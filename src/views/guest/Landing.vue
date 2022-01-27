@@ -18,6 +18,7 @@
 					</v-row>
 				</v-sheet>
 			</v-carousel-item>
+			
 		</v-carousel>
 		<div class="mb-4 d-flex justify-center">
 			<v-btn color="primary" :to="{name:'login'}">gabung sekarang</v-btn>

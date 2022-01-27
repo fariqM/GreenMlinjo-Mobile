@@ -6,6 +6,7 @@ import Login from '../views/guest/Login.vue'
 import Register from '../views/guest/Register.vue'
 import Landing from '../views/guest/Landing.vue'
 // main-page
+import LayoutMenu from '../views/layouts/MenuLayout.vue'
 import Home from '../views/Home.vue'
 import Notification from '../views/Notification.vue'
 import Pesanan from '../views/Pesanan.vue'
@@ -35,7 +36,7 @@ const routes = [
   {
     path: '/app',
     name: 'app-menu',
-    component: Register,
+    component: LayoutMenu,
     children: [{
       path: 'home',
       name: 'home',
