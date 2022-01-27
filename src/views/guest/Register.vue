@@ -1,13 +1,93 @@
 <template>
-  
+	<div>
+		<v-toolbar dense color="primary" rounded="2" class="pr-0">
+			<v-btn icon class="mr-0" small @click="navigation_back">
+				<v-icon>mdi-chevron-left</v-icon>
+			</v-btn>
+			<!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+			<!-- <v-toolbar-title>Title</v-toolbar-title> -->
+			<v-subheader class="pl-0"><h3>Daftar</h3></v-subheader>
+			<v-spacer></v-spacer>
+			<router-link :to="{ name: 'login' }" >
+				<v-subheader>
+					<h3>Masuk</h3>
+				</v-subheader>
+			</router-link>
+		</v-toolbar>
+		<v-main>
+			<v-col md="12" cols="12" class="mt-10">
+				<!-- <div>asd</div> -->
+				<v-img
+					contain
+					src="../../assets/cart.png"
+					height="200px"
+					max-height="20vh"
+				></v-img>
+			</v-col>
+			<v-col md="12" cols="12">
+				<h2 class="text-center">Daftar akun baru</h2>
+			</v-col>
+			<v-col md="12" cols="12" class="pt-0 pb-0 mb-2">
+				<v-text-field
+					hide-details="auto"
+					placeholder="Masukkan username anda"
+					label="Username"
+					outlined
+					filled
+				></v-text-field>
+			</v-col>
+			<v-col md="12" cols="12" class="pt-0 pb-0 mb-2">
+				<v-text-field
+					hide-details="auto"
+					placeholder="Masukkan email anda"
+					label="Email"
+					:error-messages="checkbox"
+					outlined
+					filled
+				></v-text-field>
+			</v-col>
+			<v-col md="12" cols="12" class="pt-0">
+				<v-text-field
+					hide-details="auto"
+					placeholder="Masukkan Password anda"
+					label="Password"
+					type="password"
+					outlined
+					filled
+				></v-text-field>
+			</v-col>
+			<v-col md="12" cols="12" class="pt-0">
+				<v-text-field
+					hide-details="auto"
+					placeholder="Ketik ulang password anda"
+					label="Ulangi Password"
+					type="password"
+					outlined
+					filled
+				></v-text-field>
+			</v-col>
+
+			<v-col md="12" cols="12" class="pt-0">
+				<v-btn width="100%" color="primary" elevation="4">Daftar</v-btn>
+			</v-col>
+		</v-main>
+	</div>
 </template>
 
 <script>
 export default {
-
-}
+	data() {
+		return {
+			checkbox: [],
+		};
+	},
+	methods:{
+		navigation_back(){
+			this.$router.back();
+		}
+	}
+};
 </script>
 
 <style>
-
 </style>

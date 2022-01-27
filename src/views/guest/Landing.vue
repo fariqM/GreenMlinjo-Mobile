@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<v-main>
 		<!-- <v-btn fab>asdasdasd</v-btn> -->
 		<v-carousel
 			cycle
@@ -12,15 +12,15 @@
 		>
 			<v-carousel-item v-for="(item, i) in images" :key="i">
 				<v-sheet height="100%">
-					<v-row class="fill-height" align="center" justify="center">
-						<v-img max-height="270" max-width="250" :src="item"> </v-img>
+					<v-row class="fill-height " align="center" justify="center">
+						<v-img max-height="270" height="200" max-width="250" :src="item" contain></v-img>
 						<!-- '../../assets/images/cart.png' -->
 					</v-row>
 				</v-sheet>
 			</v-carousel-item>
 		</v-carousel>
 		<div class="mb-4 d-flex justify-center">
-			<v-btn color="primary">gabung sekarang</v-btn>
+			<v-btn color="primary" :to="{name:'login'}">gabung sekarang</v-btn>
 		</div>
 		<v-row style="margin: 0px; display: block" no-gutters justify="center">
 			<div class="d-flex justify-space-around">
@@ -41,7 +41,7 @@
 				</div>
 			</div>
 		</v-row>
-	</div>
+	</v-main>
 </template>
 
 <script>
