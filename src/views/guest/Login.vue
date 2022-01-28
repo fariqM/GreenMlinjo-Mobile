@@ -62,7 +62,7 @@
 			</v-col>
 
 			<v-col md="12" cols="12" class="pt-0">
-				<v-btn width="100%" color="primary" elevation="4">Masuk</v-btn>
+				<v-btn width="100%" color="primary" elevation="4" :to="{name:'home'}">Masuk</v-btn>
 			</v-col>
 		</v-main>
 	</div>

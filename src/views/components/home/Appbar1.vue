@@ -1,12 +1,18 @@
 <template>
 	<div>
 		<v-app-bar
+			elevate-on-scroll
 			absolute
-			color="transparent pr-5 pt-3"
+			class="pr-5 pt-0 pb-6"
 			dark
-			elevation="0"
 			scroll-target="#scrolling-techniques-3"
 		>
+			<template v-slot:img="{ props }">
+				<v-img
+					v-bind="props"
+					gradient="to top right, rgb(142 229 132 / 62%), rgb(169 255 168 / 98%)"
+				></v-img>
+			</template>
 			<v-text-field
 				label="Cari sayur kol"
 				hide-details

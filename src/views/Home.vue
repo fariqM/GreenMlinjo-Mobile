@@ -7,22 +7,9 @@
 				class="overflow-y-auto"
 				max-height="600"
 			>
-				<v-carousel
-					cycle
-					v-model="corrousel"
-					hide-delimiters
-					:show-arrows="false"
-					height="100%"
-				>
-					<v-carousel-item v-for="(item, i) in images" :key="i" class="info">
-						<v-img
-							height="250"
-							src="../assets/sayur.jpg"
-							gradient="to top right, #ffffff38, #496c1d"
-						>
-						</v-img>
-					</v-carousel-item>
-				</v-carousel>
+				<!-- Corousels Section-->
+				<home-corousels></home-corousels>
+
 				<div class="d-flex justify-space-between pl-2 pr-2">
 					<div>
 						<span
@@ -36,21 +23,70 @@
 						>lihat semua promo</router-link
 					>
 				</div>
-				<v-subheader style="border-style: outset; border-width:4px" class="mb-2">
-					<v-icon>mdi-map-marker-outline</v-icon>
-					Lihat area jangkauan pengiriman
-					<v-spacer></v-spacer>
-					<v-btn icon><v-icon>mdi-chevron-down</v-icon></v-btn>
+				<!-- End Corousels Section -->
 
-				</v-subheader>
-                <costumscroll :ops="ops">
-                    <v-sheet width="1000" height="50px" class="d-flex align-center">
-                       <div class="">
-                           Category Category Category Category Category Category
-                       </div>
-                    </v-sheet>
-                    <!-- <v-text-field label="asdasda"></v-text-field> -->
-                </costumscroll>
+				<!-- Area Section -->
+				<location-area></location-area>
+				<!-- End Area Section -->
+
+				<!-- Recomendation Section -->
+				<costumscroll :ops="ops" class="pt-2 pb-2 pl-2 pr-2 mb-2">
+					<v-sheet width="1000" max-height="100px" class="d-flex">
+						<recom-item
+							v-for="(item, i) in recom_items"
+							:key="i"
+							:src="item.src"
+							:alt="item.alt"
+							:title="item.title"
+						></recom-item>
+					</v-sheet>
+				</costumscroll>
+				<!-- End Recomendation Section -->
+
+				<!-- Wallet Section -->
+				<wallet></wallet>
+				<!-- End Wallet Section -->
+
+				<div class="d-flex justify-space-between mt-3 px-0">
+					<v-subheader class="px-2" style="height: 20px; font-weight:bold">Paket Promo</v-subheader>
+					<v-subheader class="px-1" style="height: 20px; ">
+						<router-link :to="{name: 'login'}" style="text-decoration: none">
+							Lihat lainnya <v-icon color="primary">mdi-chevron-right</v-icon>
+						</router-link>
+					</v-subheader>
+				</div>
+				<v-row no-gutters class="px-1" justify="space-around" justify-sm="5">
+					<v-col cols="5" sm="6" class="py-2" v-for="(count, i) in 6" :key="i">
+
+						<v-card class="mx-auto" max-width="344" elevation="2" outlined>
+							<div class="d-flex justify-center">
+								<v-img
+									src="/assets/images/wortel.jpg"
+									height="100px"
+									width="100px"
+								></v-img>
+							</div>
+
+							<v-card-title style="font-size: 1rem; padding: 2px 5px">
+								Wortel Lokal
+							</v-card-title>
+
+							<v-card-subtitle style="padding: 5px 5px"
+								>Wortel lokal fresh</v-card-subtitle
+							>
+							<v-card-subtitle style="padding: 0px 5px">
+								Rp12.000 - Rp15.000 / Kg
+							</v-card-subtitle>
+							<v-card-actions style="padding: 0px 0px">
+								<v-btn color="primary" text class="pa-0">Beli</v-btn>
+								<v-spacer></v-spacer>
+								<v-btn icon>
+									<v-icon>mdi-chevron-right</v-icon>
+								</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-col>
+				</v-row>
 			</v-sheet>
 		</div>
 	</div>
@@ -58,23 +94,75 @@
 
 <script>
 import costumscroll from "vuescroll";
-import appbar from "./components/Appbar1.vue";
+import appbar from "./components/home/Appbar1.vue";
+import RecomItem from "./components/home/RecomItem.vue";
+import LocationArea from "./components/home/LocationArea.vue";
+import HomeCorousels from "./components/home/HomeCorousel.vue";
+import Wallet from "./components/home/Wallet.vue";
 
 export default {
 	components: {
 		costumscroll,
 		appbar,
+		RecomItem,
+		LocationArea,
+		HomeCorousels,
+		Wallet,
 	},
 	data() {
 		return {
+			show: false,
+			recom_items: [
+				{
+					src: "/assets/icon/flash-sale.png",
+					alt: "coupons",
+					title: "Promo Kilat",
+				},
+				{
+					src: "/assets/icon/fruit.png",
+					alt: "coupons",
+					title: "Paket Buah",
+				},
+				{
+					src: "/assets/icon/Wheat-flour.png",
+					alt: "Kebutuhan Pokok",
+					title: "Kebutuhan Pokok",
+				},
+				{
+					src: "/assets/icon/vegetables.png",
+					alt: "Sayur",
+					title: "Paket Sayur",
+				},
+				{
+					src: "/assets/icon/egg-carton.png",
+					alt: "Telur",
+					title: "Produk Telur",
+				},
+				{
+					src: "/assets/icon/meat.png",
+					alt: "Daging",
+					title: "Produk Daging",
+				},
+				{
+					src: "/assets/icon/sweet-potato.png",
+					alt: "Umbian",
+					title: "Produk Umbian",
+				},
+				{
+					src: "/assets/icon/seafood.png",
+					alt: "Ikan",
+					title: "Produk Ikan",
+				},
+				{
+					src: "/assets/icon/milk-box.png",
+					alt: "Produk Susu",
+					title: "Produk Susu",
+				},
+			],
 			corrousel: 2,
 			total_cart: 5,
 			total_fav: 10,
-			images: [
-				"assets/images/box.png",
-				"assets/images/small_box.png",
-				"assets/images/cart.png",
-			],
+			itemsrecom: "/assets/icon/meat.png",
 			ops: {
 				vuescroll: {
 					mode: "native",
@@ -87,7 +175,7 @@ export default {
 					initialScrollY: false,
 					initialScrollX: false,
 					scrollingX: true,
-					scrollingY: false,
+					scrollingY: true,
 					speed: 300,
 					easing: undefined,
 					verticalNativeBarPos: "right",
@@ -95,7 +183,7 @@ export default {
 					// maxHeight: "300",
 				},
 				rail: {
-					background: "#87BD43",
+					background: "transparent",
 					opacity: 0.3,
 					size: "4px",
 					specifyBorderRadius: false,
@@ -106,7 +194,7 @@ export default {
 				bar: {
 					showDelay: 500,
 					onlyShowBarOnScroll: false,
-					keepShow: true,
+					keepShow: false,
 					background: "#87BD43",
 					opacity: 1,
 					hoverStyle: true,
@@ -116,7 +204,7 @@ export default {
 					disable: false,
 				},
 				scrollButton: {
-					enable: true,
+					enable: false,
 					background: "#87BD43    ",
 					opacity: 1,
 					step: 180,
