@@ -55,8 +55,48 @@
 						:max_qty_per_unit="product.max_qty_per_unit"
 						:min_price="product.min_price"
 						:max_price="product.max_price"
+						:testing_log="'ini list produk 1'"
 					></products-card>
 				</v-row>
+
+				<v-lazy
+					:v-model="false"
+					:options="{
+						threshold: 0.5,
+					}"
+					min-height="200"
+				>
+					<div>
+						<div class="d-flex justify-space-between mt-3 px-0">
+							<v-subheader class="px-2" style="height: 20px; font-weight: bold"
+								>Paket Ramadan Meriah</v-subheader
+							>
+							<v-subheader class="px-1" style="height: 20px">
+								<router-link
+									:to="{ name: 'login' }"
+									style="text-decoration: none"
+								>
+									Lihat lainnya
+									<v-icon color="primary">mdi-chevron-right</v-icon>
+								</router-link>
+							</v-subheader>
+						</div>
+						<v-row no-gutters class="px-1" justify="space-between">
+							<products-card
+								v-for="(product, i) in products"
+								:key="i"
+								:title="product.title"
+								:unit="product.unit"
+								:sub_unit="product.sub_unit"
+								:min_qty_per_unit="product.min_qty_per_unit"
+								:max_qty_per_unit="product.max_qty_per_unit"
+								:min_price="product.min_price"
+								:max_price="product.max_price"
+								:testing_log="'ini list produk 2'"
+							></products-card>
+						</v-row>
+					</div>
+				</v-lazy>
 			</v-sheet>
 		</div>
 	</div>

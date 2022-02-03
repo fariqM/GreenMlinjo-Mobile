@@ -35,8 +35,18 @@
 							unit
 						}}
 					</v-card-subtitle>
-					<div class="pl-1" style="font-weight: 500; font-size: 1.07rem; white-space:nowrap; overflow:hidden; text-overflow: ellipsis">
-						Rp {{ numberWithCommas(min_price) }} - Rp {{ numberWithCommas(max_price) }}
+					<div
+						class="pl-1"
+						style="
+							font-weight: 500;
+							font-size: 1.07rem;
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						"
+					>
+						Rp {{ numberWithCommas(min_price) }} - Rp
+						{{ numberWithCommas(max_price) }}
 					</div>
 					<div class="pl-1" style="font-weight: 500; font-size: 0.775rem">
 						/{{ unit }}
@@ -62,6 +72,7 @@
 <script>
 export default {
 	props: {
+        testing_log: String,
 		title: String,
 		unit: String,
 		sub_unit: String,
@@ -70,6 +81,9 @@ export default {
 		min_price: Number,
 		max_price: Number,
 	},
+    mounted(){
+        console.log(this.testing_log);
+    },
 	methods: {
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");
