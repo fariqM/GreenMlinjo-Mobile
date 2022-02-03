@@ -5,24 +5,10 @@
 			<v-sheet
 				id="scrolling-techniques-3"
 				class="overflow-y-auto"
-				max-height="600"
+				max-height="91vh"
 			>
 				<!-- Corousels Section-->
 				<home-corousels></home-corousels>
-
-				<div class="d-flex justify-space-between pl-2 pr-2">
-					<div>
-						<span
-							v-for="(item, i) in 3"
-							:key="i"
-							class="costum_corrousel_controls"
-							:class="[i === corrousel ? 'ccc_active' : '']"
-						/>
-					</div>
-					<router-link :to="{ name: 'login' }" style="text-decoration: none"
-						>lihat semua promo</router-link
-					>
-				</div>
 				<!-- End Corousels Section -->
 
 				<!-- Area Section -->
@@ -124,7 +110,7 @@ export default {
 					title: "Paket Buah",
 				},
 				{
-					src: "/assets/icon/Wheat-flour.png",
+					src: "/assets/icon/wheat-flour.png",
 					alt: "Kebutuhan Pokok",
 					title: "Kebutuhan Pokok",
 				},
@@ -215,20 +201,6 @@ export default {
 	},
 };
 </script>
-
-<style scoped>
-.costum_corrousel_controls {
-	margin: 0px 3px;
-	height: 9px;
-	width: 9px;
-	background-color: #c5ff7cd9;
-	border-radius: 50%;
-	display: inline-block;
-}
-.ccc_active {
-	background-color: #87bd43;
-}
-</style>
 
 <style lang="scss">
 .v-toolbar__content {
