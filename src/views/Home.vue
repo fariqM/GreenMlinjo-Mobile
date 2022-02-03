@@ -1,5 +1,5 @@
 <template>
-	<div class="overflow-hidden">
+	<div>
 		<appbar></appbar>
 		<div>
 			<v-sheet
@@ -29,49 +29,33 @@
 				</costumscroll>
 				<!-- End Recomendation Section -->
 
-				<!-- Wallet Section -->
 				<wallet></wallet>
+				<!-- Wallet Section -->
+
 				<!-- End Wallet Section -->
 
 				<div class="d-flex justify-space-between mt-3 px-0">
-					<v-subheader class="px-2" style="height: 20px; font-weight:bold">Paket Promo</v-subheader>
-					<v-subheader class="px-1" style="height: 20px; ">
-						<router-link :to="{name: 'login'}" style="text-decoration: none">
+					<v-subheader class="px-2" style="height: 20px; font-weight: bold"
+						>Paket Promo</v-subheader
+					>
+					<v-subheader class="px-1" style="height: 20px">
+						<router-link :to="{ name: 'login' }" style="text-decoration: none">
 							Lihat lainnya <v-icon color="primary">mdi-chevron-right</v-icon>
 						</router-link>
 					</v-subheader>
 				</div>
-				<v-row no-gutters class="px-1" justify="space-around" justify-sm="5">
-					<v-col cols="5" sm="6" class="py-2" v-for="(count, i) in 6" :key="i">
-
-						<v-card class="mx-auto" max-width="344" elevation="2" outlined>
-							<div class="d-flex justify-center">
-								<v-img
-									src="/assets/images/wortel.jpg"
-									height="100px"
-									width="100px"
-								></v-img>
-							</div>
-
-							<v-card-title style="font-size: 1rem; padding: 2px 5px">
-								Wortel Lokal
-							</v-card-title>
-
-							<v-card-subtitle style="padding: 5px 5px"
-								>Wortel lokal fresh</v-card-subtitle
-							>
-							<v-card-subtitle style="padding: 0px 5px">
-								Rp12.000 - Rp15.000 / Kg
-							</v-card-subtitle>
-							<v-card-actions style="padding: 0px 0px">
-								<v-btn color="primary" text class="pa-0">Beli</v-btn>
-								<v-spacer></v-spacer>
-								<v-btn icon>
-									<v-icon>mdi-chevron-right</v-icon>
-								</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-col>
+				<v-row no-gutters class="px-1" justify="space-between">
+					<products-card
+						v-for="(product, i) in products"
+						:key="i"
+						:title="product.title"
+						:unit="product.unit"
+						:sub_unit="product.sub_unit"
+						:min_qty_per_unit="product.min_qty_per_unit"
+						:max_qty_per_unit="product.max_qty_per_unit"
+						:min_price="product.min_price"
+						:max_price="product.max_price"
+					></products-card>
 				</v-row>
 			</v-sheet>
 		</div>
@@ -85,6 +69,7 @@ import RecomItem from "./components/home/RecomItem.vue";
 import LocationArea from "./components/home/LocationArea.vue";
 import HomeCorousels from "./components/home/HomeCorousel.vue";
 import Wallet from "./components/home/Wallet.vue";
+import ProductsCard from "./components/home/ProductCard.vue";
 
 export default {
 	components: {
@@ -94,10 +79,67 @@ export default {
 		LocationArea,
 		HomeCorousels,
 		Wallet,
+		ProductsCard,
 	},
 	data() {
 		return {
 			show: false,
+			products: [
+				{
+					title: "Wortel Lokal1",
+					unit: "Kg",
+					sub_unit: "pcs",
+					min_qty_per_unit: 15,
+					max_qty_per_unit: 18,
+					min_price: 12000,
+					max_price: 16000,
+				},
+				{
+					title: "Wortel Lokal",
+					unit: "Kg",
+					sub_unit: "pcs",
+					min_qty_per_unit: 15,
+					max_qty_per_unit: 18,
+					min_price: 12000,
+					max_price: 16000,
+				},
+				{
+					title: "Wortel Lokal",
+					unit: "Kg",
+					sub_unit: "pcs",
+					min_qty_per_unit: 15,
+					max_qty_per_unit: 18,
+					min_price: 12000,
+					max_price: 16000,
+				},
+				{
+					title: "Wortel Lokal",
+					unit: "Kg",
+					sub_unit: "pcs",
+					min_qty_per_unit: 15,
+					max_qty_per_unit: 18,
+					min_price: 12000,
+					max_price: 16000,
+				},
+				{
+					title: "Wortel Lokal",
+					unit: "Kg",
+					sub_unit: "pcs",
+					min_qty_per_unit: 15,
+					max_qty_per_unit: 18,
+					min_price: 12000,
+					max_price: 16000,
+				},
+				{
+					title: "Wortel Lokal",
+					unit: "Kg",
+					sub_unit: "pcs",
+					min_qty_per_unit: 15,
+					max_qty_per_unit: 18,
+					min_price: 12000,
+					max_price: 16000,
+				},
+			],
 			recom_items: [
 				{
 					src: "/assets/icon/flash-sale.png",
