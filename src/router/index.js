@@ -1,3 +1,7 @@
+import { Plugins } from '@capacitor/core';
+
+const { Storage } = Plugins;
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Error404 from '../views/errors/404.vue'
@@ -69,6 +73,27 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   routes
+})
+
+async function getToken() {
+  const { value } = await Storage.get({ key: 'mlinjo_token' });
+  return value;
+};
+
+// set the default header of axios a bearer token 
+router.beforeEach((to, from, next) => {
+  if (platform === 'android') {
+    getToken().then(token => {
+      if (token === null) {
+        next();
+      } else {
+        axios.defaults.headers.Authorization = `Bearer ${token}`;
+        next();
+      }
+    })
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -25,7 +25,7 @@
 				></v-img>
 			</v-col>
 			<v-col md="12" cols="12">
-				<h2 class="text-center">Selamat Datang2</h2>
+				<h2 class="text-center">Selamat Datang</h2>
 			</v-col>
 			<v-col md="12" cols="12" class="pt-0 pb-0 mb-2">
 				<v-text-field
@@ -33,7 +33,7 @@
 					placeholder="Masukkan email anda"
 					label="Email"
 					v-model="form.email"
-					:error-messages="checkbox"
+					:rules="emailRules"
 					outlined
 					filled
 				></v-text-field>
@@ -73,6 +73,16 @@
 					>Masuk</v-btn
 				>
 			</v-col>
+			<v-col md="12" cols="12" class="pt-0">
+				<v-btn
+					width="100%"
+					color="primary"
+					elevation="4"
+					@click="check"
+					:loading="loading"
+					>cek</v-btn
+				>
+			</v-col>
 		</v-main>
 	</div>
 </template>
@@ -87,31 +97,58 @@ export default {
 			},
 			checkbox: [],
 			loading: false,
+			emailRules: [
+				(v) => !!v || "*Oops.. Tolong masukkan email",
+				(v) => (v && v.length <= 120) || "Max 120 charachters",
+				(v) => /.+@.+/.test(v) || "Kayaknya ini bukan email deh...",
+			],
 		};
 	},
 	mounted() {
-		console.log(this.$platform);
+		// console.log(this.$platform);
 	},
 	methods: {
 		navigation_back() {
 			this.$router.back();
 		},
 		check() {
-			this.$open_http
-				.get("products", this.form)
-				.then((res) => {
-					console.log(res);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
-		Login() {
-			this.$store.dispatch("auth/loginAction",  this.form).then(response => {
+			axios.get("inspect").then(response => {
 				console.log(response);
 			}).catch(e => {
 				console.log(e);
 			})
+			// this.$store
+			// 	.dispatch("auth/getCreds", {})
+			// 	.then((token) => {
+			// 		console.log(token);
+			// 	})
+			// 	.catch((e) => {
+			// 		console.log(e);
+			// 	});
+		},
+		Login() {
+			this.loading = true;
+			this.$store
+				.dispatch("auth/loginAction", this.form)
+				.then((response) => {
+					this.loading = false;
+					this.$router.push({name: 'home'})
+				})
+				.catch((e) => {
+					this.loading = false;
+					this.$toast.error(
+						"Coba lagi, kali aja bisa.",
+						"Oops ! Kayaknya ada masalah :( ",
+						{
+							position: "topCenter",
+							timeout: 4500,
+							// ballon:true,
+							transitionInMobile: "fadeInLeft",
+							transitionOutMobile: "fadeOutLeft",
+							displayMode: 2,
+						}
+					);
+				});
 		},
 	},
 };
