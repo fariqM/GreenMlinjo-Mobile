@@ -22,8 +22,8 @@
 			></v-text-field>
 			<v-btn icon large>
 				<v-badge
-					:content="total_cart"
-					:value="total_cart"
+					:content="CountFavourites"
+					:value="CountFavourites"
 					color="error"
 					overlap
 				>
@@ -41,10 +41,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
+	computed:{
+		...mapGetters({ CountFavourites: "favourites/getCountFavourites" }),
+	},
+	mounted(){
+		
+	},
 	data() {
 		return {
-			total_cart: 5,
+			
 			total_fav: 10,
 			corrousel: 2,
 		};

@@ -8,7 +8,7 @@
 			<!-- <v-toolbar-title>Title</v-toolbar-title> -->
 			<v-subheader class="pl-0"><h3>Masuk</h3></v-subheader>
 			<v-spacer></v-spacer>
-			<router-link :to="{ name: 'register' }" >
+			<router-link :to="{ name: 'register' }">
 				<v-subheader>
 					<h3>Daftar</h3>
 				</v-subheader>
@@ -25,13 +25,14 @@
 				></v-img>
 			</v-col>
 			<v-col md="12" cols="12">
-				<h2 class="text-center">Selamat Datang</h2>
+				<h2 class="text-center">Selamat Datang2</h2>
 			</v-col>
 			<v-col md="12" cols="12" class="pt-0 pb-0 mb-2">
 				<v-text-field
 					hide-details="auto"
 					placeholder="Masukkan email anda"
 					label="Email"
+					v-model="form.email"
 					:error-messages="checkbox"
 					outlined
 					filled
@@ -41,6 +42,7 @@
 				<v-text-field
 					hide-details="auto"
 					placeholder="Masukkan Password anda"
+					v-model="form.password"
 					label="Password"
 					type="password"
 					outlined
@@ -62,7 +64,14 @@
 			</v-col>
 
 			<v-col md="12" cols="12" class="pt-0">
-				<v-btn width="100%" color="primary" elevation="4" :to="{name:'home'}">Masuk</v-btn>
+				<v-btn
+					width="100%"
+					color="primary"
+					elevation="4"
+					@click="Login"
+					:loading="loading"
+					>Masuk</v-btn
+				>
 			</v-col>
 		</v-main>
 	</div>
@@ -72,13 +81,38 @@
 export default {
 	data() {
 		return {
+			form: {
+				email: "susanna.roberts@example.com",
+				password: "password",
+			},
 			checkbox: [],
+			loading: false,
 		};
 	},
-	methods:{
-		navigation_back(){
+	mounted() {
+		console.log(this.$platform);
+	},
+	methods: {
+		navigation_back() {
 			this.$router.back();
-		}
-	}
+		},
+		check() {
+			this.$open_http
+				.get("products", this.form)
+				.then((res) => {
+					console.log(res);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
+		Login() {
+			this.$store.dispatch("auth/loginAction",  this.form).then(response => {
+				console.log(response);
+			}).catch(e => {
+				console.log(e);
+			})
+		},
+	},
 };
 </script>

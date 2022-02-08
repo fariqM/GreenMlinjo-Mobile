@@ -48,6 +48,7 @@
 					<products-card
 						v-for="(product, i) in products"
 						:key="i"
+						:product_id="product.id"
 						:title="product.title"
 						:unit="product.unit"
 						:sub_unit="product.sub_unit"
@@ -81,10 +82,12 @@
 								</router-link>
 							</v-subheader>
 						</div>
+
 						<v-row no-gutters class="px-1" justify="space-between">
 							<products-card
 								v-for="(product, i) in products"
 								:key="i"
+								:product_id="product.id"
 								:title="product.title"
 								:unit="product.unit"
 								:sub_unit="product.sub_unit"
@@ -126,7 +129,8 @@ export default {
 			show: false,
 			products: [
 				{
-					title: "Wortel Lokal1",
+					id:1,
+					title: "Wortel Lokal14",
 					unit: "Kg",
 					sub_unit: "pcs",
 					min_qty_per_unit: 15,
@@ -135,6 +139,7 @@ export default {
 					max_price: 16000,
 				},
 				{
+					id:2,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -144,6 +149,7 @@ export default {
 					max_price: 16000,
 				},
 				{
+					id:3,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -153,6 +159,7 @@ export default {
 					max_price: 16000,
 				},
 				{
+					id:4,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -162,6 +169,7 @@ export default {
 					max_price: 16000,
 				},
 				{
+					id:5,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -171,6 +179,7 @@ export default {
 					max_price: 16000,
 				},
 				{
+					id:6,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -281,6 +290,12 @@ export default {
 			},
 		};
 	},
+	// mounted(){
+	// 	console.log(this.$store);
+	// },
+	methods:{
+
+	}
 };
 </script>
 

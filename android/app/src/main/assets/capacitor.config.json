@@ -1,1 +1,1 @@
-{"appId":"mlinjo.app.com","appName":"MlinjoApp","bundledWebRuntime":false,"webDir":"C:\\Dev\\FrontEnd\\green_mlinjo\\dist\\bundled"}
+{"appId":"mlinjo.app.com","appName":"MlinjoApp","bundledWebRuntime":false,"webDir":"C:\\Dev\\FrontEnd\\green_mlinjo\\dist\\bundled","server":{"url":"http://192.168.1.9:8080"}}

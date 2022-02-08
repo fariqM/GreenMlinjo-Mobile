@@ -1,7 +1,7 @@
 <template>
 	<v-col cols="6" sm="5" md="5" class="py-2" style="padding: 10px 5px 5px 10px">
-		<v-card class="mx-auto" max-width="344" elevation="2" outlined>
-			<v-list-item link class="pa-0" style="display: block">
+		<v-card class="mx-auto " max-width="344" elevation="2" outlined >
+			<v-list link class="pa-0" style="display: block">
 				<div class="d-flex justify-end">
 					<v-img src="/assets/images/wortel.jpg" height="100px" width="100px">
 						<template v-slot:placeholder>
@@ -15,6 +15,7 @@
 					</v-img>
 					<div style="position: absolute">
 						<v-btn
+							@click="addFavourite(product_id)"
 							class="pa-0 mt-1 mr-1"
 							style="min-width: 35px; background-color: #ffffffa1"
 						>
@@ -22,7 +23,8 @@
 						</v-btn>
 					</div>
 				</div>
-			</v-list-item>
+			</v-list>
+
 			<v-list-item link class="pa-0 pb-1">
 				<div style="width: 100%">
 					<v-card-title style="font-size: 1rem; padding: 2px 5px">
@@ -72,7 +74,7 @@
 <script>
 export default {
 	props: {
-        testing_log: String,
+		testing_log: String,
 		title: String,
 		unit: String,
 		sub_unit: String,
@@ -80,15 +82,19 @@ export default {
 		max_qty_per_unit: Number,
 		min_price: Number,
 		max_price: Number,
+		product_id: Number,
 	},
-    mounted(){
-        console.log(this.testing_log);
-    },
+	mounted() {
+		console.log(this.testing_log);
+	},
 	methods: {
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");
 			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			return parts.join(".");
+		},
+		addFavourite(product_id) {
+			this.$store.dispatch("favourites/addFavourites", product_id);
 		},
 	},
 };
