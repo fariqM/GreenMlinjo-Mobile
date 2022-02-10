@@ -34,7 +34,7 @@
 
 				<!-- End Wallet Section -->
 
-				<div class="d-flex justify-space-between mt-3 px-0">
+				<!-- <div class="d-flex justify-space-between mt-3 px-0">
 					<v-subheader class="px-2" style="height: 20px; font-weight: bold"
 						>Paket Promo</v-subheader
 					>
@@ -44,7 +44,7 @@
 						</router-link>
 					</v-subheader>
 				</div>
-				<v-row no-gutters class="px-1" justify="space-between">
+				<v-row no-gutters class="" justify="space-between">
 					<products-card
 						v-for="(product, i) in products"
 						:key="i"
@@ -58,48 +58,73 @@
 						:max_price="product.max_price"
 						:testing_log="'ini list produk 1'"
 					></products-card>
-				</v-row>
+				</v-row> -->
 
-				<v-lazy
-					:v-model="false"
-					:options="{
-						threshold: 0.5,
-					}"
-					min-height="200"
-				>
-					<div>
-						<div class="d-flex justify-space-between mt-3 px-0">
-							<v-subheader class="px-2" style="height: 20px; font-weight: bold"
-								>Paket Ramadan Meriah</v-subheader
+				<div class="paket-section">
+					<div class="d-flex justify-space-between mt-3 px-0">
+						<v-subheader class="px-2" style="height: 20px; font-weight: bold"
+							>Paket Promo</v-subheader
+						>
+						<v-subheader class="px-1" style="height: 20px">
+							<router-link
+								:to="{ name: 'login' }"
+								style="text-decoration: none"
 							>
-							<v-subheader class="px-1" style="height: 20px">
-								<router-link
-									:to="{ name: 'login' }"
-									style="text-decoration: none"
-								>
-									Lihat lainnya
-									<v-icon color="primary">mdi-chevron-right</v-icon>
-								</router-link>
-							</v-subheader>
-						</div>
-
-						<v-row no-gutters class="px-1" justify="space-between">
-							<products-card
-								v-for="(product, i) in products"
-								:key="i"
-								:product_id="product.id"
-								:title="product.title"
-								:unit="product.unit"
-								:sub_unit="product.sub_unit"
-								:min_qty_per_unit="product.min_qty_per_unit"
-								:max_qty_per_unit="product.max_qty_per_unit"
-								:min_price="product.min_price"
-								:max_price="product.max_price"
-								:testing_log="'ini list produk 2'"
-							></products-card>
-						</v-row>
+								Lihat lainnya
+								<v-icon color="primary">mdi-chevron-right</v-icon>
+							</router-link>
+						</v-subheader>
 					</div>
-				</v-lazy>
+
+					<v-row no-gutters justify="space-between">
+						<products-card
+							v-for="(product, i) in products"
+							:key="i"
+							:product_id="product.id"
+							:title="product.title"
+							:unit="product.unit"
+							:sub_unit="product.sub_unit"
+							:min_qty_per_unit="product.min_qty_per_unit"
+							:max_qty_per_unit="product.max_qty_per_unit"
+							:min_price="product.min_price"
+							:max_price="product.max_price"
+							:testing_log="'ini list produk 2'"
+						></products-card>
+					</v-row>
+				</div>
+
+				<div class="paket-section">
+					<div class="d-flex justify-space-between mt-3 px-0">
+						<v-subheader class="px-2" style="height: 20px; font-weight: bold"
+							>Paket Ramadhan</v-subheader
+						>
+						<v-subheader class="px-1" style="height: 20px">
+							<router-link
+								:to="{ name: 'login' }"
+								style="text-decoration: none"
+							>
+								Lihat lainnya
+								<v-icon color="primary">mdi-chevron-right</v-icon>
+							</router-link>
+						</v-subheader>
+					</div>
+
+					<v-row no-gutters justify="space-between">
+						<products-card
+							v-for="(product, i) in products"
+							:key="i"
+							:product_id="product.id"
+							:title="product.title"
+							:unit="product.unit"
+							:sub_unit="product.sub_unit"
+							:min_qty_per_unit="product.min_qty_per_unit"
+							:max_qty_per_unit="product.max_qty_per_unit"
+							:min_price="product.min_price"
+							:max_price="product.max_price"
+							:testing_log="'ini list produk 2'"
+						></products-card>
+					</v-row>
+				</div>
 			</v-sheet>
 		</div>
 	</div>
@@ -129,7 +154,7 @@ export default {
 			show: false,
 			products: [
 				{
-					id:1,
+					id: 1,
 					title: "Wortel Lokal14",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -139,7 +164,7 @@ export default {
 					max_price: 16000,
 				},
 				{
-					id:2,
+					id: 2,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -149,7 +174,7 @@ export default {
 					max_price: 16000,
 				},
 				{
-					id:3,
+					id: 3,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -159,27 +184,7 @@ export default {
 					max_price: 16000,
 				},
 				{
-					id:4,
-					title: "Wortel Lokal",
-					unit: "Kg",
-					sub_unit: "pcs",
-					min_qty_per_unit: 15,
-					max_qty_per_unit: 18,
-					min_price: 12000,
-					max_price: 16000,
-				},
-				{
-					id:5,
-					title: "Wortel Lokal",
-					unit: "Kg",
-					sub_unit: "pcs",
-					min_qty_per_unit: 15,
-					max_qty_per_unit: 18,
-					min_price: 12000,
-					max_price: 16000,
-				},
-				{
-					id:6,
+					id: 4,
 					title: "Wortel Lokal",
 					unit: "Kg",
 					sub_unit: "pcs",
@@ -293,14 +298,21 @@ export default {
 	// mounted(){
 	// 	console.log(this.$store);
 	// },
-	methods:{
-
-	}
+	methods: {},
 };
 </script>
 
 <style lang="scss">
 .v-toolbar__content {
 	padding: 4px 4px 4px 4px;
+}
+</style>
+
+<style >
+.paket-section {
+	padding: 1px 5px 5px 5px;
+	background-color: rgb(231 231 231 / 46%);
+	border-radius: 5%;
+	margin: 5px 5px 5px 5px;
 }
 </style>

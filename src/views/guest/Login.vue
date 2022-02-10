@@ -4,8 +4,6 @@
 			<v-btn icon class="mr-0" small @click="navigation_back">
 				<v-icon>mdi-chevron-left</v-icon>
 			</v-btn>
-			<!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-			<!-- <v-toolbar-title>Title</v-toolbar-title> -->
 			<v-subheader class="pl-0"><h3>Masuk</h3></v-subheader>
 			<v-spacer></v-spacer>
 			<router-link :to="{ name: 'register' }">
@@ -13,6 +11,13 @@
 					<h3>Daftar</h3>
 				</v-subheader>
 			</router-link>
+			<v-progress-linear
+				:active="loading"
+				:indeterminate="loading"
+				absolute
+				bottom
+				color="success"
+			></v-progress-linear>
 		</v-toolbar>
 		<v-main>
 			<v-col md="12" cols="12" class="mt-10">
@@ -73,16 +78,8 @@
 					>Masuk</v-btn
 				>
 			</v-col>
-			<v-col md="12" cols="12" class="pt-0">
-				<v-btn
-					width="100%"
-					color="primary"
-					elevation="4"
-					@click="check"
-					:loading="loading"
-					>cek</v-btn
-				>
-			</v-col>
+			<v-overlay :value="overlay" opacity="0.3">
+			</v-overlay>
 		</v-main>
 	</div>
 </template>
@@ -96,6 +93,7 @@ export default {
 				password: "password",
 			},
 			checkbox: [],
+			overlay: false,
 			loading: false,
 			emailRules: [
 				(v) => !!v || "*Oops.. Tolong masukkan email",
@@ -112,11 +110,14 @@ export default {
 			this.$router.back();
 		},
 		check() {
-			axios.get("inspect").then(response => {
-				console.log(response);
-			}).catch(e => {
-				console.log(e);
-			})
+			axios
+				.get("inspect")
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
 			// this.$store
 			// 	.dispatch("auth/getCreds", {})
 			// 	.then((token) => {
@@ -128,11 +129,33 @@ export default {
 		},
 		Login() {
 			this.loading = true;
+			this.overlay = true;
 			this.$store
 				.dispatch("auth/loginAction", this.form)
 				.then((response) => {
 					this.loading = false;
-					this.$router.push({name: 'home'})
+					this.$router
+						.push({ name: "home" })
+						.then((next) => {
+							this.loading = false;
+							this.overlay = false;
+						})
+						.catch((error) => {
+							this.$toast.error(
+								"Coba lagi, kali aja bisa.",
+								"Oops ! Kayaknya ada masalah :( ",
+								{
+									position: "topCenter",
+									timeout: 4500,
+									// ballon:true,
+									transitionInMobile: "fadeInLeft",
+									transitionOutMobile: "fadeOutLeft",
+									displayMode: 2,
+								}
+							);
+							this.loading = false;
+							this.overlay = false;
+						});
 				})
 				.catch((e) => {
 					this.loading = false;

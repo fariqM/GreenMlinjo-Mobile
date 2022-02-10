@@ -8,6 +8,9 @@ import { Capacitor, Plugins } from '@capacitor/core';
 import VueIziToast from "vue-izitoast";
 import 'izitoast/dist/css/iziToast.css';
 
+const __BASE_URL_SERVER = 'http://192.168.1.9:8888/';
+const __API_PREFIX = 'api'
+
 window.platform = Capacitor.getPlatform();
 
 // shared preference mobile
@@ -18,24 +21,24 @@ async function getToken() {
 };
 
 window.axios_open = AXIOS;
-axios_open.defaults.baseURL = 'http://192.168.1.9:8888/api/';
+axios_open.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
 let mlinjo_key = null;
 
 if (platform == 'android') {
   window.axios = AXIOS;
   getToken().then(token => {
     mlinjo_key = token
-    axios.defaults.baseURL = 'http://192.168.1.9:8888/api/';
+    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
     // console.log(mlinjo_key);
   }).catch(e => {
-    axios.defaults.baseURL = 'http://192.168.1.9:8888/api/';
+    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
   })
 } else {
   window.axios = AXIOS;
-  axios.defaults.baseURL = 'http://192.168.1.9:8888/api/';
-  axios.defaults.headers.Authorization = `Bearer empty`
+  axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
+  axios.defaults.headers.Authorization = `Bearer empty`;
 }
 
 
