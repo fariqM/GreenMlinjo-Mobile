@@ -4,8 +4,9 @@
 		class="mb-2"
 		v-if="!skeleton"
 	>
+	
 		<v-icon>mdi-map-marker-outline</v-icon>
-		Lihat area jangkauan pengiriman
+		<div class="normal-text">Lihat area jangkauan pengiriman</div>
 		<v-spacer></v-spacer>
 		<v-btn icon><v-icon>mdi-chevron-down</v-icon></v-btn>
 	</v-subheader>

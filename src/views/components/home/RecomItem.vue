@@ -1,6 +1,5 @@
 <template>
-	<!-- <v-hover v-slot="{ hover }"> -->
-	<v-list-item link style="padding: 0px" class="mb-2 mr-2">
+	<v-list-item link style="padding: 0px" class="mb-2 mr-2" v-if="!skeleton">
 		<v-card
 			class="d-flex align-center justify-center pa-2"
 			outlined
@@ -12,20 +11,17 @@
 				</v-avatar>
 			</div>
 			<div
-				class="text-center ml-2 noselect"
-				style="
-					white-space: normal;
-					color: #6c6c6c;
-					font-size: 0.9rem;
-					max-width: 70px;
-				"
+				class="text-center ml-2 noselect normal-text"
+				style="white-space: normal; max-width: 70px"
 			>
 				{{ title }}
 			</div>
 		</v-card>
 	</v-list-item>
 
-	<!-- </v-hover> -->
+	<v-list-item link style="padding: 0px" class="mb-2 mr-2" v-else>
+		<skeleton width="7.5rem" height="4.1rem" :radius="3" />
+	</v-list-item>
 </template>
 
 <script>
@@ -34,6 +30,7 @@ export default {
 		src: String,
 		alt: String,
 		title: String,
+		skeleton: Boolean,
 	},
 	data() {
 		return {};

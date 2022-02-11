@@ -20,6 +20,10 @@
 					</div>
 					<!-- End Area Section -->
 
+					<!-- Wallet Section -->
+					<wallet :skeleton="skeleton_show"></wallet>
+					<!-- End Wallet Section -->
+
 					<!-- Recomendation Section -->
 					<costumscroll :ops="ops" class="pt-2 pb-2 pl-2 pr-2 mb-2">
 						<v-sheet width="1000" max-height="100px" class="d-flex">
@@ -29,14 +33,11 @@
 								:src="item.src"
 								:alt="item.alt"
 								:title="item.title"
+								:skeleton="skeleton_show"
 							></recom-item>
 						</v-sheet>
 					</costumscroll>
 					<!-- End Recomendation Section -->
-
-					<!-- Wallet Section -->
-					<wallet></wallet>
-					<!-- End Wallet Section -->
 
 					<div class="paket-section">
 						<div class="d-flex justify-space-between mt-3 px-0">
@@ -57,6 +58,7 @@
 						<v-row no-gutters justify="space-between">
 							<products-card
 								v-for="(product, i) in products"
+								:skeleton="skeleton_show"
 								:key="i"
 								:product_id="product.id"
 								:title="product.title"
@@ -71,38 +73,42 @@
 						</v-row>
 					</div>
 
-					<div class="paket-section">
-						<div class="d-flex justify-space-between mt-3 px-0">
-							<v-subheader class="px-2" style="height: 20px; font-weight: bold"
-								>Paket Ramadhan</v-subheader
-							>
-							<v-subheader class="px-1" style="height: 20px">
-								<router-link
-									:to="{ name: 'login' }"
-									style="text-decoration: none"
+					<v-lazy v-model="lazy_ramadan">
+						<div class="paket-section">
+							<div class="d-flex justify-space-between mt-3 px-0">
+								<v-subheader
+									class="px-2"
+									style="height: 20px; font-weight: bold"
+									>Paket Ramadhan</v-subheader
 								>
-									Lihat lainnya
-									<v-icon color="primary">mdi-chevron-right</v-icon>
-								</router-link>
-							</v-subheader>
-						</div>
+								<v-subheader class="px-1" style="height: 20px">
+									<router-link
+										:to="{ name: 'login' }"
+										style="text-decoration: none"
+									>
+										Lihat lainnya
+										<v-icon color="primary">mdi-chevron-right</v-icon>
+									</router-link>
+								</v-subheader>
+							</div>
 
-						<v-row no-gutters justify="space-between">
-							<products-card
-								v-for="(product, i) in products"
-								:key="i"
-								:product_id="product.id"
-								:title="product.title"
-								:unit="product.unit"
-								:sub_unit="product.sub_unit"
-								:min_qty_per_unit="product.min_qty_per_unit"
-								:max_qty_per_unit="product.max_qty_per_unit"
-								:min_price="product.min_price"
-								:max_price="product.max_price"
-								:testing_log="'ini list produk 2'"
-							></products-card>
-						</v-row>
-					</div>
+							<v-row no-gutters justify="space-between">
+								<products-card
+									v-for="(product, i) in products"
+									:key="i"
+									:product_id="product.id"
+									:title="product.title"
+									:unit="product.unit"
+									:sub_unit="product.sub_unit"
+									:min_qty_per_unit="product.min_qty_per_unit"
+									:max_qty_per_unit="product.max_qty_per_unit"
+									:min_price="product.min_price"
+									:max_price="product.max_price"
+									:testing_log="'ini list produk 2'"
+								></products-card>
+							</v-row>
+						</div>
+					</v-lazy>
 				</v-sheet>
 			</div>
 		</div>
@@ -133,8 +139,14 @@ export default {
 			this.skeleton_show = false;
 		}, 2000);
 	},
+	watch:{
+		lazy_ramadan: function (newValue, oldValue) {
+			console.log(newValue);
+		}
+	},
 	data() {
 		return {
+			lazy_ramadan:false,
 			skeleton_show: true,
 			show: false,
 			products: [

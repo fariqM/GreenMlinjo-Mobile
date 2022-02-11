@@ -1,6 +1,8 @@
 <template>
 	<v-col cols="6" sm="5" md="5" class="py-2" style="padding: 10px 5px 5px 5px">
+		<skeleton  width="100%" height="12rem" :radius="3" v-if="skeleton"/>
 		<v-lazy
+			v-else
 			:v-model="false"
 			:options="{
 				threshold: 0.5,
@@ -91,6 +93,7 @@ export default {
 		min_price: Number,
 		max_price: Number,
 		product_id: Number,
+		skeleton: Boolean,
 	},
 	mounted() {
 		console.log(this.testing_log);

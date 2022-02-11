@@ -1,5 +1,5 @@
 <template>
-	<v-app >
+	<v-app>
 		<router-view />
 	</v-app>
 </template>
@@ -8,7 +8,13 @@
 export default {
 	name: "App",
 
-	data: () => ({
-	}),
+	data: () => ({}),
 };
 </script>
+
+<style>
+.normal-text {
+	color: #6c6c6c;
+	font-size: 0.9rem;
+}
+</style>
