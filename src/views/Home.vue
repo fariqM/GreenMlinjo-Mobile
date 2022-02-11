@@ -16,7 +16,7 @@
 
 					<!-- Area Section -->
 					<div @click="skeleton_show = !skeleton_show">
-						<location-area></location-area>
+						<location-area :skeleton="skeleton_show"></location-area>
 					</div>
 					<!-- End Area Section -->
 
@@ -117,7 +117,6 @@ import LocationArea from "./components/home/LocationArea.vue";
 import HomeCorousels from "./components/home/HomeCorousel.vue";
 import Wallet from "./components/home/Wallet.vue";
 import ProductsCard from "./components/home/ProductCard.vue";
-import HomeSkeleton from "./components/home/Skeleton_Home.vue";
 
 export default {
 	components: {
@@ -128,7 +127,6 @@ export default {
 		HomeCorousels,
 		Wallet,
 		ProductsCard,
-		HomeSkeleton,
 	},
 	mounted() {
 		setTimeout(() => {

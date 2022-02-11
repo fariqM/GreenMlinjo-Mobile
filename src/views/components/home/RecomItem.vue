@@ -1,10 +1,10 @@
 <template>
-	<v-hover v-slot="{ hover }">
+	<!-- <v-hover v-slot="{ hover }"> -->
+	<v-list-item link style="padding: 0px" class="mb-2 mr-2">
 		<v-card
-			class="d-flex align-center justify-center pa-2 mb-2 mr-2"
+			class="d-flex align-center justify-center pa-2"
 			outlined
 			elevation="2"
-			:style="hover ? 'background-color: rgb(148 219 59 / 57%)' : ''"
 		>
 			<div class="d-flex justify-center">
 				<v-avatar tile>
@@ -23,7 +23,9 @@
 				{{ title }}
 			</div>
 		</v-card>
-	</v-hover>
+	</v-list-item>
+
+	<!-- </v-hover> -->
 </template>
 
 <script>

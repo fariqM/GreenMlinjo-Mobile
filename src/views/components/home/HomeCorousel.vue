@@ -8,9 +8,9 @@
 		</skeleton>
 
 		<div class="d-flex justify-space-between align-center pl-2 pr-2 pt-1 pb-1">
-			<skeleton width="40px" height="15px" animation="wave" :radius="8">
+			<skeleton width="40px" height="16px" animation="wave" :radius="8">
 			</skeleton>
-			<skeleton width="140px" height="15px" animation="wave" :radius="8">
+			<skeleton width="140px" height="16px" animation="wave" :radius="3">
 			</skeleton>
 		</div>
 	</div>
@@ -31,7 +31,7 @@
 				</v-img>
 			</v-carousel-item>
 		</v-carousel>
-		<div class="d-flex justify-space-between pl-2 pr-2">
+		<div class="d-flex justify-space-between pl-2 pr-2 ">
 			<div>
 				<span
 					v-for="(item, i) in 3"
