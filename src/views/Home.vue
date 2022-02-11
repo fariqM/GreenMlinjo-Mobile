@@ -3,7 +3,7 @@
 		<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
 
 		<div>
-			<appbar :skeleton="skeleton_show"></appbar>
+			<appbar></appbar>
 			<div>
 				<v-sheet
 					id="scrolling-techniques-3"
@@ -140,9 +140,9 @@ export default {
 		}, 2000);
 	},
 	watch:{
-		lazy_ramadan: function (newValue, oldValue) {
-			console.log(newValue);
-		}
+		// lazy_ramadan: function (newValue, oldValue) {
+		// 	console.log(newValue);
+		// }
 	},
 	data() {
 		return {

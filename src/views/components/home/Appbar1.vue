@@ -14,7 +14,7 @@
 				></v-img>
 			</template>
 			<v-text-field
-				:label="skeleton?'Tunggu Sebentar...':'Cari sayur kol'"
+				:label="skeleton ? 'Tunggu Sebentar...' : 'Cari sayur kol'"
 				hide-details
 				dark
 				prepend-icon="mdi-magnify"
@@ -46,7 +46,7 @@
 				height="40px"
 				animation="wave"
 				v-if="skeleton"
-				style="margin-right:-9px; margin-left:5px"
+				style="margin-right: -9px; margin-left: 5px"
 			/>
 			<v-btn icon large class="" v-else>
 				<v-badge :content="total_fav" :value="total_fav" color="error" overlap>
@@ -62,16 +62,27 @@
 import { mapGetters } from "vuex";
 
 export default {
-	props: {
-		skeleton: Boolean,
-	},
 	computed: {
 		...mapGetters({ CountFavourites: "favourites/getCountFavourites" }),
 	},
-	mounted() {},
+	mounted() {
+		this.$store
+			.dispatch("favourites/setFavourites")
+			.then((result) => {
+				this.skeleton = false
+			})
+			.catch((e) => {
+				this.skeleton = false
+				console.log(e);
+			});
+	},
+	watch:{
+		
+	},
 	data() {
 		return {
-			total_fav: 10,
+			skeleton: true,
+			total_fav: 7,
 			corrousel: 2,
 		};
 	},

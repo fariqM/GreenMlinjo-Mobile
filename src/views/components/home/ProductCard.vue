@@ -96,7 +96,7 @@ export default {
 		skeleton: Boolean,
 	},
 	mounted() {
-		console.log(this.testing_log);
+		// console.log(this.testing_log);
 	},
 	methods: {
 		numberWithCommas(x) {

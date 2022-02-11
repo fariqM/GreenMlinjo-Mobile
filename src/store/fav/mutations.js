@@ -4,5 +4,5 @@ export default {
     },
     addFavourites(state, payload) {
        state.Favourites = [...state.Favourites, payload]
-    }
+    },
 }
