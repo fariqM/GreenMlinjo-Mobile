@@ -42,7 +42,7 @@
 					<div class="paket-section">
 						<div class="d-flex justify-space-between mt-3 px-0">
 							<v-subheader class="px-2" style="height: 20px; font-weight: bold"
-								>Paket Promo</v-subheader
+								>Produk Terlaris</v-subheader
 							>
 							<v-subheader class="px-1" style="height: 20px">
 								<router-link
@@ -58,7 +58,7 @@
 						<v-row no-gutters justify="space-between">
 							<products-card
 								v-for="(product, i) in products"
-								:skeleton="skeleton_show"
+								:skeleton="skeleton.product_terlaris"
 								:key="i"
 								:product_id="product.id"
 								:title="product.title"
@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import costumscroll from "vuescroll";
 import appbar from "./components/home/Appbar1.vue";
 import RecomItem from "./components/home/RecomItem.vue";
@@ -134,19 +135,20 @@ export default {
 		Wallet,
 		ProductsCard,
 	},
-	mounted() {
-		setTimeout(() => {
-			this.skeleton_show = false;
-		}, 2000);
+	watch: {
+		ProductTerlaris: function (newValue, oldValue) {
+			console.log(newValue);
+		}
 	},
-	watch:{
-		// lazy_ramadan: function (newValue, oldValue) {
-		// 	console.log(newValue);
-		// }
+	computed: {
+		...mapGetters({ ProductTerlaris: "product/getSectionProductTerlaris" }),
 	},
 	data() {
 		return {
-			lazy_ramadan:false,
+			skeleton: {
+				product_terlaris: true,
+			},
+			lazy_ramadan: false,
 			skeleton_show: true,
 			show: false,
 			products: [
@@ -292,9 +294,15 @@ export default {
 			},
 		};
 	},
-	// mounted(){
-	// 	console.log(this.$store);
-	// },
+	mounted() {
+		this.$store
+			.dispatch("product/setProductTerlaris")
+			.then((result) => {
+				this.skeleton.product_terlaris = false;
+			})
+			.catch((e) => {});
+		// console.log(this.$store);
+	},
 	methods: {},
 };
 </script>

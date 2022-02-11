@@ -1,3 +1,3 @@
 export default {
-    getPromo: state => state.Favourites,
+    getSectionProductTerlaris: state => state.SectionProdukTerlaris,
 }

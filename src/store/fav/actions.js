@@ -1,5 +1,4 @@
 import { Plugins } from '@capacitor/core';
-import axios from 'axios';
 const { Storage } = Plugins;
 
 async function getItem(key) {

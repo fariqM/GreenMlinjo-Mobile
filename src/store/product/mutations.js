@@ -1,8 +1,5 @@
 export default {
-    setFavourites(state, payload){
-        state.Favourites = payload
+    setSectionProdukTerlaris(state, payload){
+        state.SectionProdukTerlaris = payload
     },
-    addFavourites(state, payload) {
-       state.Favourites = [...state.Favourites, payload]
-    }
 }

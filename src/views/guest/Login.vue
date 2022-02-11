@@ -89,7 +89,7 @@ export default {
 	data() {
 		return {
 			form: {
-				email: "susanna.roberts@example.com",
+				email: "mlinjo@gmail.com",
 				password: "password",
 			},
 			checkbox: [],
