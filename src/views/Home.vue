@@ -1,131 +1,110 @@
 <template>
 	<div>
-		<appbar></appbar>
+		<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
+
 		<div>
-			<v-sheet
-				id="scrolling-techniques-3"
-				class="overflow-y-auto"
-				max-height="91vh"
-			>
-				<!-- Corousels Section-->
-				<home-corousels></home-corousels>
-				<!-- End Corousels Section -->
+			<appbar :skeleton="skeleton_show"></appbar>
+			<div>
+				<v-sheet
+					id="scrolling-techniques-3"
+					class="overflow-y-auto"
+					max-height="91vh"
+				>
+					<!-- Corousels Section-->
+					<home-corousels :skeleton="skeleton_show"></home-corousels>
+					<!-- End Corousels Section -->
 
-				<!-- Area Section -->
-				<location-area></location-area>
-				<!-- End Area Section -->
+					<!-- Area Section -->
+					<div @click="skeleton_show = !skeleton_show">
+						<location-area></location-area>
+					</div>
+					<!-- End Area Section -->
 
-				<!-- Recomendation Section -->
-				<costumscroll :ops="ops" class="pt-2 pb-2 pl-2 pr-2 mb-2">
-					<v-sheet width="1000" max-height="100px" class="d-flex">
-						<recom-item
-							v-for="(item, i) in recom_items"
-							:key="i"
-							:src="item.src"
-							:alt="item.alt"
-							:title="item.title"
-						></recom-item>
-					</v-sheet>
-				</costumscroll>
-				<!-- End Recomendation Section -->
+					<!-- Recomendation Section -->
+					<costumscroll :ops="ops" class="pt-2 pb-2 pl-2 pr-2 mb-2">
+						<v-sheet width="1000" max-height="100px" class="d-flex">
+							<recom-item
+								v-for="(item, i) in recom_items"
+								:key="i"
+								:src="item.src"
+								:alt="item.alt"
+								:title="item.title"
+							></recom-item>
+						</v-sheet>
+					</costumscroll>
+					<!-- End Recomendation Section -->
 
-				<wallet></wallet>
-				<!-- Wallet Section -->
+					<!-- Wallet Section -->
+					<wallet></wallet>
+					<!-- End Wallet Section -->
 
-				<!-- End Wallet Section -->
-
-				<!-- <div class="d-flex justify-space-between mt-3 px-0">
-					<v-subheader class="px-2" style="height: 20px; font-weight: bold"
-						>Paket Promo</v-subheader
-					>
-					<v-subheader class="px-1" style="height: 20px">
-						<router-link :to="{ name: 'login' }" style="text-decoration: none">
-							Lihat lainnya <v-icon color="primary">mdi-chevron-right</v-icon>
-						</router-link>
-					</v-subheader>
-				</div>
-				<v-row no-gutters class="" justify="space-between">
-					<products-card
-						v-for="(product, i) in products"
-						:key="i"
-						:product_id="product.id"
-						:title="product.title"
-						:unit="product.unit"
-						:sub_unit="product.sub_unit"
-						:min_qty_per_unit="product.min_qty_per_unit"
-						:max_qty_per_unit="product.max_qty_per_unit"
-						:min_price="product.min_price"
-						:max_price="product.max_price"
-						:testing_log="'ini list produk 1'"
-					></products-card>
-				</v-row> -->
-
-				<div class="paket-section">
-					<div class="d-flex justify-space-between mt-3 px-0">
-						<v-subheader class="px-2" style="height: 20px; font-weight: bold"
-							>Paket Promo</v-subheader
-						>
-						<v-subheader class="px-1" style="height: 20px">
-							<router-link
-								:to="{ name: 'login' }"
-								style="text-decoration: none"
+					<div class="paket-section">
+						<div class="d-flex justify-space-between mt-3 px-0">
+							<v-subheader class="px-2" style="height: 20px; font-weight: bold"
+								>Paket Promo</v-subheader
 							>
-								Lihat lainnya
-								<v-icon color="primary">mdi-chevron-right</v-icon>
-							</router-link>
-						</v-subheader>
+							<v-subheader class="px-1" style="height: 20px">
+								<router-link
+									:to="{ name: 'login' }"
+									style="text-decoration: none"
+								>
+									Lihat lainnya
+									<v-icon color="primary">mdi-chevron-right</v-icon>
+								</router-link>
+							</v-subheader>
+						</div>
+
+						<v-row no-gutters justify="space-between">
+							<products-card
+								v-for="(product, i) in products"
+								:key="i"
+								:product_id="product.id"
+								:title="product.title"
+								:unit="product.unit"
+								:sub_unit="product.sub_unit"
+								:min_qty_per_unit="product.min_qty_per_unit"
+								:max_qty_per_unit="product.max_qty_per_unit"
+								:min_price="product.min_price"
+								:max_price="product.max_price"
+								:testing_log="'ini list produk 2'"
+							></products-card>
+						</v-row>
 					</div>
 
-					<v-row no-gutters justify="space-between">
-						<products-card
-							v-for="(product, i) in products"
-							:key="i"
-							:product_id="product.id"
-							:title="product.title"
-							:unit="product.unit"
-							:sub_unit="product.sub_unit"
-							:min_qty_per_unit="product.min_qty_per_unit"
-							:max_qty_per_unit="product.max_qty_per_unit"
-							:min_price="product.min_price"
-							:max_price="product.max_price"
-							:testing_log="'ini list produk 2'"
-						></products-card>
-					</v-row>
-				</div>
-
-				<div class="paket-section">
-					<div class="d-flex justify-space-between mt-3 px-0">
-						<v-subheader class="px-2" style="height: 20px; font-weight: bold"
-							>Paket Ramadhan</v-subheader
-						>
-						<v-subheader class="px-1" style="height: 20px">
-							<router-link
-								:to="{ name: 'login' }"
-								style="text-decoration: none"
+					<div class="paket-section">
+						<div class="d-flex justify-space-between mt-3 px-0">
+							<v-subheader class="px-2" style="height: 20px; font-weight: bold"
+								>Paket Ramadhan</v-subheader
 							>
-								Lihat lainnya
-								<v-icon color="primary">mdi-chevron-right</v-icon>
-							</router-link>
-						</v-subheader>
-					</div>
+							<v-subheader class="px-1" style="height: 20px">
+								<router-link
+									:to="{ name: 'login' }"
+									style="text-decoration: none"
+								>
+									Lihat lainnya
+									<v-icon color="primary">mdi-chevron-right</v-icon>
+								</router-link>
+							</v-subheader>
+						</div>
 
-					<v-row no-gutters justify="space-between">
-						<products-card
-							v-for="(product, i) in products"
-							:key="i"
-							:product_id="product.id"
-							:title="product.title"
-							:unit="product.unit"
-							:sub_unit="product.sub_unit"
-							:min_qty_per_unit="product.min_qty_per_unit"
-							:max_qty_per_unit="product.max_qty_per_unit"
-							:min_price="product.min_price"
-							:max_price="product.max_price"
-							:testing_log="'ini list produk 2'"
-						></products-card>
-					</v-row>
-				</div>
-			</v-sheet>
+						<v-row no-gutters justify="space-between">
+							<products-card
+								v-for="(product, i) in products"
+								:key="i"
+								:product_id="product.id"
+								:title="product.title"
+								:unit="product.unit"
+								:sub_unit="product.sub_unit"
+								:min_qty_per_unit="product.min_qty_per_unit"
+								:max_qty_per_unit="product.max_qty_per_unit"
+								:min_price="product.min_price"
+								:max_price="product.max_price"
+								:testing_log="'ini list produk 2'"
+							></products-card>
+						</v-row>
+					</div>
+				</v-sheet>
+			</div>
 		</div>
 	</div>
 </template>
@@ -138,6 +117,7 @@ import LocationArea from "./components/home/LocationArea.vue";
 import HomeCorousels from "./components/home/HomeCorousel.vue";
 import Wallet from "./components/home/Wallet.vue";
 import ProductsCard from "./components/home/ProductCard.vue";
+import HomeSkeleton from "./components/home/Skeleton_Home.vue";
 
 export default {
 	components: {
@@ -148,9 +128,16 @@ export default {
 		HomeCorousels,
 		Wallet,
 		ProductsCard,
+		HomeSkeleton,
+	},
+	mounted() {
+		setTimeout(() => {
+			this.skeleton_show = false;
+		}, 2000);
 	},
 	data() {
 		return {
+			skeleton_show: true,
 			show: false,
 			products: [
 				{
@@ -308,7 +295,10 @@ export default {
 }
 </style>
 
-<style >
+<style scoped>
+</style>
+
+<style>
 .paket-section {
 	padding: 1px 5px 5px 5px;
 	background-color: rgb(231 231 231 / 46%);

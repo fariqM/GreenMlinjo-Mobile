@@ -14,13 +14,22 @@
 				></v-img>
 			</template>
 			<v-text-field
-				label="Cari sayur kol"
+				:label="skeleton?'Tunggu Sebentar...':'Cari sayur kol'"
 				hide-details
 				dark
 				prepend-icon="mdi-magnify"
 				single-line
 			></v-text-field>
-			<v-btn icon large>
+
+			<skeleton
+				type="circle"
+				width="40px"
+				height="40px"
+				animation="wave"
+				v-if="skeleton"
+			/>
+
+			<v-btn icon large v-else class="">
 				<v-badge
 					:content="CountFavourites"
 					:value="CountFavourites"
@@ -30,7 +39,16 @@
 					<v-icon>mdi-cards-heart-outline</v-icon>
 				</v-badge>
 			</v-btn>
-			<v-btn icon large>
+
+			<skeleton
+				type="circle"
+				width="40px"
+				height="40px"
+				animation="wave"
+				v-if="skeleton"
+				style="margin-right:-9px; margin-left:5px"
+			/>
+			<v-btn icon large class="" v-else>
 				<v-badge :content="total_fav" :value="total_fav" color="error" overlap>
 					<v-icon>mdi-cart-outline</v-icon>
 				</v-badge>
@@ -44,15 +62,15 @@
 import { mapGetters } from "vuex";
 
 export default {
-	computed:{
+	props: {
+		skeleton: Boolean,
+	},
+	computed: {
 		...mapGetters({ CountFavourites: "favourites/getCountFavourites" }),
 	},
-	mounted(){
-		
-	},
+	mounted() {},
 	data() {
 		return {
-			
 			total_fav: 10,
 			corrousel: 2,
 		};

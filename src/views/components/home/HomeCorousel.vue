@@ -1,5 +1,20 @@
 <template>
-	<div>
+	<div v-if="skeleton">
+		<skeleton
+			width="100%"
+			height="250px"
+			animation="wave"
+		>
+		</skeleton>
+
+		<div class="d-flex justify-space-between align-center pl-2 pr-2 pt-1 pb-1">
+			<skeleton width="40px" height="15px" animation="wave" :radius="8">
+			</skeleton>
+			<skeleton width="140px" height="15px" animation="wave" :radius="8">
+			</skeleton>
+		</div>
+	</div>
+	<div v-else>
 		<v-carousel
 			cycle
 			v-model="corrousel"
@@ -34,8 +49,10 @@
 
 <script>
 export default {
+	props: {
+		skeleton: Boolean,
+	},
 	data() {
-
 		return {
 			corrousel: 0,
 			image: "/assets/images/sayur.jpg",

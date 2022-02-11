@@ -7,6 +7,9 @@ import AXIOS from "axios";
 import { Capacitor, Plugins } from '@capacitor/core';
 import VueIziToast from "vue-izitoast";
 import 'izitoast/dist/css/iziToast.css';
+// import VueSkeletonLoader from 'skeleton-loader-vue';
+
+
 
 const __BASE_URL_SERVER = 'http://192.168.1.9:8888/';
 const __API_PREFIX = 'api'
@@ -30,7 +33,6 @@ if (platform == 'android') {
     mlinjo_key = token
     axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
-    // console.log(mlinjo_key);
   }).catch(e => {
     axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
@@ -41,29 +43,11 @@ if (platform == 'android') {
   axios.defaults.headers.Authorization = `Bearer empty`;
 }
 
-
-// axios.defaults.baseURL = 'http://192.168.1.9:8888/api/';
-// axios.defaults.headers.Authorization = `Bearer `
-
 Vue.config.productionTip = false;
 Vue.use(VueIziToast);
 
-// const http = AXIOS.create({
-//   baseURL: 'http://192.168.1.9:8888/api/',
-//   headers: {
-//     Authorization: `Bearer ${localStorage.getItem("mlinjo_token")}`,
-//   }
-// });
 
-// const open_http = AXIOS.create({
-//   baseURL: 'http://192.168.1.9:8888/api/',
-// });
-
-// Vue.prototype.$http = http;
-// Vue.prototype.$open_http = open_http;
-// Vue.prototype.$platform = Capacitor.getPlatform();
-
-
+Vue.component('skeleton', require("./views/components/skeleton/Skeleton.vue").default);
 
 new Vue({
   router,
