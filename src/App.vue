@@ -7,8 +7,22 @@
 <script>
 export default {
 	name: "App",
-
 	data: () => ({}),
+	mounted() {
+		this.$store
+			.dispatch("auth/getCreds")
+			.then((response) => {
+				if (response.status === 200) {
+					console.log("set user success");
+				} else {
+					console.log("set user wrong response");
+				}
+				// console.log(response);
+			})
+			.catch((e) => {
+				console.log("set user failed");
+			});
+	},
 };
 </script>
 

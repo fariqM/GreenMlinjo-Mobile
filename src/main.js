@@ -7,13 +7,17 @@ import AXIOS from "axios";
 import { Capacitor, Plugins } from '@capacitor/core';
 import VueIziToast from "vue-izitoast";
 import 'izitoast/dist/css/iziToast.css';
+
 // import VueSkeletonLoader from 'skeleton-loader-vue';
-
-
-
+const { SplashScreen } = Plugins
 const __BASE_URL_SERVER = 'http://192.168.1.9:8888/';
 const __API_PREFIX = 'api'
 
+window.axios_open = AXIOS.create({
+  baseURL: `${__BASE_URL_SERVER}${__API_PREFIX}`
+});
+
+window.__BASE_URL__ = __BASE_URL_SERVER
 window.platform = Capacitor.getPlatform();
 
 // shared preference mobile
@@ -23,25 +27,32 @@ async function getToken() {
   return value;
 };
 
-window.axios_open = AXIOS;
-axios_open.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
+
 let mlinjo_key = null;
 
-if (platform == 'android') {
-  window.axios = AXIOS;
-  getToken().then(token => {
-    mlinjo_key = token
+
+
+async function prepare() {
+  if (platform == 'android') {
+    window.axios = AXIOS;
+    await getToken().then(token => {
+    console.log("my-token => " + token);
+      SplashScreen.hide();
+      mlinjo_key = token
+      axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
+      axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
+    }).catch(e => {
+      SplashScreen.hide();
+      axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
+      axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
+    })
+  } else {
+    window.axios = AXIOS;
     axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
-    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
-  }).catch(e => {
-    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
-    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
-  })
-} else {
-  window.axios = AXIOS;
-  axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
-  axios.defaults.headers.Authorization = `Bearer empty`;
+    axios.defaults.headers.Authorization = `Bearer empty`;
+  }
 }
+
 
 Vue.config.productionTip = false;
 Vue.use(VueIziToast);
@@ -49,9 +60,13 @@ Vue.use(VueIziToast);
 
 Vue.component('skeleton', require("./views/components/skeleton/Skeleton.vue").default);
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+prepare().then(() => {
+  new Vue({
+    router,
+    store,
+    vuetify,
+    render: h => h(App),
+  }).$mount('#app')
+})
+
+

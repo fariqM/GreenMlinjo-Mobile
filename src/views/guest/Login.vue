@@ -78,8 +78,7 @@
 					>Masuk</v-btn
 				>
 			</v-col>
-			<v-overlay :value="overlay" opacity="0.3">
-			</v-overlay>
+			<v-overlay :value="overlay" opacity="0.3"> </v-overlay>
 		</v-main>
 	</div>
 </template>

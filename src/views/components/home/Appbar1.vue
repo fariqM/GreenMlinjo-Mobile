@@ -73,11 +73,13 @@ export default {
 			})
 			.catch((e) => {
 				this.skeleton = false
-				console.log(e);
+				// console.log(e);
 			});
 	},
 	watch:{
-		
+		// CountFavourites: function (newValue, oldValue) {
+		// 	console.log(newValue);
+		// }
 	},
 	data() {
 		return {

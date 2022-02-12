@@ -1,4 +1,5 @@
 import { Plugins } from '@capacitor/core';
+import axios from 'axios';
 
 const { Storage } = Plugins;
 
@@ -10,22 +11,25 @@ async function setItem(token) {
     });
 };
 
-// async function getItem(key) {
-//     const { value } = await Storage.get({ key: key });
-//     return value;
-//     // console.log('Got item: ', value);
-// };
+async function getItem(key) {
+    if (platform === 'android') {
+        const { value } = await Storage.get({ key: key });
+        return value;
+    } else {
+        return null
+    }
+};
 
 async function getToken() {
     const { value } = await Storage.get({ key: 'mlinjo_token' });
-    console.log('Got item: ', value);
+    // console.log('Got item: ', value);
     return value;
 };
 
 export default {
     namespaced: true,
     state: {
-        user: { name: 'me' }
+        user: {}
     },
     mutations: {
         setUser(state, payload) {
@@ -46,10 +50,17 @@ export default {
         },
         getCreds(state, payload) {
             return new Promise((resolve, reject) => {
-                getToken().then(token => {
-                    resolve(token);
-                }).catch(e => {
-                    reject(e);
+                axios.get("inspect").then(response => {
+                    // console.log(response);
+                    if (response.status === 200) {
+                        state.commit("setUser", response.data.data)
+                        resolve(response);
+                    } else {
+                        reject(response);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                    reject(err);
                 })
             });
         }

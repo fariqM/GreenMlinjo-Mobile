@@ -3,7 +3,15 @@ import Vuex from 'vuex'
 import Favourites from './fav/store'
 import Auth from './auth'
 import Product from './product/store'
-// import { PluginsStorage } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
+const { Storage } = Plugins;
+
+async function setItem(key, value) {
+  await Storage.set({
+      key: key,
+      value: token
+  });
+};
 
 Vue.use(Vuex)
 
@@ -15,7 +23,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    product:Product,
+    products:Product,
     favourites: Favourites,
     auth: Auth
   }

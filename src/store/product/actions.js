@@ -11,15 +11,21 @@ async function getItem(key) {
 };
 
 export default {
-    setProductTerlaris(state, payload){
+    setProductTerlaris(state, payload) {
         return new Promise((resolve, reject) => {
             getItem('mlinjo_token').then(token => {
                 if (token === null) {
-                    reject(null_token)
+                    axios_open.get("products/promo-section").then(response => {
+                        state.commit("setSectionProdukTerlaris", response.data.data)
+                        // console.log(response);
+                        resolve(response)
+                    }).catch(e => {
+                        reject(e)
+                    })
                 } else {
                     axios.get("products/promo-section").then(response => {
                         state.commit("setSectionProdukTerlaris", response.data.data)
-                        console.log(response);
+                        // console.log(response);
                         resolve(response)
                     }).catch(e => {
                         reject(e)

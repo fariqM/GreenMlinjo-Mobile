@@ -1,6 +1,6 @@
 <template>
 	<v-col cols="6" sm="5" md="5" class="py-2" style="padding: 10px 5px 5px 5px">
-		<skeleton  width="100%" height="12rem" :radius="3" v-if="skeleton"/>
+		<skeleton width="100%" height="12rem" :radius="3" v-if="skeleton" />
 		<v-lazy
 			v-else
 			:v-model="false"
@@ -12,7 +12,7 @@
 			<v-card class="mx-auto" max-width="344" elevation="2" outlined>
 				<v-list link class="pa-0" style="display: block">
 					<div class="d-flex justify-end">
-						<v-img src="/assets/images/wortel.jpg" height="100px" width="100px">
+						<v-img :src="url + images[0].url" height="100px" width="100px">
 							<template v-slot:placeholder>
 								<v-row class="fill-height ma-0" align="center" justify="center">
 									<v-progress-circular
@@ -36,7 +36,16 @@
 
 				<v-list-item link class="pa-0 pb-1">
 					<div style="width: 100%">
-						<v-card-title style="font-size: 1rem; padding: 2px 5px">
+						<v-card-title
+							style="
+								font-size: 0.8rem;
+								padding: 2px 5px;
+								white-space: nowrap;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								display:flow-root
+							"
+						>
 							{{ title }}
 						</v-card-title>
 						<v-card-subtitle
@@ -50,16 +59,20 @@
 							class="pl-1"
 							style="
 								font-weight: 500;
-								font-size: 1.07rem;
+								font-size: 0.9rem;
 								white-space: nowrap;
 								overflow: hidden;
 								text-overflow: ellipsis;
+								color: #09893c;
 							"
 						>
 							Rp {{ numberWithCommas(min_price) }} - Rp
 							{{ numberWithCommas(max_price) }}
 						</div>
-						<div class="pl-1" style="font-weight: 500; font-size: 0.775rem">
+						<div
+							class="pl-1 normal-text"
+							style="font-weight: 500; font-size: 0.775rem"
+						>
 							/{{ unit }}
 						</div>
 					</div>
@@ -83,6 +96,11 @@
 
 <script>
 export default {
+	data() {
+		return {
+			url: __BASE_URL__,
+		};
+	},
 	props: {
 		testing_log: String,
 		title: String,
@@ -94,9 +112,11 @@ export default {
 		max_price: Number,
 		product_id: Number,
 		skeleton: Boolean,
+		favourite: Array,
+		images: Array,
 	},
 	mounted() {
-		// console.log(this.testing_log);
+		// console.log(this.images[0].url);
 	},
 	methods: {
 		numberWithCommas(x) {

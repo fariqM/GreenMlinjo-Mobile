@@ -57,7 +57,7 @@
 
 						<v-row no-gutters justify="space-between">
 							<products-card
-								v-for="(product, i) in products"
+								v-for="(product, i) in ProductTerlaris"
 								:skeleton="skeleton.product_terlaris"
 								:key="i"
 								:product_id="product.id"
@@ -68,12 +68,14 @@
 								:max_qty_per_unit="product.max_qty_per_unit"
 								:min_price="product.min_price"
 								:max_price="product.max_price"
+								:favourite="product.favourites"
+								:images="product.images"
 								:testing_log="'ini list produk 2'"
 							></products-card>
 						</v-row>
 					</div>
 
-					<v-lazy v-model="lazy_ramadan">
+					<!-- <v-lazy v-model="lazy_ramadan">
 						<div class="paket-section">
 							<div class="d-flex justify-space-between mt-3 px-0">
 								<v-subheader
@@ -108,7 +110,7 @@
 								></products-card>
 							</v-row>
 						</div>
-					</v-lazy>
+					</v-lazy> -->
 				</v-sheet>
 			</div>
 		</div>
@@ -136,12 +138,18 @@ export default {
 		ProductsCard,
 	},
 	watch: {
-		ProductTerlaris: function (newValue, oldValue) {
-			console.log(newValue);
-		}
+		// ProductTerlaris: function (newValue, oldValue) {
+		// 	console.log(newValue);
+		// },
+		// AllFavouriteProducts: function (newValue, oldValue) {
+		// 	console.log(newValue);
+		// },
 	},
 	computed: {
-		...mapGetters({ ProductTerlaris: "product/getSectionProductTerlaris" }),
+		...mapGetters({
+			ProductTerlaris: "products/getSectionProductTerlaris",
+			AllFavouriteProducts: "favourites/getAllFavourites",
+		}),
 	},
 	data() {
 		return {
@@ -296,11 +304,14 @@ export default {
 	},
 	mounted() {
 		this.$store
-			.dispatch("product/setProductTerlaris")
+			.dispatch("products/setProductTerlaris")
 			.then((result) => {
 				this.skeleton.product_terlaris = false;
 			})
 			.catch((e) => {});
+		// this.$store.dispatch("getFirstTime").then((hasil) => {
+		// 	console.log("first time => " + hasil);
+		// });
 		// console.log(this.$store);
 	},
 	methods: {},
