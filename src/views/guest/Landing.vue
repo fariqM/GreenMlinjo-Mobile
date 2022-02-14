@@ -65,6 +65,7 @@ export default {
 	},
 	methods: {
 		lewati() {
+			this.$router.push({name:'home'})
 		},
 	},
 };

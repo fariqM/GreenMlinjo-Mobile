@@ -23,13 +23,21 @@
 							</template>
 						</v-img>
 						<div style="position: absolute">
-							<v-btn
-								@click="addFavourite(product_id)"
-								class="pa-0 mt-1 mr-1"
-								style="min-width: 35px; background-color: #ffffffa1"
-							>
-								<v-icon color="white"> mdi-cards-heart-outline </v-icon>
-							</v-btn>
+							<div>
+								<v-btn
+									class="pa-0 mt-1 mr-1"
+									style="min-width: 35px; background-color: #ffffffa1"
+									id="MyBTN12212"
+								>
+									<!-- <v-icon v-if="favourite.length === 0" color="white"> mdi-cards-heart-outline </v-icon> -->
+									<!-- <v-icon >  </v-icon> -->
+									<div style="height: 30px; width: 30px" @click="clickFav(product_id)">
+										<heart-icon  v-if="favourite.length === 0" :isFavourite="false" :product_id="product_id"/>
+										<heart-icon v-else :isFavourite="true" :product_id="product_id"/>
+										<!-- <cart-icon></cart-icon> -->
+									</div>
+								</v-btn>
+							</div>
 						</div>
 					</div>
 				</v-list>
@@ -43,7 +51,7 @@
 								white-space: nowrap;
 								overflow: hidden;
 								text-overflow: ellipsis;
-								display:flow-root
+								display: flow-root;
 							"
 						>
 							{{ title }}
@@ -95,7 +103,14 @@
 </template>
 
 <script>
+import HeartIcon from "../../components/icon/Heart.vue";
+import CartIcon from "../../components/icon/Cart.vue"
+
 export default {
+	components: {
+		HeartIcon,
+		CartIcon
+	},
 	data() {
 		return {
 			url: __BASE_URL__,
@@ -115,9 +130,6 @@ export default {
 		favourite: Array,
 		images: Array,
 	},
-	mounted() {
-		// console.log(this.images[0].url);
-	},
 	methods: {
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");
@@ -126,6 +138,14 @@ export default {
 		},
 		addFavourite(product_id) {
 			this.$store.dispatch("favourites/addFavourites", product_id);
+		},
+		clickFav(product_id) {
+			this.$store.dispatch("favourites/addFavourites", product_id).then(response => {
+				// console.log(response);
+			}).catch(e => {
+				console.log(e);
+			})
+			console.log("ok");
 		},
 	},
 };

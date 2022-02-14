@@ -8,7 +8,7 @@
 export default {
 	name: "App",
 	data: () => ({}),
-	mounted() {
+	beforeCreate() {
 		this.$store
 			.dispatch("auth/getCreds")
 			.then((response) => {

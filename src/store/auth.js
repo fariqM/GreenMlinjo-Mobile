@@ -53,7 +53,7 @@ export default {
                 axios.get("inspect").then(response => {
                     // console.log(response);
                     if (response.status === 200) {
-                        state.commit("setUser", response.data.data)
+                        state.commit("setUser", response.data.client)
                         resolve(response);
                     } else {
                         reject(response);

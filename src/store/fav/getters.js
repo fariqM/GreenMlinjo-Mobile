@@ -1,4 +1,4 @@
 export default {
-    getCountFavourites: state => state.Favourites.length,
+    getCountFavourites: state => state.CountFavourites,
     getAllFavourites: state => state.Favourites,
 }

@@ -14,6 +14,7 @@ export default {
     setProductTerlaris(state, payload) {
         return new Promise((resolve, reject) => {
             getItem('mlinjo_token').then(token => {
+                console.log("my token => " + token);
                 if (token === null) {
                     axios_open.get("products/promo-section").then(response => {
                         state.commit("setSectionProdukTerlaris", response.data.data)

@@ -63,23 +63,26 @@ import { mapGetters } from "vuex";
 
 export default {
 	computed: {
-		...mapGetters({ CountFavourites: "favourites/getCountFavourites" }),
+		...mapGetters({
+			CountFavourites: "favourites/getCountFavourites",
+			getAllFavourites: "favourites/getAllFavourites",
+		}),
 	},
 	mounted() {
 		this.$store
 			.dispatch("favourites/setFavourites")
 			.then((result) => {
-				this.skeleton = false
+				this.skeleton = false;
 			})
 			.catch((e) => {
-				this.skeleton = false
+				this.skeleton = false;
 				// console.log(e);
 			});
 	},
-	watch:{
-		// CountFavourites: function (newValue, oldValue) {
+	watch: {
+		// getAllFavourites: function (newValue, oldValue) {
 		// 	console.log(newValue);
-		// }
+		// },
 	},
 	data() {
 		return {

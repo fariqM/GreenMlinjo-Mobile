@@ -8,30 +8,32 @@ import { Capacitor, Plugins } from '@capacitor/core';
 import VueIziToast from "vue-izitoast";
 import 'izitoast/dist/css/iziToast.css';
 
-// import VueSkeletonLoader from 'skeleton-loader-vue';
+
+
+// base server ip
 const { SplashScreen } = Plugins
-const __BASE_URL_SERVER = 'http://192.168.1.9:8888/';
+const __BASE_URL_SERVER = 'http://192.168.1.4:8888/';
 const __API_PREFIX = 'api'
 
+// non-auth url
 window.axios_open = AXIOS.create({
   baseURL: `${__BASE_URL_SERVER}${__API_PREFIX}`
 });
-
 window.__BASE_URL__ = __BASE_URL_SERVER
 window.platform = Capacitor.getPlatform();
 
-// shared preference mobile
+// lodash
+window._ = require('./plugins/lodash_plugins/lodash.min.js');
+
+// get token from shared preference on mobile device
 const { Storage } = Plugins;
 async function getToken() {
   const { value } = await Storage.get({ key: 'mlinjo_token' });
   return value;
 };
 
-
+// preparation for bearer key (if its exist)
 let mlinjo_key = null;
-
-
-
 async function prepare() {
   if (platform == 'android') {
     window.axios = AXIOS;
@@ -55,11 +57,12 @@ async function prepare() {
 
 
 Vue.config.productionTip = false;
+
+// another component
 Vue.use(VueIziToast);
-
-
 Vue.component('skeleton', require("./views/components/skeleton/Skeleton.vue").default);
 
+// is preparation for bearer complete then render the app
 prepare().then(() => {
   new Vue({
     router,

@@ -141,7 +141,7 @@ export default {
 		// ProductTerlaris: function (newValue, oldValue) {
 		// 	console.log(newValue);
 		// },
-		// AllFavouriteProducts: function (newValue, oldValue) {
+		// CurrentUser: function (newValue, oldValue) {
 		// 	console.log(newValue);
 		// },
 	},
@@ -149,6 +149,7 @@ export default {
 		...mapGetters({
 			ProductTerlaris: "products/getSectionProductTerlaris",
 			AllFavouriteProducts: "favourites/getAllFavourites",
+			CurrentUser:"auth/getUser"
 		}),
 	},
 	data() {
@@ -303,6 +304,7 @@ export default {
 		};
 	},
 	mounted() {
+		// console.log(this.CurrentUser);
 		this.$store
 			.dispatch("products/setProductTerlaris")
 			.then((result) => {
