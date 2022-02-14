@@ -314,7 +314,7 @@ export default {
 					new Event("click")
 				);
 			}
-		}, 2000);
+		}, 600);
 	},
 	// mounted() {
 		

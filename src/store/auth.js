@@ -37,10 +37,14 @@ export default {
     actions: {
         loginAction(state, payload) {
             return new Promise((resolve, reject) => {
-
                 axios_open.post('login', payload).then(response => {
-                    setItem(response.data.token);
-                    resolve(response);
+                    state.commit("setUser", {user: response.data.user, isLogedIn: true})
+                    // console.log(response);
+                    setItem(response.data.token).then(setComplete => {
+                        resolve(response);
+                    }).catch(e => {
+                        reject(e);
+                    })
                 }).catch(error => {
                     reject(error);
                 })
@@ -51,7 +55,7 @@ export default {
                 axios.get("inspect").then(response => {
                     // console.log(response);
                     if (response.status === 200) {
-                        state.commit("setUser", {user:response.data.client, isLogedIn:true})
+                        state.commit("setUser", { user: response.data.client, isLogedIn: true })
                         resolve(response);
                     } else {
                         reject(response);
@@ -59,7 +63,7 @@ export default {
                 }).catch(err => {
                     if (err.response) {
                         if (err.response.status === 401) {
-                            state.commit("setUser", {user:null, isLogedIn:false})
+                            state.commit("setUser", { user: null, isLogedIn: false })
                             reject(err);
                         }
                     }

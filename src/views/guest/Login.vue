@@ -132,29 +132,31 @@ export default {
 			this.$store
 				.dispatch("auth/loginAction", this.form)
 				.then((response) => {
-					this.loading = false;
-					this.$router
-						.push({ name: "home" })
-						.then((next) => {
-							this.loading = false;
-							this.overlay = false;
-						})
-						.catch((error) => {
-							this.$toast.error(
-								"Coba lagi, kali aja bisa.",
-								"Oops ! Kayaknya ada masalah :( ",
-								{
-									position: "topCenter",
-									timeout: 4500,
-									// ballon:true,
-									transitionInMobile: "fadeInLeft",
-									transitionOutMobile: "fadeOutLeft",
-									displayMode: 2,
-								}
-							);
-							this.loading = false;
-							this.overlay = false;
-						});
+					// this.loading = false;
+					setTimeout(() => {
+						this.$router
+							.push({ name: "home" })
+							.then((next) => {
+								this.loading = false;
+								this.overlay = false;
+							})
+							.catch((error) => {
+								this.$toast.error(
+									"Coba lagi, kali aja bisa.",
+									"Oops ! Kayaknya ada masalah :( ",
+									{
+										position: "topCenter",
+										timeout: 4500,
+										// ballon:true,
+										transitionInMobile: "fadeInLeft",
+										transitionOutMobile: "fadeOutLeft",
+										displayMode: 2,
+									}
+								);
+								this.loading = false;
+								this.overlay = false;
+							});
+					}, 800);
 				})
 				.catch((e) => {
 					this.loading = false;

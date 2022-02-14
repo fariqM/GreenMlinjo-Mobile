@@ -82,18 +82,16 @@ async function getToken() {
 
 // set the default header of axios a bearer token 
 router.beforeEach((to, from, next) => {
-  if (platform === 'android') {
-    getToken().then(token => {
-      if (token === null) {
-        next();
-      } else {
-        axios.defaults.headers.Authorization = `Bearer ${token}`;
-        next();
-      }
-    })
-  } else {
-    next();
-  }
+  getToken().then(token => {
+    console.log("ganti route token => " + token);
+
+    if (token === null) {
+      next();
+    } else {
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+      next();
+    }
+  })
 })
 
 export default router

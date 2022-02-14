@@ -161,7 +161,7 @@ export default {
 		redirectLogin(){
 			setTimeout(() => {
 				this.$router.push({name:'login'})
-			}, 1000);
+			}, 500);
 		}
 	},
 };
