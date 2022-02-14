@@ -25,7 +25,21 @@ export default {
                         // console.log(response);
                         resolve(response)
                     }).catch(e => {
-                        reject(e)
+                        // console.log(e.response);
+                        if (e.response) {
+                            if (e.response.status === 401) {
+                                axios_open.get("products/promo-section").then(response => {
+                                    state.commit("setSectionProdukTerlaris", response.data.data)
+                                    // console.log(response);
+                                    resolve(response)
+                                }).catch(err => {
+                                    reject(err)
+                                })
+                            }
+                        } else {
+                            reject(e)
+                        }
+                        
                     })
                 }
                 // console.log(token);

@@ -25,11 +25,13 @@ async function getToken() {
 export default {
     namespaced: true,
     state: {
-        user: {}
+        user: {},
+        isLogedIn: false,
     },
     mutations: {
         setUser(state, payload) {
-            state.user = payload
+            state.user = payload.user
+            state.isLogedIn = payload.isLogedIn
         },
     },
     actions: {
@@ -49,13 +51,18 @@ export default {
                 axios.get("inspect").then(response => {
                     // console.log(response);
                     if (response.status === 200) {
-                        state.commit("setUser", response.data.client)
+                        state.commit("setUser", {user:response.data.client, isLogedIn:true})
                         resolve(response);
                     } else {
                         reject(response);
                     }
                 }).catch(err => {
-                    console.log(err);
+                    if (err.response) {
+                        if (err.response.status === 401) {
+                            state.commit("setUser", {user:null, isLogedIn:false})
+                            reject(err);
+                        }
+                    }
                     reject(err);
                 })
             });
@@ -63,5 +70,6 @@ export default {
     },
     getters: {
         getUser: state => state.user,
+        getUserStatus: state => state.isLogedIn
     }
 }

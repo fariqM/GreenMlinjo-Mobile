@@ -53,6 +53,13 @@
 					<v-icon>mdi-cart-outline</v-icon>
 				</v-badge>
 			</v-btn>
+			<v-progress-linear
+				:active="loading"
+				:indeterminate="loading"
+				absolute
+				bottom
+				color="success"
+			></v-progress-linear>
 		</v-app-bar>
 		<slot></slot>
 	</div>
@@ -62,6 +69,9 @@
 import { mapGetters } from "vuex";
 
 export default {
+	props:{
+		loading:Boolean
+	},
 	computed: {
 		...mapGetters({
 			CountFavourites: "favourites/getCountFavourites",

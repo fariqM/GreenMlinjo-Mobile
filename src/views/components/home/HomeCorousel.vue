@@ -26,7 +26,7 @@
 				<v-img
 					height="250"
 					:src="image"
-					gradient="to top right, #ffffff38, #496c1d"
+					gradient="to top right, rgb(72 255 82 / 7%), rgb(160 255 40 / 8%)"
 				>
 				</v-img>
 			</v-carousel-item>
@@ -55,7 +55,7 @@ export default {
 	data() {
 		return {
 			corrousel: 0,
-			image: "/assets/images/sayur.jpg",
+			image: "/assets/images/sayur.png",
 			images: [
 				"assets/images/box.png",
 				"assets/images/small_box.png",

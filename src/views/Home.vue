@@ -1,9 +1,8 @@
 <template>
 	<div>
 		<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
-
 		<div>
-			<appbar></appbar>
+			<appbar :loading="loadingBar"></appbar>
 			<div>
 				<v-sheet
 					id="scrolling-techniques-3"
@@ -112,6 +111,7 @@
 						</div>
 					</v-lazy> -->
 				</v-sheet>
+				<v-overlay :value="skeleton_show" opacity="0.2"> </v-overlay>
 			</div>
 		</div>
 	</div>
@@ -149,11 +149,12 @@ export default {
 		...mapGetters({
 			ProductTerlaris: "products/getSectionProductTerlaris",
 			AllFavouriteProducts: "favourites/getAllFavourites",
-			CurrentUser:"auth/getUser"
+			CurrentUser: "auth/getUser",
 		}),
 	},
 	data() {
 		return {
+			loadingBar: true,
 			skeleton: {
 				product_terlaris: true,
 			},
@@ -308,15 +309,26 @@ export default {
 		this.$store
 			.dispatch("products/setProductTerlaris")
 			.then((result) => {
+				// console.log(result);
+				this.loadingBar = false;
+				this.skeleton_show = false;
 				this.skeleton.product_terlaris = false;
 			})
-			.catch((e) => {});
+			.catch((e) => {
+				// console.log(e);
+			});
 		// this.$store.dispatch("getFirstTime").then((hasil) => {
 		// 	console.log("first time => " + hasil);
 		// });
 		// console.log(this.$store);
 	},
-	methods: {},
+	methods: {
+		redirectLogin(){
+			setTimeout(() => {
+				this.$router.push({name:'login'})
+			}, 1000);
+		}
+	},
 };
 </script>
 

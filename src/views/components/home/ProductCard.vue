@@ -23,18 +23,18 @@
 							</template>
 						</v-img>
 						<div style="position: absolute">
-							<div>
+							<div style="user-select:none">
 								<v-btn
 									class="pa-0 mt-1 mr-1"
 									style="min-width: 35px; background-color: #ffffffa1"
 									id="MyBTN12212"
-								>
-									<!-- <v-icon v-if="favourite.length === 0" color="white"> mdi-cards-heart-outline </v-icon> -->
-									<!-- <v-icon >  </v-icon> -->
-									<div style="height: 30px; width: 30px" @click="clickFav(product_id)">
+								>	
+									<div v-if="isLogedIn" style="height: 30px; width: 30px" @click="clickFav(product_id)">
 										<heart-icon  v-if="favourite.length === 0" :isFavourite="false" :product_id="product_id"/>
 										<heart-icon v-else :isFavourite="true" :product_id="product_id"/>
-										<!-- <cart-icon></cart-icon> -->
+									</div>
+									<div v-else style="height: 30px; width: 30px" @click="clickFav(product_id)" >
+										<heart-disabled-icon/>
 									</div>
 								</v-btn>
 							</div>
@@ -105,11 +105,14 @@
 <script>
 import HeartIcon from "../../components/icon/Heart.vue";
 import CartIcon from "../../components/icon/Cart.vue"
+import HeartDisabledIcon from "../../components/icon/HeartDisabled.vue"
+import { mapGetters } from "vuex";
 
 export default {
 	components: {
 		HeartIcon,
-		CartIcon
+		CartIcon,
+		HeartDisabledIcon
 	},
 	data() {
 		return {
@@ -130,6 +133,9 @@ export default {
 		favourite: Array,
 		images: Array,
 	},
+	computed:{
+		...mapGetters({isLogedIn: "auth/getUserStatus"})
+	},
 	methods: {
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");
@@ -143,10 +149,20 @@ export default {
 			this.$store.dispatch("favourites/addFavourites", product_id).then(response => {
 				// console.log(response);
 			}).catch(e => {
+				if (e.response) {
+					if (e.response.status === 401) {
+						this.redirectLogin()
+					}
+				}
 				console.log(e);
 			})
-			console.log("ok");
+			// console.log("ok");
 		},
+		redirectLogin(){
+			setTimeout(() => {
+				this.$router.push({name:'login'})
+			}, 1000);
+		}
 	},
 };
 </script>
