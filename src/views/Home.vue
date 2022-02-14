@@ -7,7 +7,7 @@
 				<v-sheet
 					id="scrolling-techniques-3"
 					class="overflow-y-auto"
-					max-height="91vh"
+					max-height="92vh"
 				>
 					<!-- Corousels Section-->
 					<home-corousels :skeleton="skeleton_show"></home-corousels>
@@ -54,7 +54,7 @@
 							</v-subheader>
 						</div>
 
-						<v-row no-gutters justify="space-between">
+						<v-row no-gutters justify="space-around">
 							<products-card
 								v-for="(product, i) in ProductTerlaris"
 								:skeleton="skeleton.product_terlaris"

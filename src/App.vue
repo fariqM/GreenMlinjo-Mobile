@@ -1,6 +1,9 @@
 <template>
+
 	<v-app>
-		<router-view />
+		<div style="max-width: 30.5rem; width: 100vw; height:100vh">
+			<router-view />
+		</div>
 	</v-app>
 </template>
 
@@ -27,6 +30,9 @@ export default {
 </script>
 
 <style>
+.v-application--wrap {
+	align-items: center;
+}
 .normal-text {
 	color: #6c6c6c;
 	font-size: 0.9rem;

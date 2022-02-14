@@ -3,7 +3,7 @@
 		<v-app-bar
 			elevate-on-scroll
 			absolute
-			class="pr-5 pt-0 pb-6"
+			class="pt-0 pb-6"
 			dark
 			scroll-target="#scrolling-techniques-3"
 		>
@@ -20,39 +20,50 @@
 				prepend-icon="mdi-magnify"
 				single-line
 			></v-text-field>
+			<div>
+				<skeleton
+					style="margin-left: 0.32rem"
+					type="circle"
+					width="35px"
+					height="35px"
+					animation="wave"
+					v-if="skeleton"
+				/>
 
-			<skeleton
-				type="circle"
-				width="40px"
-				height="40px"
-				animation="wave"
-				v-if="skeleton"
-			/>
+				<v-btn icon large v-else class="">
+					<v-badge
+						:content="CountFavourites"
+						:value="CountFavourites"
+						color="error"
+						overlap
+					>
+						<v-icon>mdi-cards-heart-outline</v-icon>
+					</v-badge>
+				</v-btn>
+			</div>
+			<div>
+				<skeleton
+					type="circle"
+					width="35px"
+					height="35px"
+					animation="wave"
+					v-if="skeleton"
+					class="mr-2"
+					style="margin-left: 5px"
+				/>
 
-			<v-btn icon large v-else class="">
-				<v-badge
-					:content="CountFavourites"
-					:value="CountFavourites"
-					color="error"
-					overlap
-				>
-					<v-icon>mdi-cards-heart-outline</v-icon>
-				</v-badge>
-			</v-btn>
-
-			<skeleton
-				type="circle"
-				width="40px"
-				height="40px"
-				animation="wave"
-				v-if="skeleton"
-				style="margin-right: -9px; margin-left: 5px"
-			/>
-			<v-btn icon large class="" v-else>
-				<v-badge :content="total_fav" :value="total_fav" color="error" overlap>
-					<v-icon>mdi-cart-outline</v-icon>
-				</v-badge>
-			</v-btn>
+				<v-btn icon large class="" v-else>
+					<v-badge
+						class="mr-1"
+						:content="total_fav"
+						:value="total_fav"
+						color="error"
+						overlap
+					>
+						<v-icon>mdi-cart-outline</v-icon>
+					</v-badge>
+				</v-btn>
+			</div>
 			<v-progress-linear
 				:active="loading"
 				:indeterminate="loading"
@@ -69,8 +80,8 @@
 import { mapGetters } from "vuex";
 
 export default {
-	props:{
-		loading:Boolean
+	props: {
+		loading: Boolean,
 	},
 	computed: {
 		...mapGetters({
