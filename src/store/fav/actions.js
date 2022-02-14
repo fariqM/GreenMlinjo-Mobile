@@ -2,17 +2,13 @@ import { Plugins } from '@capacitor/core';
 const { Storage } = Plugins;
 
 async function getItem(key) {
-    if (platform === 'android') {
-        const { value } = await Storage.get({ key: key });
-        return value;
-    } else {
-        return null
-    }
+    const { value } = await Storage.get({ key: key });
+    return value;
 };
 
 const null_token = {
     status: 406,
-    message: "Token null"
+    message: "Mobile token null"
 }
 
 export default {

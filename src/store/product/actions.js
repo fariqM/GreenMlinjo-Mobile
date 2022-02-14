@@ -2,19 +2,15 @@ import { Plugins } from '@capacitor/core';
 const { Storage } = Plugins;
 
 async function getItem(key) {
-    if (platform === 'android') {
-        const { value } = await Storage.get({ key: key });
-        return value;
-    } else {
-        return null
-    }
+    const { value } = await Storage.get({ key: key });
+    return value;
 };
 
 export default {
     setProductTerlaris(state, payload) {
         return new Promise((resolve, reject) => {
             getItem('mlinjo_token').then(token => {
-                console.log("my token => " + token);
+                // console.log("my token => " + token);
                 if (token === null) {
                     axios_open.get("products/promo-section").then(response => {
                         state.commit("setSectionProdukTerlaris", response.data.data)

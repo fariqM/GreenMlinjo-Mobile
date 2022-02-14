@@ -12,12 +12,8 @@ async function setItem(token) {
 };
 
 async function getItem(key) {
-    if (platform === 'android') {
-        const { value } = await Storage.get({ key: key });
-        return value;
-    } else {
-        return null
-    }
+    const { value } = await Storage.get({ key: key });
+    return value;
 };
 
 async function getToken() {

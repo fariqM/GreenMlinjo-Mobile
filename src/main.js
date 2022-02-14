@@ -35,27 +35,26 @@ async function getToken() {
 // preparation for bearer key (if its exist)
 let mlinjo_key = null;
 async function prepare() {
-  if (platform == 'android') {
-    window.axios = AXIOS;
-    await getToken().then(token => {
+  window.axios = AXIOS;
+  await getToken().then(token => {
     console.log("my-token => " + token);
-      SplashScreen.hide();
-      mlinjo_key = token
-      axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
-      axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
-    }).catch(e => {
-      SplashScreen.hide();
-      axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
-      axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
-    })
-  } else {
-    window.axios = AXIOS;
-    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}`;
-    axios.defaults.headers.Authorization = `Bearer empty`;
-  }
+    SplashScreen.hide();
+    mlinjo_key = token
+    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
+    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
+  }).catch(e => {
+    SplashScreen.hide();
+    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
+    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
+  })
+  // if (platform == 'android') {
+
+  // } else {
+  //   window.axios = AXIOS;
+  //   axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
+  //   axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('_cap_mlinjo_token')}`;
+  // }
 }
-
-
 Vue.config.productionTip = false;
 
 // another component
