@@ -30,7 +30,7 @@
 					v-if="skeleton"
 				/>
 
-				<v-btn icon large v-else class="">
+				<v-btn icon large v-else :to="isLogedIn ? {name:'favourites'} : {name:'login'}">
 					<v-badge
 						:content="CountFavourites"
 						:value="CountFavourites"
@@ -87,6 +87,7 @@ export default {
 		...mapGetters({
 			CountFavourites: "favourites/getCountFavourites",
 			getAllFavourites: "favourites/getAllFavourites",
+			isLogedIn: "auth/getUserStatus"
 		}),
 	},
 	mounted() {

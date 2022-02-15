@@ -7,8 +7,10 @@ async function getItem(key) {
 };
 
 const null_token = {
-    status: 406,
-    message: "Mobile token null"
+    response: {
+        status: 406,
+        message: "Mobile token null"
+    }
 }
 
 export default {

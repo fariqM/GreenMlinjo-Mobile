@@ -1,80 +1,79 @@
 <template>
+	<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
 	<div>
-		<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
+		<appbar :loading="loadingBar"></appbar>
 		<div>
-			<appbar :loading="loadingBar"></appbar>
-			<div>
-				<v-sheet
-					id="scrolling-techniques-3"
-					class="overflow-y-auto"
-					max-height="92vh"
-				>
-					<!-- Corousels Section-->
-					<home-corousels :skeleton="skeleton_show"></home-corousels>
-					<!-- End Corousels Section -->
+			<v-sheet
+				id="scrolling-techniques-3"
+				class="overflow-y-auto"
+				max-height="92vh"
+			>
+				<!-- Corousels Section-->
+				<home-corousels :skeleton="skeleton_show"></home-corousels>
+				<!-- End Corousels Section -->
 
-					<!-- Area Section -->
-					<div @click="skeleton_show = !skeleton_show">
-						<location-area :skeleton="skeleton_show"></location-area>
-					</div>
-					<!-- End Area Section -->
+				<!-- Area Section -->
+				<div @click="skeleton_show = !skeleton_show">
+					<location-area :skeleton="skeleton_show"></location-area>
+				</div>
+				<!-- End Area Section -->
 
-					<!-- Wallet Section -->
-					<wallet :skeleton="skeleton_show"></wallet>
-					<!-- End Wallet Section -->
+				<!-- Wallet Section -->
+				<wallet :skeleton="skeleton_show"></wallet>
+				<!-- End Wallet Section -->
 
-					<!-- Recomendation Section -->
-					<costumscroll :ops="ops" class="pt-2 pb-2 pl-2 pr-2 mb-2">
-						<v-sheet width="1000" max-height="100px" class="d-flex">
-							<recom-item
-								v-for="(item, i) in recom_items"
-								:key="i"
-								:src="item.src"
-								:alt="item.alt"
-								:title="item.title"
-								:skeleton="skeleton_show"
-							></recom-item>
-						</v-sheet>
-					</costumscroll>
-					<!-- End Recomendation Section -->
+				<!-- Recomendation Section -->
+				<costumscroll :ops="ops" class="pt-2 pb-2 pl-2 pr-2 mb-2">
+					<v-sheet width="1000" max-height="100px" class="d-flex">
+						<recom-item
+							v-for="(item, i) in recom_items"
+							:key="i"
+							:src="item.src"
+							:alt="item.alt"
+							:title="item.title"
+							:skeleton="skeleton_show"
+						></recom-item>
+					</v-sheet>
+				</costumscroll>
+				<!-- End Recomendation Section -->
 
-					<div class="paket-section">
-						<div class="d-flex justify-space-between mt-3 px-0">
-							<v-subheader class="px-2" style="height: 20px; font-weight: bold"
-								>Produk Terlaris</v-subheader
+				<div class="paket-section">
+					<div class="d-flex justify-space-between mt-3 px-0">
+						<v-subheader class="px-2" style="height: 20px; font-weight: bold"
+							>Produk Terlaris</v-subheader
+						>
+						<v-subheader class="px-1" style="height: 20px">
+							<router-link
+								:to="{ name: 'login' }"
+								style="text-decoration: none"
 							>
-							<v-subheader class="px-1" style="height: 20px">
-								<router-link
-									:to="{ name: 'login' }"
-									style="text-decoration: none"
-								>
-									Lihat lainnya
-									<v-icon color="primary">mdi-chevron-right</v-icon>
-								</router-link>
-							</v-subheader>
-						</div>
-
-						<v-row no-gutters justify="space-around">
-							<products-card
-								v-for="(product, i) in ProductTerlaris"
-								:skeleton="skeleton.product_terlaris"
-								:key="i"
-								:product_id="product.id"
-								:title="product.title"
-								:unit="product.unit"
-								:sub_unit="product.sub_unit"
-								:min_qty_per_unit="product.min_qty_per_unit"
-								:max_qty_per_unit="product.max_qty_per_unit"
-								:min_price="product.min_price"
-								:max_price="product.max_price"
-								:favourite="product.favourites"
-								:images="product.images"
-								:testing_log="'ini list produk 2'"
-							></products-card>
-						</v-row>
+								Lihat lainnya
+								<v-icon color="primary">mdi-chevron-right</v-icon>
+							</router-link>
+						</v-subheader>
 					</div>
 
-					<!-- <v-lazy v-model="lazy_ramadan">
+					<v-row no-gutters justify="space-around">
+						<products-card
+							v-for="(product, i) in ProductTerlaris"
+							:skeleton="skeleton.product_terlaris"
+							:key="i"
+							:product_id="product.id"
+							:title="product.title"
+							:unit="product.unit"
+							:sub_unit="product.sub_unit"
+							:min_qty_per_unit="product.min_qty_per_unit"
+							:max_qty_per_unit="product.max_qty_per_unit"
+							:min_price="product.min_price"
+							:max_price="product.max_price"
+							:favourite="product.favourites"
+							:images="product.images"
+							:testing_log="'ini list produk 2'"
+						></products-card>
+					</v-row>
+				</div>
+
+				<!-- <v-lazy v-model="lazy_ramadan">
 						<div class="paket-section">
 							<div class="d-flex justify-space-between mt-3 px-0">
 								<v-subheader
@@ -110,9 +109,8 @@
 							</v-row>
 						</div>
 					</v-lazy> -->
-				</v-sheet>
-				<v-overlay :value="skeleton_show" opacity="0.2"> </v-overlay>
-			</div>
+			</v-sheet>
+			<v-overlay :value="skeleton_show" opacity="0.2"> </v-overlay>
 		</div>
 	</div>
 </template>
@@ -323,11 +321,11 @@ export default {
 		// console.log(this.$store);
 	},
 	methods: {
-		redirectLogin(){
+		redirectLogin() {
 			setTimeout(() => {
-				this.$router.push({name:'login'})
+				this.$router.push({ name: "login" });
 			}, 1000);
-		}
+		},
 	},
 };
 </script>

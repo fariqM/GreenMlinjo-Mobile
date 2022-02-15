@@ -16,6 +16,9 @@ import Notification from '../views/Notification.vue'
 import Pesanan from '../views/Pesanan.vue'
 import Profile from '../views/Profile.vue'
 
+// other page
+import Favourites from "../views/pages/Favourites.vue"
+
 
 
 
@@ -36,6 +39,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/my-favourites',
+    name: 'favourites',
+    component: Favourites
   },
   {
     path: '/app',
