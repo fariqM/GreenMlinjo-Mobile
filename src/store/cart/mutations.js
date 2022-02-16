@@ -13,6 +13,7 @@ export default {
         _.remove(newArray, function (obj) {
             return (obj.id == payload)
         })
+
         state.Carts = newArray;
         state.CountCarts = state.Carts.length
     }

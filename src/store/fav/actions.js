@@ -1,4 +1,5 @@
 import { Plugins } from '@capacitor/core';
+import axios from 'axios';
 const { Storage } = Plugins;
 
 async function getItem(key) {
@@ -41,6 +42,15 @@ export default {
         })
         // state.commit("addFavourites", payload);
     },
+    removeFavourite(state, payload) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`favourites/remove-favourite/${payload}`).then(response => {
+                resolve(response)
+            }).catch(e => {
+                reject(e)
+            })
+        })
+    },
     setFavourites(state, payload) {
         return new Promise((resolve, reject) => {
             getItem('mlinjo_token').then(token => {
@@ -60,7 +70,7 @@ export default {
             })
         })
     },
-    getFavouritesProduct(state, payload){
+    getFavouritesProduct(state, payload) {
         return new Promise((resolve, reject) => {
             axios.get("favourites/favourite-products").then(response => {
                 resolve(response)

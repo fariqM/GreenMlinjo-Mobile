@@ -30,7 +30,12 @@
 					v-if="skeleton"
 				/>
 
-				<v-btn icon large v-else :to="isLogedIn ? {name:'favourites'} : {name:'login'}">
+				<v-btn
+					icon
+					large
+					v-else
+					:to="isLogedIn ? { name: 'favourites' } : { name: 'login' }"
+				>
 					<v-badge
 						:content="CountFavourites"
 						:value="CountFavourites"
@@ -55,8 +60,8 @@
 				<v-btn icon large class="" v-else>
 					<v-badge
 						class="mr-1"
-						:content="total_fav"
-						:value="total_fav"
+						:content="CountCarts"
+						:value="CountCarts"
 						color="error"
 						overlap
 					>
@@ -87,14 +92,17 @@ export default {
 		...mapGetters({
 			CountFavourites: "favourites/getCountFavourites",
 			getAllFavourites: "favourites/getAllFavourites",
-			isLogedIn: "auth/getUserStatus"
+			CountCarts: "carts/getCountCarts",
+			isLogedIn: "auth/getUserStatus",
 		}),
 	},
 	mounted() {
 		this.$store
 			.dispatch("favourites/setFavourites")
 			.then((result) => {
-				this.skeleton = false;
+				this.$store.dispatch("carts/setCarts").then((result) => {
+					this.skeleton = false;
+				});
 			})
 			.catch((e) => {
 				this.skeleton = false;

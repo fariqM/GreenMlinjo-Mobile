@@ -6,7 +6,9 @@
 			</v-btn>
 			<!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 			<!-- <v-toolbar-title>Title</v-toolbar-title> -->
-			<v-subheader class="pl-0"><h3>Daftar</h3></v-subheader>
+			<v-toolbar-title>Daftar</v-toolbar-title>
+
+			<!-- <v-subheader class="pl-0"><h3>Daftar</h3></v-subheader> -->
 			<v-spacer></v-spacer>
 			<router-link :to="{ name: 'login' }" >
 				<v-subheader>

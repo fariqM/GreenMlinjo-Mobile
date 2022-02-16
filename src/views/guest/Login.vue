@@ -4,7 +4,9 @@
 			<v-btn icon class="mr-0" small @click="navigation_back">
 				<v-icon>mdi-chevron-left</v-icon>
 			</v-btn>
-			<v-subheader class="pl-0"><h3>Masuk</h3></v-subheader>
+			<v-toolbar-title>Masuk</v-toolbar-title>
+
+			<!-- <v-subheader class="pl-0"><h3>Masuk</h3></v-subheader> -->
 			<v-spacer></v-spacer>
 			<router-link :to="{ name: 'register' }">
 				<v-subheader>
@@ -141,18 +143,16 @@ export default {
 								this.overlay = false;
 							})
 							.catch((error) => {
-								this.$toast.error(
-									"Coba lagi, kali aja bisa.",
-									"Oops ! Kayaknya ada masalah :( ",
-									{
-										position: "topCenter",
-										timeout: 4500,
-										// ballon:true,
-										transitionInMobile: "fadeInLeft",
-										transitionOutMobile: "fadeOutLeft",
-										displayMode: 2,
-									}
-								);
+								iziToast.error({
+									title: "Oops ! Kayaknya ada masalah :( ",
+									message: "Coba lagi, kali aja bisa.",
+									position: "topCenter",
+									timeout: 4500,
+									// ballon:true,
+									transitionInMobile: "fadeInLeft",
+									transitionOutMobile: "fadeOutLeft",
+									displayMode: 2,
+								});
 								this.loading = false;
 								this.overlay = false;
 							});
@@ -160,18 +160,16 @@ export default {
 				})
 				.catch((e) => {
 					this.loading = false;
-					this.$toast.error(
-						"Coba lagi, kali aja bisa.",
-						"Oops ! Kayaknya ada masalah :( ",
-						{
-							position: "topCenter",
-							timeout: 4500,
-							// ballon:true,
-							transitionInMobile: "fadeInLeft",
-							transitionOutMobile: "fadeOutLeft",
-							displayMode: 2,
-						}
-					);
+					iziToast.error({
+						title: "Oops ! Kayaknya ada masalah :( ",
+						message: "Coba lagi, kali aja bisa.",
+						position: "topCenter",
+						timeout: 4500,
+						// ballon:true,
+						transitionInMobile: "fadeInLeft",
+						transitionOutMobile: "fadeOutLeft",
+						displayMode: 2,
+					});
 				});
 		},
 	},

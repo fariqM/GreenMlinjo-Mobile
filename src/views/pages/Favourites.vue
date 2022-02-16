@@ -1,23 +1,39 @@
 <template>
 	<v-main>
-		<search-bar
-			:loading="loading"
-			:data="favourites"
-			v-on:searchTyping="searchInput"
-		></search-bar>
-		<v-sheet class="overflow-y-auto" max-height="92vh">
+		<!-- <div> -->
+		<toolbar :loading="loading" :page="'Favorit'"></toolbar>
+		<v-text-field
+			v-if="!loading"
+			hide-details
+			placeholder="Cari apa ?"
+			prepend-inner-icon="mdi-magnify"
+			clearable
+			v-model="searchInputForm"
+			class="px-2 my-2"
+			single-line
+			filled
+			dense
+		></v-text-field>
+
+		<!-- </div> -->
+
+		<v-sheet
+			class="overflow-y-auto"
+			max-height="92vh"
+			id="scrolling-techniques-8"
+		>
 			<v-row no-gutters justify="center" class="py-1 px-1">
 				<v-col v-if="loading" cols="12" md="12" sm="12">
-					<div class="d-flex align-center justify-center" style="height: 92vh">
+					<div class="d-flex align-center justify-center" style="height: 84vh">
 						<v-progress-circular
 							:size="30"
 							color="success"
 							indeterminate
 						></v-progress-circular>
 					</div>
-					<!-- <skeleton width="100%" height="7rem" :radius="3" v-for="(favourite, i) in 8" :key="i" class="mb-2"></skeleton> -->
 				</v-col>
 				<v-col
+					class="mb-2"
 					v-else
 					cols="12"
 					md="12"
@@ -25,7 +41,13 @@
 					v-for="(favourite, i) in filteredFavouritItems"
 					:key="i"
 				>
-					<v-card class="mx-auto" max-width="100%" outlined v-ripple>
+					<v-card
+						class="mx-auto"
+						max-width="100%"
+						outlined
+						v-ripple
+						elevation="3"
+					>
 						<v-list-item three-line>
 							<v-list-item-avatar class="py-0 px-0" tile size="90" color="grey">
 								<v-img :src="url + favourite.product.images[0].url"></v-img>
@@ -56,7 +78,7 @@
 										color="warning"
 										height="1.9rem"
 										width="1.07rem"
-										@click="clickItem"
+										@click="deleteFav(favourite.id)"
 										@click.stop=""
 										@mousedown.stop=""
 										@touchstart.stop=""
@@ -93,11 +115,11 @@
 
 <script>
 // import { mapGetters } from "vuex";
-import SearchBar from "../components/SearchBar.vue";
+import Toolbar from "../components/Toolbar.vue";
 
 export default {
 	components: {
-		SearchBar,
+		Toolbar,
 	},
 	mounted() {
 		this.$store
@@ -122,6 +144,7 @@ export default {
 			favourites: [],
 			searchInputForm: "",
 			input_helper: "",
+			offsetTop: 0,
 		};
 	},
 	computed: {
@@ -143,26 +166,9 @@ export default {
 			this.searchInputForm = input;
 		},
 		addToCart(product_id) {
-			this.$store
-				.dispatch("carts/addCarts", product_id)
-				.then((response) => {
-					console.log(response);
-					this.$toast.success("Berhasil ditambahkan ke keranjang.", "Oke. ", {
-						position: "topCenter",
-						timeout: 4500,
-						// ballon:true,
-						transitionInMobile: "fadeInLeft",
-						transitionOutMobile: "fadeOutLeft",
-						displayMode: 2,
-					});
-				})
-				.catch((e) => {
-					console.log(e);
-				});
-		},
-		deleteCart() {
 			let inputForm = null;
-			this.$toast.question("(/Kg)", "Masukan ke keranjang", {
+			iziToast.question({
+				title: "Masukan ke keranjang",
 				animateInside: true,
 				class: "addInputForm",
 				timeout: false,
@@ -171,7 +177,6 @@ export default {
 				displayMode: "once",
 				id: "question",
 				zindex: 999,
-				title: "Hey",
 				position: "center",
 				inputs: [
 					[
@@ -182,76 +187,83 @@ export default {
 						},
 						false,
 					],
+					["<div>*Kg</div>"],
 				],
 				buttons: [
 					[
 						"<button><b>Tambahkan</b></button>",
 						function (instance, toast) {
-							instance.hide({ transitionOut: "fadeOut" }, toast, inputForm);
+							axios
+								.post("carts/add-carts", {
+									product_id: product_id,
+									qty: parseFloat(inputForm),
+								})
+								.then((response) => {
+									instance.hide({ transitionOut: "fadeOut" }, toast);
+									iziToast.success({
+										title: "Oke.",
+										message: "Berhasil ditambahkan ke keranjang.",
+										position: "topCenter",
+										timeout: 4500,
+										// ballon:true,
+										transitionInMobile: "fadeInLeft",
+										transitionOutMobile: "fadeOutLeft",
+										displayMode: 2,
+									});
+								})
+								.catch((e) => {
+									iziToast.error({
+										title: "Error :( ",
+										message:
+											"Ga bisa nambahin barang ini ke keranjang, coba lagi nanti.",
+										position: "topCenter",
+										timeout: 4500,
+										// ballon:true,
+										transitionInMobile: "fadeInLeft",
+										transitionOutMobile: "fadeOutLeft",
+										displayMode: 2,
+									});
+								});
 						},
 						true,
 					],
 				],
 				onClosing: function (instance, toast, closedBy) {
-					// console.log(instance);
-					toast.error(
-						"Coba lagi, kali aja bisa.",
-						"Oops ! Kayaknya ada masalah :( ",
-						{
-							position: "topCenter",
-							timeout: 4500,
-							// ballon:true,
-							transitionInMobile: "fadeInLeft",
-							transitionOutMobile: "fadeOutLeft",
-							displayMode: 2,
-						}
-					);
-				},
-				onClosed: function (instance, toast, closedBy) {
-					// console.log(this.$store);
+					// console.log(parseFloat(closedBy));
 				},
 			});
 		},
-		deleteCartAction(value) {
-			console.log(value);
+		deleteCart() {
+			let inputForm = null;
 		},
-		clickItem() {
-			iziToast.question({
-				timeout: 20000,
-				close: false,
-				overlay: true,
-				displayMode: "once",
-				id: "question",
-				zindex: 999,
-				title: "Hey",
-				message: "Are you sure about that?",
-				position: "center",
-				buttons: [
-					[
-						"<button><b>YES</b></button>",
-						function (instance, toast) {
-							instance.hide({ transitionOut: "fadeOut" }, toast, "button");
-						},
-						true,
-					],
-					[
-						"<button>NO</button>",
-						function (instance, toast) {
-							instance.hide({ transitionOut: "fadeOut" }, toast, "button");
-						},
-					],
-				],
-				onClosing: function (instance, toast, closedBy) {
-					console.info("Closing | closedBy: " + closedBy);
-				},
-				onClosed: function (instance, toast, closedBy) {
-					console.info("Closed | closedBy: " + closedBy);
-				},
-			});
+		deleteFav(id) {
+			this.$store
+				.dispatch("favourites/removeFavourite", id)
+				.then((response) => {
+					if (response.status === 200) {
+						this.favourites = _.remove(this.favourites, function (obj) {
+							return obj.id !== id;
+						});
+					} else {
+						this.favourites = _.remove(this.favourites, function (obj) {
+							return obj.id !== id;
+						});
+					}
+				})
+				.catch((e) => {
+					iziToast.error({
+						title: "Oops ada yang error :( ",
+						message: "Ga bisa hapus ini dari favorit, coba lagi nanti.",
+						position: "topCenter",
+						timeout: 4500,
+						// ballon:true,
+						transitionInMobile: "fadeInLeft",
+						transitionOutMobile: "fadeOutLeft",
+						displayMode: 2,
+					});
+				});
 		},
+		clickItem() {},
 	},
 };
 </script>
-
-<style>
-</style>

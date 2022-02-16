@@ -44,6 +44,7 @@ export default {
                     reject(null_token)
                 } else {
                     axios.get("carts/my-carts").then(response => {
+                        // console.log(response);
                         state.commit("setCarts", response.data.data)
                         resolve(response)
                     }).catch(e => {
