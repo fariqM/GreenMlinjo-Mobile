@@ -18,6 +18,7 @@ import Profile from '../views/Profile.vue'
 
 // other page
 import Favourites from "../views/pages/Favourites.vue"
+import Carts from "../views/pages/Cart.vue"
 
 
 
@@ -44,6 +45,11 @@ const routes = [
     path: '/my-favourites',
     name: 'favourites',
     component: Favourites
+  },
+  {
+    path: '/my-carts',
+    name: 'carts',
+    component: Carts
   },
   {
     path: '/app',

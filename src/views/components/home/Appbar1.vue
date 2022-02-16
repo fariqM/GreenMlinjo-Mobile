@@ -57,7 +57,13 @@
 					style="margin-left: 5px"
 				/>
 
-				<v-btn icon large class="" v-else>
+				<v-btn
+					icon
+					large
+					class=""
+					v-else
+					:to="isLogedIn ? { name: 'carts' } : { name: 'login' }"
+				>
 					<v-badge
 						class="mr-1"
 						:content="CountCarts"
