@@ -5,10 +5,11 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import AXIOS from "axios";
 import { Capacitor, Plugins } from '@capacitor/core';
-import VueIziToast from "vue-izitoast";
-import 'izitoast/dist/css/iziToast.css';
+import izi_Toast from 'izitoast'
 
 
+// iziToast
+window.iziToast = izi_Toast
 
 // base server ip
 const { SplashScreen } = Plugins
@@ -55,10 +56,12 @@ async function prepare() {
   //   axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('_cap_mlinjo_token')}`;
   // }
 }
+
+window.__input_helper__ = ""
+
 Vue.config.productionTip = false;
 
 // another component
-Vue.use(VueIziToast);
 Vue.component('skeleton', require("./views/components/skeleton/Skeleton.vue").default);
 
 // is preparation for bearer complete then render the app

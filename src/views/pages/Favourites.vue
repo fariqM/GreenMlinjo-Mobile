@@ -56,7 +56,7 @@
 										color="warning"
 										height="1.9rem"
 										width="1.07rem"
-										@click="deleteCart"
+										@click="clickItem"
 										@click.stop=""
 										@mousedown.stop=""
 										@touchstart.stop=""
@@ -70,7 +70,7 @@
 										color="primary"
 										class="pa-4"
 										width="85%"
-										@click="addToCart"
+										@click="addToCart(favourite.product_id)"
 										@click.stop=""
 										@mousedown.stop=""
 										@touchstart.stop=""
@@ -100,14 +100,13 @@ export default {
 		SearchBar,
 	},
 	mounted() {
-		console.log(this.$store);
 		this.$store
 			.dispatch("favourites/getFavouritesProduct")
 			.then((response) => {
 				this.loading = false;
 				if (response.status === 200) {
 					this.favourites = response.data.data;
-					console.log(this.favourites);
+					// console.log(this.favourites);
 				} else {
 				}
 			})
@@ -121,7 +120,8 @@ export default {
 			skeleton: true,
 			loading: true,
 			favourites: [],
-			inputForm: "",
+			searchInputForm: "",
+			input_helper: "",
 		};
 	},
 	computed: {
@@ -129,19 +129,126 @@ export default {
 			return this.favourites.filter((favourite) => {
 				return favourite.product.title
 					.toLowerCase()
-					.match(this.inputForm.toLowerCase());
+					.match(this.searchInputForm.toLowerCase());
 			});
+		},
+	},
+	watch: {
+		input_helper(newVal, oldVal) {
+			console.log(newVal);
 		},
 	},
 	methods: {
 		searchInput(input) {
-			this.inputForm = input;
+			this.searchInputForm = input;
 		},
-		addToCart() {
-
+		addToCart(product_id) {
+			this.$store
+				.dispatch("carts/addCarts", product_id)
+				.then((response) => {
+					console.log(response);
+					this.$toast.success("Berhasil ditambahkan ke keranjang.", "Oke. ", {
+						position: "topCenter",
+						timeout: 4500,
+						// ballon:true,
+						transitionInMobile: "fadeInLeft",
+						transitionOutMobile: "fadeOutLeft",
+						displayMode: 2,
+					});
+				})
+				.catch((e) => {
+					console.log(e);
+				});
 		},
-		deleteCart() {},
-		clickItem() {},
+		deleteCart() {
+			let inputForm = null;
+			this.$toast.question("(/Kg)", "Masukan ke keranjang", {
+				animateInside: true,
+				class: "addInputForm",
+				timeout: false,
+				close: true,
+				overlay: true,
+				displayMode: "once",
+				id: "question",
+				zindex: 999,
+				title: "Hey",
+				position: "center",
+				inputs: [
+					[
+						'<input type="number">',
+						"keyup",
+						function (instance, toast, input, e) {
+							inputForm = input.value;
+						},
+						false,
+					],
+				],
+				buttons: [
+					[
+						"<button><b>Tambahkan</b></button>",
+						function (instance, toast) {
+							instance.hide({ transitionOut: "fadeOut" }, toast, inputForm);
+						},
+						true,
+					],
+				],
+				onClosing: function (instance, toast, closedBy) {
+					// console.log(instance);
+					toast.error(
+						"Coba lagi, kali aja bisa.",
+						"Oops ! Kayaknya ada masalah :( ",
+						{
+							position: "topCenter",
+							timeout: 4500,
+							// ballon:true,
+							transitionInMobile: "fadeInLeft",
+							transitionOutMobile: "fadeOutLeft",
+							displayMode: 2,
+						}
+					);
+				},
+				onClosed: function (instance, toast, closedBy) {
+					// console.log(this.$store);
+				},
+			});
+		},
+		deleteCartAction(value) {
+			console.log(value);
+		},
+		clickItem() {
+			iziToast.question({
+				timeout: 20000,
+				close: false,
+				overlay: true,
+				displayMode: "once",
+				id: "question",
+				zindex: 999,
+				title: "Hey",
+				message: "Are you sure about that?",
+				position: "center",
+				buttons: [
+					[
+						"<button><b>YES</b></button>",
+						function (instance, toast) {
+							instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+						},
+						true,
+					],
+					[
+						"<button>NO</button>",
+						function (instance, toast) {
+							instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+						},
+					],
+				],
+				onClosing: function (instance, toast, closedBy) {
+					console.info("Closing | closedBy: " + closedBy);
+				},
+				onClosed: function (instance, toast, closedBy) {
+					console.info("Closed | closedBy: " + closedBy);
+				},
+			});
+		},
 	},
 };
 </script>
