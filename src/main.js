@@ -40,11 +40,11 @@ async function prepare() {
     console.log("my-token => " + token);
     SplashScreen.hide();
     mlinjo_key = token
-    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
+    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/v1/`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
   }).catch(e => {
     SplashScreen.hide();
-    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/a/`;
+    axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/v1/`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
   })
   // if (platform == 'android') {

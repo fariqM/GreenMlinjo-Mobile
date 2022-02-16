@@ -1,29 +1,47 @@
 <template>
-
-	<v-toolbar width="100%" elevation="0" class="pr-2">
-		<template v-slot:img="{ props }">
-			<v-img
-				v-bind="props"
-				gradient="to top right, rgb(142 229 132 / 62%), rgb(169 255 168 / 98%)"
-			></v-img>
-		</template>
-		<v-btn icon >
-			<v-icon>mdi-arrow-left</v-icon>
-		</v-btn>
-		<v-text-field
-			label="Cari sesuatu ..."
-			hide-details
-			dark
-			prepend-icon="mdi-magnify"
-			single-line
-		></v-text-field>
-	</v-toolbar>
+	<div>
+		<v-toolbar width="100%" elevation="0" class="pr-2" color="primary">
+			<v-btn icon @click="navigation_back">
+				<v-icon>mdi-arrow-left</v-icon>
+			</v-btn>
+			<v-text-field
+				label="Cari sesuatu ..."
+				hide-details
+				dark
+				prepend-icon="mdi-magnify"
+				single-line
+				v-model="searchInput"
+			></v-text-field>
+		</v-toolbar>
+		<v-progress-linear
+			:active="loading"
+			:indeterminate="loading"
+			bottom
+			color="success"
+		></v-progress-linear>
+	</div>
 </template>
 
 <script>
 export default {
 	props: {
 		data: Array,
+		loading: Boolean,
+	},
+	data() {
+		return {
+			searchInput: "",
+		};
+	},
+	methods: {
+		navigation_back() {
+			this.$router.back();
+		},
+	},
+	watch: {
+		searchInput: function (newVal, oldVal) {
+			this.$emit("searchTyping", newVal)
+		},
 	},
 };
 </script>

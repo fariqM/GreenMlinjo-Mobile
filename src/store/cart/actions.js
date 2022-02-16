@@ -14,41 +14,37 @@ const null_token = {
 }
 
 export default {
-    addFavourites(state, payload) {
+    addCarts(state, payload) {
         return new Promise((resolve, reject) => {
             getItem('mlinjo_token').then(token => {
                 if (token === null) {
                     reject(null_token)
                 } else {
-                    axios.post("favourites/add-favourites", { product_id: payload }).then(response => {
+                    axios.post("carts/add-carts", { product_id: payload }).then(response => {
                         if (response.status === 201) {
-                            // add fav
-                            state.commit("addFavourites", response.data.data)
+                            // add cart
+                            state.commit("addCarts", response.data.data)
                             resolve(response)
                         } else {
-                            // remove fav
-                            state.commit("removeFavourites", response.data.data)
+                            // remove cart
+                            state.commit("removeCarts", response.data.data)
                             resolve(response)
                         }
-                        // console.log(response);
-                        // state.commit("setFavourites", response.data.data)
-
                     }).catch(e => {
                         reject(e)
                     })
                 }
             })
         })
-        // state.commit("addFavourites", payload);
     },
-    setFavourites(state, payload) {
+    setCarts(state, payload) {
         return new Promise((resolve, reject) => {
             getItem('mlinjo_token').then(token => {
                 if (token === null) {
                     reject(null_token)
                 } else {
-                    axios.get("favourites/my-favourites").then(response => {
-                        state.commit("setFavourites", response.data.data)
+                    axios.get("carts/my-carts").then(response => {
+                        state.commit("setCarts", response.data.data)
                         resolve(response)
                     }).catch(e => {
                         reject(e)
@@ -60,9 +56,9 @@ export default {
             })
         })
     },
-    getFavouritesProduct(state, payload){
+    getCartsProduct(state, payload){
         return new Promise((resolve, reject) => {
-            axios.get("favourites/favourite-products").then(response => {
+            axios.get("carts/cart-products").then(response => {
                 resolve(response)
             }).catch(e => {
                 reject(e)
