@@ -13,7 +13,7 @@ window.iziToast = izi_Toast
 
 // base server ip
 const { SplashScreen } = Plugins
-const __BASE_URL_SERVER = 'http://192.168.1.4:8888/';
+const __BASE_URL_SERVER = 'http://192.168.1.2:8888/';
 const __API_PREFIX = 'api'
 
 // non-auth url
@@ -63,6 +63,7 @@ Vue.config.productionTip = false;
 
 // another component
 Vue.component('skeleton', require("./views/components/skeleton/Skeleton.vue").default);
+Vue.component('mlj-toolbar', require("./views/components/Toolbar.vue").default)
 
 // is preparation for bearer complete then render the app
 prepare().then(() => {

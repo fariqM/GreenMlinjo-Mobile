@@ -1,7 +1,7 @@
 <template>
 	<v-main>
 		<!-- <div> -->
-		<toolbar :loading="loading" :page="'Favorit'"></toolbar>
+		<mlj-toolbar :loading="loading" :page="'Favorit'"></mlj-toolbar>
 		<v-text-field
 			v-if="!loading"
 			hide-details
@@ -115,11 +115,9 @@
 
 <script>
 // import { mapGetters } from "vuex";
-import Toolbar from "../components/Toolbar.vue";
 
 export default {
 	components: {
-		Toolbar,
 	},
 	mounted() {
 		this.$store
