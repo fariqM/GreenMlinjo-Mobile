@@ -180,7 +180,7 @@ export default {
 				position: "center",
 				inputs: [
 					[
-						'<input type="number">',
+						'<input type="number" id="inputToast">',
 						"keyup",
 						function (instance, toast, input, e) {
 							inputForm = input.value;
@@ -193,37 +193,47 @@ export default {
 					[
 						"<button><b>Tambahkan</b></button>",
 						function (instance, toast) {
-							axios
-								.post("carts/add-carts", {
-									product_id: product_id,
-									qty: parseFloat(inputForm),
-								})
-								.then((response) => {
-									instance.hide({ transitionOut: "fadeOut" }, toast);
-									iziToast.success({
-										title: "Oke.",
-										message: "Berhasil ditambahkan ke keranjang.",
-										position: "topCenter",
-										timeout: 4500,
-										// ballon:true,
-										transitionInMobile: "fadeInLeft",
-										transitionOutMobile: "fadeOutLeft",
-										displayMode: 2,
+							console.log(inputForm);
+							if (inputForm === null) {
+								let input = document.getElementById("inputToast");
+								input.classList.add("input-error-toast");
+								input.placeholder = "Wah kosong...";
+							} else {
+								let input = document.getElementById("inputToast");
+								input.classList.remove("input-error-toast");
+								input.classList.add("input-success-toast");
+								axios
+									.post("carts/add-carts", {
+										product_id: product_id,
+										qty: parseFloat(inputForm),
+									})
+									.then((response) => {
+										instance.hide({ transitionOut: "fadeOut" }, toast);
+										iziToast.success({
+											title: "Oke.",
+											message: "Berhasil ditambahkan ke keranjang.",
+											position: "topCenter",
+											timeout: 4500,
+											// ballon:true,
+											transitionInMobile: "fadeInLeft",
+											transitionOutMobile: "fadeOutLeft",
+											displayMode: 2,
+										});
+									})
+									.catch((e) => {
+										iziToast.error({
+											title: "Error :( ",
+											message:
+												"Ga bisa nambahin barang ini ke keranjang, coba lagi nanti.",
+											position: "topCenter",
+											timeout: 4500,
+											// ballon:true,
+											transitionInMobile: "fadeInLeft",
+											transitionOutMobile: "fadeOutLeft",
+											displayMode: 2,
+										});
 									});
-								})
-								.catch((e) => {
-									iziToast.error({
-										title: "Error :( ",
-										message:
-											"Ga bisa nambahin barang ini ke keranjang, coba lagi nanti.",
-										position: "topCenter",
-										timeout: 4500,
-										// ballon:true,
-										transitionInMobile: "fadeInLeft",
-										transitionOutMobile: "fadeOutLeft",
-										displayMode: 2,
-									});
-								});
+							}
 						},
 						true,
 					],
@@ -267,3 +277,14 @@ export default {
 	},
 };
 </script>
+
+<style>
+.input-error-toast {
+	background: rgb(199 12 12 / 14%) !important;
+	box-shadow: 0 0 0 1px rgb(235 17 17) !important;
+}
+.input-success-toast {
+	background: rgb(90 233 54 / 17%) !important;
+	box-shadow: 0 0 0 1px rgb(51 191 42 / 80%) !important;
+}
+</style>

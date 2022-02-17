@@ -1,6 +1,6 @@
 <template>
   <v-main>
-      carts
+      
   </v-main>
 </template>
 
