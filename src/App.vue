@@ -1,7 +1,6 @@
 <template>
-
 	<v-app>
-		<div style="max-width: 30.5rem; width: 100vw; height:100vh">
+		<div style="max-width: 30.5rem; width: 100vw; height: 100vh">
 			<router-view />
 		</div>
 	</v-app>
@@ -36,5 +35,32 @@ export default {
 .normal-text {
 	color: #6c6c6c;
 	font-size: 0.9rem;
+}
+.empty-outer {
+	display: table;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100%;
+}
+.empty-middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+.empty-inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+  /* Whatever width you want */
+}
+.noselect {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 </style>

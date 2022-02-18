@@ -19,6 +19,7 @@ import Profile from '../views/Profile.vue'
 // other page
 import Favourites from "../views/pages/Favourites.vue"
 import Carts from "../views/pages/Cart.vue"
+import Chat from "../views/pages/Chat.vue"
 
 
 
@@ -50,6 +51,11 @@ const routes = [
     path: '/my-carts',
     name: 'carts',
     component: Carts
+  },
+  {
+    path: '/chat-list',
+    name: 'chat',
+    component: Chat
   },
   {
     path: '/app',

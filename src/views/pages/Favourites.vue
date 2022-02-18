@@ -166,6 +166,8 @@ export default {
 		addToCart(product_id) {
 			let inputForm = null;
 			iziToast.question({
+				color:"#acbd90",
+				progressBarColor: "#87BD43",
 				title: "Masukan ke keranjang",
 				animateInside: true,
 				class: "addInputForm",

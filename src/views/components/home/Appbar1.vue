@@ -62,7 +62,7 @@
 					large
 					class=""
 					v-else
-					:to="isLogedIn ? { name: 'carts' } : { name: 'login' }"
+					:to="isLogedIn ? { name: 'chat' } : { name: 'login' }"
 				>
 					<v-badge
 						class="mr-1"

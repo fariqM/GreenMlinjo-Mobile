@@ -37,6 +37,15 @@ export default {
             })
         })
     },
+    removeCarts(state, payload) {
+        return new Promise((resolve, reject) => {
+            axios.delete("carts/remove-carts", { data: { selected: payload } }).then(response => {
+                resolve(response)
+            }).catch(e => {
+                reject(e)
+            })
+        })
+    },
     setCarts(state, payload) {
         return new Promise((resolve, reject) => {
             getItem('mlinjo_token').then(token => {
@@ -57,7 +66,7 @@ export default {
             })
         })
     },
-    getCartsProduct(state, payload){
+    getCartsProduct(state, payload) {
         return new Promise((resolve, reject) => {
             axios.get("carts/cart-products").then(response => {
                 resolve(response)
@@ -65,5 +74,10 @@ export default {
                 reject(e)
             })
         })
-    }
+    },
+    // adjustQty(state, payload){
+    //     return new Promise((resolve, reject) => {
+    //         axios.post("carts/adjust-qty", {type:payload.type, })
+    //     })
+    // }
 }
