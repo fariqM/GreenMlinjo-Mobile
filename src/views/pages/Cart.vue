@@ -109,15 +109,13 @@
 								<v-row no-gutters class="pa-0">
 									<v-col>
 										<div
-											style="
-												max-height: 18px;
-											"
-											class="ml-2 product-title-text"
+											style="max-height: 18px"
+											class="ml-2 product-title-text noselect"
 										>
 											<span>{{ cart.title }}</span>
 										</div>
 
-										<div class="product-subtitle-text ml-2">
+										<div class="product-subtitle-text ml-2 noselect">
 											{{ cart.min_qty_per_unit }}-{{ cart.max_qty_per_unit }}
 											{{ cart.sub_unit }}/{{ cart.unit }}
 										</div>
@@ -127,12 +125,9 @@
 										>
 											<div>
 												<div
-												class="product-price-text"
+													class="product-price-text ellipsis-text noselect"
 													style="
 														max-width: 95px;
-														white-space: nowrap;
-														overflow: hidden;
-														text-overflow: ellipsis;
 													"
 												>
 													Rp {{ numberWithCommas(cart.min_price) }} - Rp
@@ -225,7 +220,7 @@
 								</v-row>
 							</div>
 
-							<div class="d-flex align-center py-2" style="margin-left: 25px">
+							<div class="d-flex align-center py-2 noselect" style="margin-left: 25px">
 								<v-chip x-small v-for="(promo, i) in 4" :key="i" class="mr-1"
 									>Promo</v-chip
 								>
@@ -238,15 +233,35 @@
 
 		<div
 			v-if="!loading"
-
-			class="bottom-container d-flex justify-space-around align-center white py-2"
-			style="box-shadow: 0 -1px 3px rgb(191 191 191);"
+			class="bottom-container white py-2"
+			style="
+				box-shadow: rgb(191, 191, 191) 0px -1px 3px;
+				display: grid;
+				grid-template-columns: 50% 1fr;
+				align-items: center;
+				justify-items: center;
+			"
 		>
-			<div>
-				<div style="font-size: 1rem; font-weight: 500">Total harga</div>
-				<div style="font-size: 0.9rem; font-weight: 500">Rp 12312312</div>
+		
+			<div style="min-width: 100%;">
+				<div class="d-flex align-center justify-center noselect" style="font-size: font-size: clamp(0.6rem, 0.1rem + 4vw, 1rem); font-weight: 500">
+					Kisaran total harga
+					<v-icon small class="ml-1" >mdi-help-circle-outline</v-icon>
+				</div>
+				<div
+					class="product-price-text ellipsis-text text-center noselect"
+					style="max-width:7rem; min-width: 100%;"
+				>
+					Rp {{ numberWithCommas(totalMinPrice) }} - Rp {{ numberWithCommas(totalMaxPrice) }}
+				</div>
 			</div>
-			<v-btn color="primary">Beli (3)</v-btn>
+			<v-btn
+				elevation="0"
+				color="primary"
+				small
+				:disabled="CheckBoxSelected.length === 0"
+				>Beli ({{ CheckBoxSelected.length }})</v-btn
+			>
 		</div>
 	</v-main>
 </template>
@@ -265,6 +280,8 @@ export default {
 			adjusMinustState: null,
 			heightWindows: window.innerHeight,
 			tesHeight: null,
+			totalMinPrice:0,
+			totalMaxPrice:0,
 		};
 	},
 	watch: {
@@ -296,6 +313,15 @@ export default {
 				this.deleteBtnText = "Hapus semua";
 			} else {
 				this.deleteBtnText = "Hapus";
+			}
+
+			// count total
+			this.totalMinPrice = 0
+			this.totalMaxPrice = 0
+			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
+				this.totalMinPrice += this.carts[index].min_price
+				this.totalMaxPrice += this.carts[index].max_price
+
 			}
 		},
 	},

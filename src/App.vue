@@ -82,4 +82,9 @@ export default {
 	bottom: 0;
 	width: 100%;
 }
+.ellipsis-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 </style>

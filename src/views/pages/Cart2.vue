@@ -8,14 +8,14 @@
 
 				<v-list-item-content class="">
 					<!-- List1 -->
-					<v-list-item-title class="">
+					<v-list-item-title class="noselect">
 						<div style="font-weight: 700">
 							{{ cart.title }}
 						</div>
 					</v-list-item-title>
 
 					<!-- List2 -->
-					<div class="normal-text">
+					<div class="normal-text noselect">
 						{{ cart.min_qty_per_unit }}-{{ cart.max_qty_per_unit }}
 						{{ cart.sub_unit }}/{{ cart.unit }}
 					</div>
@@ -25,12 +25,9 @@
 						<div class="d-flex justify-space-between align-center pt-1 pb-3">
 							<div>
 								<div
-									class="pt-2 info"
+									class="pt-2 info ellipsis-text noselect"
 									style="
 										max-width: 95px;
-										white-space: nowrap;
-										overflow: hidden;
-										text-overflow: ellipsis;
 									"
 								>
 									Rp {{ numberWithCommas(cart.min_price) }} - Rp
