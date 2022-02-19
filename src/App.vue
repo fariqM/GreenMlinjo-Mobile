@@ -77,4 +77,9 @@ export default {
 	user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+.bottom-container {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
 </style>

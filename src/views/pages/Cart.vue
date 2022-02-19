@@ -7,7 +7,7 @@
 			</div>
 		</v-row> -->
 
-		<v-row v-if="loading" style="height: 100vh">
+		<v-row v-if="loading" style="height: 100vh" v-resize="onResize">
 			<v-col v-if="loading" cols="12" md="12" sm="12">
 				<div class="d-flex align-center justify-center" style="height: 84vh">
 					<v-progress-circular
@@ -80,7 +80,7 @@
 
 			<v-sheet
 				class="overflow-y-auto"
-				max-height="92vh"
+				:max-height="heightWindows - 104 + 'px'"
 				id="scrolling-techniques-8"
 			>
 				<v-row no-gutters justify="center" class="py-1 px-1">
@@ -102,7 +102,7 @@
 									style="max-width: 25px"
 								></v-checkbox>
 								<div>
-									<v-avatar tile size="80">
+									<v-avatar tile size="75">
 										<v-img :src="url + cart.url"></v-img>
 									</v-avatar>
 								</div>
@@ -110,17 +110,14 @@
 									<v-col>
 										<div
 											style="
-												font-weight: 500;
-												font-size: 0.8rem;
 												max-height: 18px;
 											"
-											class="ml-2"
+											class="ml-2 product-title-text"
 										>
 											<span>{{ cart.title }}</span>
 										</div>
 
-
-										<div class="normal-text ml-2">
+										<div class="product-subtitle-text ml-2">
 											{{ cart.min_qty_per_unit }}-{{ cart.max_qty_per_unit }}
 											{{ cart.sub_unit }}/{{ cart.unit }}
 										</div>
@@ -130,6 +127,7 @@
 										>
 											<div>
 												<div
+												class="product-price-text"
 													style="
 														max-width: 95px;
 														white-space: nowrap;
@@ -237,6 +235,19 @@
 				</v-row>
 			</v-sheet>
 		</div>
+
+		<div
+			v-if="!loading"
+
+			class="bottom-container d-flex justify-space-around align-center white py-2"
+			style="box-shadow: 0 -1px 3px rgb(191 191 191);"
+		>
+			<div>
+				<div style="font-size: 1rem; font-weight: 500">Total harga</div>
+				<div style="font-size: 0.9rem; font-weight: 500">Rp 12312312</div>
+			</div>
+			<v-btn color="primary">Beli (3)</v-btn>
+		</div>
 	</v-main>
 </template>
 
@@ -251,8 +262,9 @@ export default {
 			deleteBtnDisabled: true,
 			CheckBoxSelected: [],
 			carts: [],
-			adjusMinustState:null,
-			
+			adjusMinustState: null,
+			heightWindows: window.innerHeight,
+			tesHeight: null,
 		};
 	},
 	watch: {
@@ -288,6 +300,7 @@ export default {
 		},
 	},
 	mounted() {
+		this.onResize();
 		this.getCarts();
 	},
 	methods: {
@@ -298,11 +311,11 @@ export default {
 			}
 
 			// instead of sending data for every quantity change,
-			// let it send for every 4 second, if its not change, 
-			// then send the last change to server 
+			// let it send for every 4 second, if its not change,
+			// then send the last change to server
 			this.adjustState = window.setTimeout(() => {
 				console.log("last Adjust is => " + this.carts[index].qty);
-			}, 4000)
+			}, 4000);
 		},
 		plusQty(index) {
 			this.carts[index].qty += 1;
@@ -407,6 +420,9 @@ export default {
 					this.loading = false;
 					console.log(e);
 				});
+		},
+		onResize() {
+			this.tesHeight = window.innerHeight;
 		},
 	},
 };
