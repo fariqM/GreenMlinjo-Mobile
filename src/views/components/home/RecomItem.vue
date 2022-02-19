@@ -6,7 +6,7 @@
 			elevation="2"
 		>
 			<div class="d-flex justify-center">
-				<v-avatar tile>
+				<v-avatar tile size="40">
 					<img :src="src" :alt="alt" />
 				</v-avatar>
 			</div>

@@ -111,13 +111,14 @@
 										<div
 											style="
 												font-weight: 500;
-												font-size: 16px;
+												font-size: 0.8rem;
 												max-height: 18px;
 											"
 											class="ml-2"
 										>
 											<span>{{ cart.title }}</span>
 										</div>
+
 
 										<div class="normal-text ml-2">
 											{{ cart.min_qty_per_unit }}-{{ cart.max_qty_per_unit }}

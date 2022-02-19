@@ -3,7 +3,7 @@
 		<skeleton height="4.4rem" width="50%" v-if="skeleton" :radius="3" />
 
 		<v-card class="d-flex align-center pa-3" elevation="2" v-else>
-			<v-avatar tile>
+			<v-avatar tile size="40">
 				<img :src="'/assets/icon/wallet.png'" :alt="'qr-code'" />
 			</v-avatar>
 			<div class="ml-1">
@@ -27,12 +27,12 @@
 			</v-btn>
 			<v-divider class="mx-1" vertical inset></v-divider> -->
 
-			<v-avatar tile>
+			<v-avatar tile size="40">
 				<img :src="'/assets/icon/coupons.png'" :alt="'qr-code'" />
 			</v-avatar>
 			<div class="ml-1">
 				<div class="d-flex justify-center align-center">
-					<v-chip color="warning" small class="mb-2">
+					<v-chip color="warning" x-small class="mb-2">
 						<b>PROMO</b>
 					</v-chip>
 					<!-- <div style="color: #6c6c6c; font-size: 0.7em; font-weight: 900">

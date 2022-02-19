@@ -31,7 +31,8 @@
 				</v-img>
 			</v-carousel-item>
 		</v-carousel>
-		<div class="d-flex justify-space-between pl-2 pr-2 ">
+
+		<div class="d-flex justify-space-between align-center px-2">
 			<div>
 				<span
 					v-for="(item, i) in 3"
@@ -40,7 +41,7 @@
 					:class="[i === corrousel ? 'ccc_active' : '']"
 				/>
 			</div>
-			<router-link :to="{ name: 'login' }" style="text-decoration: none"
+			<router-link :to="{ name: 'login' }" style="text-decoration: none; font-size:0.9rem; font-weight:500"
 				>lihat semua promo</router-link
 			>
 		</div>

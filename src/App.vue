@@ -34,7 +34,21 @@ export default {
 }
 .normal-text {
 	color: #6c6c6c;
+	font-size: 0.7rem;
+}
+.product-title-text {
+	color: rgba(0, 0, 0, 0.87);
+	font-size: 0.8rem;
+	font-weight: 500;
+}
+.product-subtitle-text {
+	color: #6c6c6c;
+	font-size: 0.7rem;
+}
+.product-price-text {
+	color: rgb(9, 137, 60);
 	font-size: 0.9rem;
+	font-weight: 500;
 }
 .empty-outer {
 	display: table;
@@ -45,14 +59,14 @@ export default {
 	width: 100%;
 }
 .empty-middle {
-  display: table-cell;
-  vertical-align: middle;
+	display: table-cell;
+	vertical-align: middle;
 }
 .empty-inner {
-  margin-left: auto;
-  margin-right: auto;
-  width: 400px;
-  /* Whatever width you want */
+	margin-left: auto;
+	margin-right: auto;
+	width: 400px;
+	/* Whatever width you want */
 }
 .noselect {
 	-webkit-touch-callout: none; /* iOS Safari */

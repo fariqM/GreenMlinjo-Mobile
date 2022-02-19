@@ -23,8 +23,10 @@
 				<!-- End Wallet Section -->
 
 				<!-- Recomendation Section -->
-				<costumscroll :ops="ops" class="pt-2 pb-2 pl-2 pr-2 mb-2">
-					<v-sheet width="1000" max-height="100px" class="d-flex">
+
+				<costumscroll :ops="ops" class="pa-2">
+					<v-sheet width="1000" max-height="100px" class="d-flex align-center">
+						<!-- <v-card elevation="2"> -->
 						<recom-item
 							v-for="(item, i) in recom_items"
 							:key="i"
@@ -33,8 +35,10 @@
 							:title="item.title"
 							:skeleton="skeleton_show"
 						></recom-item>
+						<!-- </v-card> -->
 					</v-sheet>
 				</costumscroll>
+
 				<!-- End Recomendation Section -->
 
 				<div class="paket-section">
@@ -273,7 +277,7 @@ export default {
 				},
 				rail: {
 					background: "transparent",
-					opacity: 0.3,
+					opacity: 0,
 					size: "4px",
 					specifyBorderRadius: false,
 					gutterOfEnds: null,
@@ -285,7 +289,7 @@ export default {
 					onlyShowBarOnScroll: false,
 					keepShow: false,
 					background: "#87BD43",
-					opacity: 1,
+					opacity: 0,
 					hoverStyle: true,
 					specifyBorderRadius: false,
 					minSize: 0,

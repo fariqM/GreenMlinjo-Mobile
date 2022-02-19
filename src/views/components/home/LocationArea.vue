@@ -1,15 +1,16 @@
 <template>
-	<v-subheader
-		style="border-style: outset; border-width: 4px"
-		class="mb-2"
+	<div
 		v-if="!skeleton"
+		class="d-flex align-center px-4 py-1 my-2 elevation-2"
+		style="border-style: outset; border-width: 2px"
 	>
-	
-		<v-icon>mdi-map-marker-outline</v-icon>
-		<div class="normal-text">Lihat area jangkauan pengiriman</div>
+		<v-icon small class="mr-2 pa-0">mdi-map-marker-outline</v-icon>
+		<div class="normal-text" style="font-weight: 500">
+			Lihat area jangkauan pengiriman
+		</div>
 		<v-spacer></v-spacer>
-		<v-btn icon><v-icon>mdi-chevron-down</v-icon></v-btn>
-	</v-subheader>
+		<v-btn icon x-small><v-icon>mdi-chevron-down</v-icon></v-btn>
+	</div>
 	<v-subheader
 		style="border-style: outset; border-width: 4px"
 		class="mb-2"
