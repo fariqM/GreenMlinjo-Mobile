@@ -26,9 +26,7 @@
 							<div>
 								<div
 									class="pt-2 info ellipsis-text noselect"
-									style="
-										max-width: 95px;
-									"
+									style="max-width: 95px"
 								>
 									Rp {{ numberWithCommas(cart.min_price) }} - Rp
 									{{ numberWithCommas(cart.max_price) }}
@@ -115,7 +113,40 @@
 </template>
 
 <script>
-export default {};
+export default {
+	methods: {
+		qtyClicked(id) {
+			this.$refs["costum-input" + id][0].classList.add("v-input--is-focused");
+			this.$refs["costum-input" + id][0].classList.add("primary--text");
+			// console.log(this.$refs["costum-input" + id]);
+		},
+		onFocusCustom(id) {
+			this.$refs["costum-input" + id][0].classList.add("v-input--is-focused");
+			this.$refs["costum-input" + id][0].classList.add("primary--text");
+		},
+		onBlurCostum(id) {
+			this.$refs["costum-input" + id][0].classList.remove(
+				"v-input--is-focused"
+			);
+			this.$refs["costum-input" + id][0].classList.remove("primary--text");
+		},
+		getCarts() {
+			this.$store
+				.dispatch("carts/getCartsProduct")
+				.then((response) => {
+					this.carts = response.data.data;
+					this.loading = false;
+				})
+				.catch((e) => {
+					this.loading = false;
+					console.log(e);
+				});
+		},
+		onResize() {
+			this.tesHeight = window.innerHeight;
+		},
+	},
+};
 </script>
 
 <style>

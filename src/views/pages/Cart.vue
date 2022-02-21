@@ -56,12 +56,6 @@
 								<span class="checkbox-controller-text">Hapus semua barang</span>
 							</template>
 						</v-checkbox>
-						<!-- <div
-							class="d-flex align-center pt-2"
-							style="min-height: 100%; color: #6c6c6c"
-						>
-							Pilih semua barang
-						</div> -->
 					</div>
 					<div
 						class="d-flex align-center noselect"
@@ -85,31 +79,14 @@
 						>
 							{{ deleteBtnText }}
 						</div>
-						<!-- <v-btn
-							x-small
-							text
-							class="ma-0"
-							color="primary"
-							@click="deleteCart(CheckBoxSelected)"
-							:disabled="deleteBtnDisabled"
-							style="
-								padding-top: 0px;
-								margin-top: 2px !important;
-								color: rgba(0, 0, 0, 0.6);
-								font-size: 16px;
-								letter-spacing: 0;
-								text-transform: none;
-								font-weight: normal;
-							"
-							><div style="font-size: 0.8rem">{{ deleteBtnText }}</div></v-btn
-						> -->
 					</div>
 				</v-card>
 
+
 				<!-- cart main content -->
 				<v-sheet
-					class="overflow-y-auto"
-					:max-height="heightWindows - 104 + 'px'"
+					class="overflow-y-auto "
+					:max-height="heightWindows - 224 + 'px'"
 					id="scrolling-techniques-8"
 				>
 					<v-row no-gutters justify="center" class="py-1 px-1">
@@ -208,16 +185,14 @@
 																	></i>
 																</div>
 															</div>
-
 															<!-- text input quantity-->
 															<div class="v-text-field__slot">
 																<input
-																	@focus="onFocusCustom(cart.id)"
-																	@blur="onBlurCostum(cart.id)"
 																	type="number"
 																	step="0.01"
 																	style="text-align: center"
-																	v-model="cart.qty"
+																	@change="onChangeQty(1)"
+																	:value="cart.qty"
 																/>
 															</div>
 
@@ -391,9 +366,14 @@ export default {
 			this.totalMinPrice = 0;
 			this.totalMaxPrice = 0;
 			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
-				// console.log(this.carts[index]);
-				this.totalMinPrice += this.carts[index].min_price;
-				this.totalMaxPrice += this.carts[index].max_price;
+				let cart_index = _.findIndex(this.carts, {cart_id: this.CheckBoxSelected[index]});
+				// console.log(cart_index);
+				// console.log();
+				// console.log(this.carts[index].min_price+ '*' + this.carts[index].qty);
+				this.totalMinPrice +=
+					this.carts[cart_index].min_price * this.carts[cart_index].qty;
+				this.totalMaxPrice +=
+					this.carts[cart_index].max_price * this.carts[cart_index].qty;
 			}
 		},
 	},
@@ -403,26 +383,12 @@ export default {
 	},
 	methods: {
 		minusQty(index) {
-			window.clearTimeout(this.adjustState);
 			if (this.carts[index].qty > 0) {
 				this.carts[index].qty -= 1;
 			}
-
-			// instead of sending data for every quantity change,
-			// let it send for every 4 second, if its not change,
-			// then send the last change to server
-			this.adjustState = window.setTimeout(() => {
-				console.log("last Adjust is => " + this.carts[index].qty);
-			}, 4000);
 		},
 		plusQty(index) {
 			this.carts[index].qty += 1;
-
-			setTimeout(() => {
-				if (this.adjustState) {
-					console.log("send Adjust");
-				}
-			}, 4000);
 		},
 		deleteCart(CheckBoxSelected) {
 			iziToast.question({
@@ -492,20 +458,8 @@ export default {
 			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			return parts.join(".");
 		},
-		qtyClicked(id) {
-			this.$refs["costum-input" + id][0].classList.add("v-input--is-focused");
-			this.$refs["costum-input" + id][0].classList.add("primary--text");
-			console.log(this.$refs["costum-input" + id]);
-		},
-		onFocusCustom(id) {
-			this.$refs["costum-input" + id][0].classList.add("v-input--is-focused");
-			this.$refs["costum-input" + id][0].classList.add("primary--text");
-		},
-		onBlurCostum(id) {
-			this.$refs["costum-input" + id][0].classList.remove(
-				"v-input--is-focused"
-			);
-			this.$refs["costum-input" + id][0].classList.remove("primary--text");
+		onChangeQty(id) {
+			console.log(id);
 		},
 		getCarts() {
 			this.$store
