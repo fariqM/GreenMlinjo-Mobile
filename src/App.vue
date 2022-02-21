@@ -38,12 +38,12 @@ export default {
 }
 .product-title-text {
 	color: rgba(0, 0, 0, 0.87);
-	font-size: 0.8rem;
+	font-size: 0.8rem !important;
 	font-weight: 500;
 }
 .product-subtitle-text {
 	color: #6c6c6c;
-	font-size: 0.7rem;
+	font-size: 0.7rem !important;
 }
 .product-price-text {
 	color: rgb(9, 137, 60);
@@ -77,10 +77,12 @@ export default {
 	user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+
 .bottom-container {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
+	max-width: 30.5rem;
 }
 .ellipsis-text {
 	white-space: nowrap;

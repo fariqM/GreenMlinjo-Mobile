@@ -1,5 +1,5 @@
 <template>
-	<div style="height:100%; display:flex;">
+	<div style="height: 100%; display: flex">
 		<v-main>
 			<mlj-toolbar :loading="loading" :page="'Keranjang'"></mlj-toolbar>
 			<!-- <v-row  class="info" justify="center" align="center" no-gutters style="min-height:100%">
@@ -21,6 +21,7 @@
 			</v-row>
 
 			<div v-else>
+				<!-- empty image -->
 				<v-row
 					v-if="carts.length === 0"
 					style="min-height: 100vh"
@@ -42,6 +43,7 @@
 					</div>
 				</v-row>
 
+				<!-- panel control for checkbox and delete -->
 				<v-card
 					v-else
 					class="d-flex justify-space-between px-2 py-1 my-2 mx-1"
@@ -79,6 +81,7 @@
 					</div>
 				</v-card>
 
+				<!-- cart main content -->
 				<v-sheet
 					class="overflow-y-auto"
 					:max-height="heightWindows - 104 + 'px'"
@@ -235,40 +238,76 @@
 				</v-sheet>
 			</div>
 		</v-main>
-		<div
-			v-if="!loading"
-			class="bottom-container white py-2"
-			style="
-				box-shadow: rgb(191, 191, 191) 0px -1px 3px;
-				display: grid;
-				grid-template-columns: 50% 1fr;
-				align-items: center;
-				justify-items: center;
-			"
-		>
-			<div style="min-width: 100%">
-				<div
-					class="d-flex align-center justify-center noselect"
-					style="font-size: font-size: clamp(0.6rem, 0.1rem + 4vw, 1rem); font-weight: 500"
-				>
-					Kisaran total harga
-					<v-icon small class="ml-1">mdi-help-circle-outline</v-icon>
-				</div>
-				<div
-					class="product-price-text ellipsis-text text-center noselect"
-					style="max-width: 7rem; min-width: 100%"
-				>
-					Rp {{ numberWithCommas(totalMinPrice) }} - Rp
-					{{ numberWithCommas(totalMaxPrice) }}
-				</div>
+
+		<!-- bottom sheet -->
+		<div class="bottom-container " v-if="!loading && carts.length !== 0">
+			<div class="" style="box-shadow: rgb(191, 191, 191) 0px -2px 2px;">
+				<v-list class="pa-0 ">
+					<v-list-item link class="px-2">
+						<v-list-item-avatar class="pa-0 text-center mr-1">
+							<v-btn icon outlined color="error" :ripple="false" plain >
+								<v-icon color="error">mdi-ticket-percent-outline</v-icon>
+							</v-btn>
+						</v-list-item-avatar>
+
+						<v-list-item-content>
+							<v-list-item-title class="product-title-text">
+								Gunakan voucher kupon
+							</v-list-item-title>
+
+							<v-list-item-subtitle class="product-subtitle-text">
+								Pilih voucher untuk mendapatkan potongan!
+							</v-list-item-subtitle>
+						</v-list-item-content>
+
+						<v-list-item-action>
+							<v-btn icon :ripple="false" plain>
+								<v-icon color="grey lighten-1">mdi-chevron-right</v-icon>
+							</v-btn>
+						</v-list-item-action>
+					</v-list-item>
+				</v-list>
 			</div>
-			<v-btn
-				elevation="0"
-				color="primary"
-				small
-				:disabled="CheckBoxSelected.length === 0"
-				>Beli ({{ CheckBoxSelected.length }})</v-btn
+
+			<!-- Total price -->
+			<div
+				class="white py-2"
+				style="
+					box-shadow: rgb(191 191 191 / 36%) 0px -1px 0px;
+					display: grid;
+					grid-template-columns: 50% 1fr;
+					align-items: center;
+					justify-items: center;
+				"
 			>
+				<div style="min-width: 100%">
+					<div
+						class="d-flex align-center justify-center noselect"
+						style="font-size: font-size: clamp(0.6rem, 0.1rem + 4vw, 1rem); font-weight: 500; font-size:0.9rem"
+					>
+						Kisaran total harga
+						<v-icon small class="ml-1">mdi-help-circle-outline</v-icon>
+					</div>
+					<div
+						class="product-price-text ellipsis-text text-center noselect"
+						style="max-width: 7rem; min-width: 100%"
+					>
+						Rp {{ numberWithCommas(totalMinPrice) }} - Rp
+						{{ numberWithCommas(totalMaxPrice) }}
+					</div>
+				</div>
+
+				<v-btn
+					v-if="CheckBoxSelected.length === 0"
+					elevation="0"
+					color="primary"
+					small
+					>Beli</v-btn
+				>
+				<v-btn v-else elevation="0" color="primary" small
+					>Beli ({{ CheckBoxSelected.length }})</v-btn
+				>
+			</div>
 		</div>
 	</div>
 </template>
@@ -464,4 +503,5 @@ export default {
 .costum-wafe {
 	background-color: aqua;
 }
+
 </style>
