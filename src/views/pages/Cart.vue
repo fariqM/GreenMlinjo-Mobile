@@ -50,18 +50,43 @@
 					elevation="2"
 					outlined
 				>
-					<v-checkbox
-						class="pt-0"
-						hide-details
-						dense
-						v-model="checkAll"
-						label="Pilih semua barang"
-					></v-checkbox>
-
-					<div class="d-flex align-center">
+					<div class="d-flex product-title-text">
+						<v-checkbox class="pt-0" hide-details dense v-model="checkAll">
+							<template v-slot:label>
+								<span class="checkbox-controller-text">Hapus semua barang</span>
+							</template>
+						</v-checkbox>
+						<!-- <div
+							class="d-flex align-center pt-2"
+							style="min-height: 100%; color: #6c6c6c"
+						>
+							Pilih semua barang
+						</div> -->
+					</div>
+					<div
+						class="d-flex align-center noselect"
+						@click="
+							CheckBoxSelected.length !== 0 ? deleteCart(CheckBoxSelected) : ''
+						"
+					>
 						<!-- Hapus -->
-						<v-btn
+						<v-icon
 							small
+							class="pt-1 mr-1"
+							:color="CheckBoxSelected.length === 0 ? '#6c6c6c' : '#ff0000',"
+							>mdi-delete-outline</v-icon
+						>
+						<div
+							class="checkbox-controller-text"
+							:style="{
+								color: CheckBoxSelected.length === 0 ? '#6c6c6c' : '#ff0000',
+							}"
+							style="padding-top: 0.38rem"
+						>
+							{{ deleteBtnText }}
+						</div>
+						<!-- <v-btn
+							x-small
 							text
 							class="ma-0"
 							color="primary"
@@ -76,8 +101,8 @@
 								text-transform: none;
 								font-weight: normal;
 							"
-							>{{ deleteBtnText }}</v-btn
-						>
+							><div style="font-size: 0.8rem">{{ deleteBtnText }}</div></v-btn
+						> -->
 					</div>
 				</v-card>
 
@@ -116,7 +141,7 @@
 												style="max-height: 18px"
 												class="ml-2 product-title-text noselect"
 											>
-												<span>{{ cart.title }}</span>
+												<span>{{ cart.title }} ({{ cart.unit }})</span>
 											</div>
 
 											<div class="product-subtitle-text ml-2 noselect">
@@ -240,12 +265,12 @@
 		</v-main>
 
 		<!-- bottom sheet -->
-		<div class="bottom-container " v-if="!loading && carts.length !== 0">
-			<div class="" style="box-shadow: rgb(191, 191, 191) 0px -2px 2px;">
-				<v-list class="pa-0 ">
+		<div class="bottom-container" v-if="!loading && carts.length !== 0">
+			<div class="" style="box-shadow: rgb(191, 191, 191) 0px -2px 2px">
+				<v-list class="pa-0">
 					<v-list-item link class="px-2">
 						<v-list-item-avatar class="pa-0 text-center mr-1">
-							<v-btn icon outlined color="error" :ripple="false" plain >
+							<v-btn icon outlined color="error" :ripple="false" plain>
 								<v-icon color="error">mdi-ticket-percent-outline</v-icon>
 							</v-btn>
 						</v-list-item-avatar>
@@ -332,7 +357,8 @@ export default {
 	},
 	watch: {
 		checkAll: function (newVal, oldVal) {
-			console.log(newVal);
+			// console.log(newVal);
+			this.CheckBoxSelected = [];
 
 			if (newVal) {
 				this.deleteBtnText = "Hapus semua";
@@ -346,7 +372,7 @@ export default {
 			}
 		},
 		CheckBoxSelected: function (newVal, oldVal) {
-			console.log(newVal);
+			// console.log(newVal);
 			let countDataCarts = this.carts.length;
 			let countSelected = this.CheckBoxSelected.length;
 			if (!countSelected > 0) {
@@ -365,6 +391,7 @@ export default {
 			this.totalMinPrice = 0;
 			this.totalMaxPrice = 0;
 			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
+				// console.log(this.carts[index]);
 				this.totalMinPrice += this.carts[index].min_price;
 				this.totalMaxPrice += this.carts[index].max_price;
 			}
@@ -451,7 +478,7 @@ export default {
 			});
 		},
 		removeCartsArray(array) {
-			console.log(array);
+			// console.log(array);
 			for (let index = 0; index < array.length; index++) {
 				this.carts = _.remove(this.carts, function (obj) {
 					return obj.cart_id !== array[index];
@@ -503,5 +530,9 @@ export default {
 .costum-wafe {
 	background-color: aqua;
 }
-
+.checkbox-controller-text {
+	color: #6c6c6c;
+	font-size: 0.8rem !important;
+	font-weight: 500;
+}
 </style>
