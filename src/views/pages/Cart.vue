@@ -1,236 +1,240 @@
 <template>
-	<v-main>
-		<mlj-toolbar :loading="loading" :page="'Keranjang'"></mlj-toolbar>
-		<!-- <v-row  class="info" justify="center" align="center" no-gutters style="min-height:100%">
+	<div style="height:100%; display:flex;">
+		<v-main>
+			<mlj-toolbar :loading="loading" :page="'Keranjang'"></mlj-toolbar>
+			<!-- <v-row  class="info" justify="center" align="center" no-gutters style="min-height:100%">
 			<div class="primary" style="height: 50vh">
 				asd
 			</div>
 		</v-row> -->
 
-		<v-row v-if="loading" style="height: 100vh" v-resize="onResize">
-			<v-col v-if="loading" cols="12" md="12" sm="12">
-				<div class="d-flex align-center justify-center" style="height: 84vh">
-					<v-progress-circular
-						:size="30"
-						color="success"
-						indeterminate
-					></v-progress-circular>
-				</div>
-			</v-col>
-		</v-row>
-
-		<div v-else>
-			<v-row
-				v-if="carts.length === 0"
-				style="min-height: 100vh"
-				class="pt-4"
-				no-gutters
-				justify="center"
-			>
-				<div class="text-center d-flex justify-center noselect mt-4">
-					<div>
-						<img
-							src="/assets/images/CartEmpty.png"
-							alt=""
-							style="max-height: 12rem; max-width: 15rem"
-						/>
-						<div style="font-size: 1.6rem; font-weight: 500; color: #67c93e">
-							Yahh keranjang kamu masih kosong
-						</div>
+			<v-row v-if="loading" style="height: 100vh" v-resize="onResize">
+				<v-col v-if="loading" cols="12" md="12" sm="12">
+					<div class="d-flex align-center justify-center" style="height: 84vh">
+						<v-progress-circular
+							:size="30"
+							color="success"
+							indeterminate
+						></v-progress-circular>
 					</div>
-				</div>
+				</v-col>
 			</v-row>
 
-			<v-card
-				v-else
-				class="d-flex justify-space-between px-2 py-1 my-2 mx-1"
-				elevation="2"
-				outlined
-			>
-				<v-checkbox
-					class="pt-0"
-					hide-details
-					dense
-					v-model="checkAll"
-					label="Pilih semua barang"
-				></v-checkbox>
+			<div v-else>
+				<v-row
+					v-if="carts.length === 0"
+					style="min-height: 100vh"
+					class="pt-4"
+					no-gutters
+					justify="center"
+				>
+					<div class="text-center d-flex justify-center noselect mt-4">
+						<div>
+							<img
+								src="/assets/images/CartEmpty.png"
+								alt=""
+								style="max-height: 12rem; max-width: 15rem"
+							/>
+							<div style="font-size: 1.6rem; font-weight: 500; color: #67c93e">
+								Yahh keranjang kamu masih kosong
+							</div>
+						</div>
+					</div>
+				</v-row>
 
-				<div class="d-flex align-center">
-					<!-- Hapus -->
-					<v-btn
-						small
-						text
-						class="ma-0"
-						color="primary"
-						@click="deleteCart(CheckBoxSelected)"
-						:disabled="deleteBtnDisabled"
-						style="
-							padding-top: 0px;
-							margin-top: 2px !important;
-							color: rgba(0, 0, 0, 0.6);
-							font-size: 16px;
-							letter-spacing: 0;
-							text-transform: none;
-							font-weight: normal;
-						"
-						>{{ deleteBtnText }}</v-btn
-					>
-				</div>
-			</v-card>
+				<v-card
+					v-else
+					class="d-flex justify-space-between px-2 py-1 my-2 mx-1"
+					elevation="2"
+					outlined
+				>
+					<v-checkbox
+						class="pt-0"
+						hide-details
+						dense
+						v-model="checkAll"
+						label="Pilih semua barang"
+					></v-checkbox>
 
-			<v-sheet
-				class="overflow-y-auto"
-				:max-height="heightWindows - 104 + 'px'"
-				id="scrolling-techniques-8"
-			>
-				<v-row no-gutters justify="center" class="py-1 px-1">
-					<v-col
-						class="mb-2 pa-0"
-						cols="12"
-						md="12"
-						sm="12"
-						v-for="(cart, i) in carts"
-						:key="i"
-					>
-						<v-card>
-							<div class="d-flex pa-0 pt-2">
-								<v-checkbox
-									dense
-									:value="cart.cart_id"
-									v-model="CheckBoxSelected"
-									class="pa-0 ma-0"
-									style="max-width: 25px"
-								></v-checkbox>
-								<div>
-									<v-avatar tile size="75">
-										<v-img :src="url + cart.url"></v-img>
-									</v-avatar>
-								</div>
-								<v-row no-gutters class="pa-0">
-									<v-col>
-										<div
-											style="max-height: 18px"
-											class="ml-2 product-title-text noselect"
-										>
-											<span>{{ cart.title }}</span>
-										</div>
+					<div class="d-flex align-center">
+						<!-- Hapus -->
+						<v-btn
+							small
+							text
+							class="ma-0"
+							color="primary"
+							@click="deleteCart(CheckBoxSelected)"
+							:disabled="deleteBtnDisabled"
+							style="
+								padding-top: 0px;
+								margin-top: 2px !important;
+								color: rgba(0, 0, 0, 0.6);
+								font-size: 16px;
+								letter-spacing: 0;
+								text-transform: none;
+								font-weight: normal;
+							"
+							>{{ deleteBtnText }}</v-btn
+						>
+					</div>
+				</v-card>
 
-										<div class="product-subtitle-text ml-2 noselect">
-											{{ cart.min_qty_per_unit }}-{{ cart.max_qty_per_unit }}
-											{{ cart.sub_unit }}/{{ cart.unit }}
-										</div>
+				<v-sheet
+					class="overflow-y-auto"
+					:max-height="heightWindows - 104 + 'px'"
+					id="scrolling-techniques-8"
+				>
+					<v-row no-gutters justify="center" class="py-1 px-1">
+						<v-col
+							class="mb-2 pa-0"
+							cols="12"
+							md="12"
+							sm="12"
+							v-for="(cart, i) in carts"
+							:key="i"
+						>
+							<v-card>
+								<div class="d-flex pa-0 pt-2">
+									<v-checkbox
+										dense
+										:value="cart.cart_id"
+										v-model="CheckBoxSelected"
+										class="pa-0 ma-0"
+										style="max-width: 25px"
+									></v-checkbox>
+									<div>
+										<v-avatar tile size="75">
+											<v-img :src="url + cart.url"></v-img>
+										</v-avatar>
+									</div>
+									<v-row no-gutters class="pa-0">
+										<v-col>
+											<div
+												style="max-height: 18px"
+												class="ml-2 product-title-text noselect"
+											>
+												<span>{{ cart.title }}</span>
+											</div>
 
-										<div
-											class="d-flex justify-space-between align-end ml-2 mr-1"
-										>
-											<div>
+											<div class="product-subtitle-text ml-2 noselect">
+												{{ cart.min_qty_per_unit }}-{{ cart.max_qty_per_unit }}
+												{{ cart.sub_unit }}/{{ cart.unit }}
+											</div>
+
+											<div
+												class="d-flex justify-space-between align-end ml-2 mr-1"
+											>
+												<div>
+													<div
+														class="product-price-text ellipsis-text noselect"
+														style="max-width: 95px"
+													>
+														Rp {{ numberWithCommas(cart.min_price) }} - Rp
+														{{ numberWithCommas(cart.max_price) }}
+													</div>
+												</div>
 												<div
-													class="product-price-text ellipsis-text noselect"
+													:ref="'costum-input' + cart.id"
+													class="
+														v-input
+														v-input--solo
+														v-input--hide-details
+														v-input--is-label-active
+														v-input--is-dirty
+														v-input--dense
+														theme--light
+														v-text-field
+														v-text-field--outlined
+														v-text-field--is-booted
+														v-text-field--enclosed
+													"
 													style="
-														max-width: 95px;
+														max-width: 100px;
+														width: 70px;
+														padding: 0px !important;
+														height: 32px;
 													"
 												>
-													Rp {{ numberWithCommas(cart.min_price) }} - Rp
-													{{ numberWithCommas(cart.max_price) }}
-												</div>
-											</div>
-											<div
-												:ref="'costum-input' + cart.id"
-												class="
-													v-input
-													v-input--solo
-													v-input--hide-details
-													v-input--is-label-active
-													v-input--is-dirty
-													v-input--dense
-													theme--light
-													v-text-field
-													v-text-field--outlined
-													v-text-field--is-booted
-													v-text-field--enclosed
-												"
-												style="
-													max-width: 100px;
-													width: 70px;
-													padding: 0px !important;
-													height: 32px;
-												"
-											>
-												<div class="v-input__control">
-													<div
-														class="v-input__slot"
-														style="padding: 0px 0px 0px 0px !important"
-													>
+													<div class="v-input__control">
 														<div
-															@click="minusQty(i)"
-															class="v-input__prepend-inner"
+															class="v-input__slot"
+															style="padding: 0px 0px 0px 0px !important"
 														>
 															<div
-																class="
-																	v-input__icon v-input__icon--prepend-inner
-																"
+																@click="minusQty(i)"
+																class="v-input__prepend-inner"
 															>
-																<i
-																	aria-hidden="true"
+																<div
 																	class="
-																		v-icon
-																		notranslate
-																		mdi mdi-minus
-																		theme--light
+																		v-input__icon v-input__icon--prepend-inner
 																	"
-																></i>
+																>
+																	<i
+																		aria-hidden="true"
+																		class="
+																			v-icon
+																			notranslate
+																			mdi mdi-minus
+																			theme--light
+																		"
+																	></i>
+																</div>
 															</div>
-														</div>
 
-														<!-- text input quantity-->
-														<div class="v-text-field__slot">
-															<input
-																@focus="onFocusCustom(cart.id)"
-																@blur="onBlurCostum(cart.id)"
-																type="number"
-																step="0.01"
-																style="text-align: center"
-																v-model="cart.qty"
-															/>
-														</div>
+															<!-- text input quantity-->
+															<div class="v-text-field__slot">
+																<input
+																	@focus="onFocusCustom(cart.id)"
+																	@blur="onBlurCostum(cart.id)"
+																	type="number"
+																	step="0.01"
+																	style="text-align: center"
+																	v-model="cart.qty"
+																/>
+															</div>
 
-														<!-- icon plus -->
-														<div
-															@click="plusQty(i)"
-															class="v-input__append-inner"
-														>
-															<div class="v-input__icon v-input__icon--append">
-																<i
-																	aria-hidden="true"
-																	class="
-																		v-icon
-																		notranslate
-																		mdi mdi-plus
-																		theme--light
-																	"
-																></i>
+															<!-- icon plus -->
+															<div
+																@click="plusQty(i)"
+																class="v-input__append-inner"
+															>
+																<div
+																	class="v-input__icon v-input__icon--append"
+																>
+																	<i
+																		aria-hidden="true"
+																		class="
+																			v-icon
+																			notranslate
+																			mdi mdi-plus
+																			theme--light
+																		"
+																	></i>
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<v-divider class="ml-2 mt-2 mr-1" />
-									</v-col>
-								</v-row>
-							</div>
+											<v-divider class="ml-2 mt-2 mr-1" />
+										</v-col>
+									</v-row>
+								</div>
 
-							<div class="d-flex align-center py-2 noselect" style="margin-left: 25px">
-								<v-chip x-small v-for="(promo, i) in 4" :key="i" class="mr-1"
-									>Promo</v-chip
+								<div
+									class="d-flex align-center py-2 noselect"
+									style="margin-left: 25px"
 								>
-							</div>
-						</v-card>
-					</v-col>
-				</v-row>
-			</v-sheet>
-		</div>
-
+									<v-chip x-small v-for="(promo, i) in 4" :key="i" class="mr-1"
+										>Promo</v-chip
+									>
+								</div>
+							</v-card>
+						</v-col>
+					</v-row>
+				</v-sheet>
+			</div>
+		</v-main>
 		<div
 			v-if="!loading"
 			class="bottom-container white py-2"
@@ -242,17 +246,20 @@
 				justify-items: center;
 			"
 		>
-		
-			<div style="min-width: 100%;">
-				<div class="d-flex align-center justify-center noselect" style="font-size: font-size: clamp(0.6rem, 0.1rem + 4vw, 1rem); font-weight: 500">
+			<div style="min-width: 100%">
+				<div
+					class="d-flex align-center justify-center noselect"
+					style="font-size: font-size: clamp(0.6rem, 0.1rem + 4vw, 1rem); font-weight: 500"
+				>
 					Kisaran total harga
-					<v-icon small class="ml-1" >mdi-help-circle-outline</v-icon>
+					<v-icon small class="ml-1">mdi-help-circle-outline</v-icon>
 				</div>
 				<div
 					class="product-price-text ellipsis-text text-center noselect"
-					style="max-width:7rem; min-width: 100%;"
+					style="max-width: 7rem; min-width: 100%"
 				>
-					Rp {{ numberWithCommas(totalMinPrice) }} - Rp {{ numberWithCommas(totalMaxPrice) }}
+					Rp {{ numberWithCommas(totalMinPrice) }} - Rp
+					{{ numberWithCommas(totalMaxPrice) }}
 				</div>
 			</div>
 			<v-btn
@@ -263,7 +270,7 @@
 				>Beli ({{ CheckBoxSelected.length }})</v-btn
 			>
 		</div>
-	</v-main>
+	</div>
 </template>
 
 <script>
@@ -280,8 +287,8 @@ export default {
 			adjusMinustState: null,
 			heightWindows: window.innerHeight,
 			tesHeight: null,
-			totalMinPrice:0,
-			totalMaxPrice:0,
+			totalMinPrice: 0,
+			totalMaxPrice: 0,
 		};
 	},
 	watch: {
@@ -316,12 +323,11 @@ export default {
 			}
 
 			// count total
-			this.totalMinPrice = 0
-			this.totalMaxPrice = 0
+			this.totalMinPrice = 0;
+			this.totalMaxPrice = 0;
 			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
-				this.totalMinPrice += this.carts[index].min_price
-				this.totalMaxPrice += this.carts[index].max_price
-
+				this.totalMinPrice += this.carts[index].min_price;
+				this.totalMaxPrice += this.carts[index].max_price;
 			}
 		},
 	},
