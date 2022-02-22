@@ -59,7 +59,7 @@
 					</div>
 					<div
 						class="d-flex align-center noselect"
-						style="cursor: pointer;"
+						style="cursor: pointer"
 						@click="CheckBoxSelected.length !== 0 ? deleteCart(true) : ''"
 					>
 						<!-- Hapus -->
@@ -305,7 +305,7 @@
 					small
 					>Beli</v-btn
 				>
-				<v-btn v-else elevation="0" color="primary" small
+				<v-btn v-else elevation="0" color="primary" small @click="makeOrder"
 					>Beli ({{ CheckBoxSelected.length }})</v-btn
 				>
 			</div>
@@ -327,7 +327,11 @@
 						Tidak
 					</v-btn>
 
-					<v-btn color="green darken-1" text @click="deleteCartAction(deletedCart)">
+					<v-btn
+						color="green darken-1"
+						text
+						@click="deleteCartAction(deletedCart)"
+					>
 						ya
 					</v-btn>
 				</v-card-actions>
@@ -388,6 +392,31 @@ export default {
 				this.deleteBtnText = "Hapus";
 			}
 
+			this.countTotalPrice();
+		},
+	},
+	mounted() {
+		this.onResize();
+		this.getCarts();
+	},
+	methods: {
+		makeOrder() {
+			let products = {};
+			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
+				let cart_index = _.findIndex(this.carts, {
+					cart_id: this.CheckBoxSelected[index],
+				});
+				
+				Object.assign(products, {[this.carts[cart_index].id]: { qty: this.carts[cart_index].qty }})
+			}
+			this.$store.dispatch("orders/makeOrder", products).then(response => {
+				console.log(response);
+			}).catch(e => {
+				console.log(e);
+			})
+			// console.log(products);
+		},
+		countTotalPrice() {
 			// count total
 			this.totalMinPrice = 0;
 			this.totalMaxPrice = 0;
@@ -404,12 +433,6 @@ export default {
 					this.carts[cart_index].max_price * this.carts[cart_index].qty;
 			}
 		},
-	},
-	mounted() {
-		this.onResize();
-		this.getCarts();
-	},
-	methods: {
 		minusQty(index) {
 			if (this.carts[index].qty > 1) {
 				let payload = {
@@ -417,7 +440,7 @@ export default {
 					cart_id: this.carts[index].cart_id,
 				};
 				this.carts[index].qty -= 1;
-
+				this.countTotalPrice();
 				this.$store.dispatch("carts/adjustQty", payload);
 			} else {
 				this.deleteCart(false, index);
@@ -429,6 +452,7 @@ export default {
 				cart_id: this.carts[index].cart_id,
 			};
 			this.carts[index].qty += 1;
+			this.countTotalPrice();
 			this.$store.dispatch("carts/adjustQty", payload);
 		},
 		deleteCart(condition, index = null) {
@@ -450,11 +474,11 @@ export default {
 			this.$store
 				.dispatch("carts/removeCarts", selectedItem)
 				.then((response) => {
-					this.dialog = false
+					this.dialog = false;
 					this.removeCartsArray(selectedItem);
 				})
 				.catch((e) => {
-					this.dialog = false
+					this.dialog = false;
 					iziToast.error({
 						title: "Ooops error :( ",
 						message: "Coba lagi nanti.",

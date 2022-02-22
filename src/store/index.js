@@ -4,6 +4,7 @@ import Favourites from './fav/store'
 import Auth from './auth'
 import Product from './product/store'
 import Cart from './cart/store'
+import Order from './order'
 
 // import { Plugins } from '@capacitor/core';
 // const { Storage } = Plugins;
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     products: Product,
     favourites: Favourites,
     auth: Auth,
-    carts: Cart
+    carts: Cart,
+    orders:Order
   }
 })
