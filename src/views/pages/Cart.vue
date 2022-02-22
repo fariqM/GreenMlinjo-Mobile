@@ -59,9 +59,8 @@
 					</div>
 					<div
 						class="d-flex align-center noselect"
-						@click="
-							CheckBoxSelected.length !== 0 ? deleteCart(CheckBoxSelected) : ''
-						"
+						style="cursor: pointer;"
+						@click="CheckBoxSelected.length !== 0 ? deleteCart(true) : ''"
 					>
 						<!-- Hapus -->
 						<v-icon
@@ -82,10 +81,9 @@
 					</div>
 				</v-card>
 
-
 				<!-- cart main content -->
 				<v-sheet
-					class="overflow-y-auto "
+					class="overflow-y-auto"
 					:max-height="heightWindows - 224 + 'px'"
 					id="scrolling-techniques-8"
 				>
@@ -165,9 +163,11 @@
 															class="v-input__slot"
 															style="padding: 0px 0px 0px 0px !important"
 														>
+															<!-- icon minus -->
 															<div
 																@click="minusQty(i)"
 																class="v-input__prepend-inner"
+																style="cursor: pointer"
 															>
 																<div
 																	class="
@@ -200,6 +200,7 @@
 															<div
 																@click="plusQty(i)"
 																class="v-input__append-inner"
+																style="cursor: pointer"
 															>
 																<div
 																	class="v-input__icon v-input__icon--append"
@@ -309,6 +310,29 @@
 				>
 			</div>
 		</div>
+
+		<!-- modal -->
+		<v-dialog v-model="dialog" max-width="290">
+			<v-card>
+				<v-card-title class="text-h6"> Hapus barang ini ? </v-card-title>
+
+				<v-card-text>
+					Barang belanjaan ini akan terhapus dari keranjang Anda.
+				</v-card-text>
+
+				<v-card-actions>
+					<v-spacer></v-spacer>
+
+					<v-btn color="green darken-1" text @click="dialog = false">
+						Tidak
+					</v-btn>
+
+					<v-btn color="green darken-1" text @click="deleteCartAction(deletedCart)">
+						ya
+					</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -323,11 +347,13 @@ export default {
 			deleteBtnDisabled: true,
 			CheckBoxSelected: [],
 			carts: [],
+			deletedCart: [],
 			adjusMinustState: null,
 			heightWindows: window.innerHeight,
 			tesHeight: null,
 			totalMinPrice: 0,
 			totalMaxPrice: 0,
+			dialog: false,
 		};
 	},
 	watch: {
@@ -366,7 +392,9 @@ export default {
 			this.totalMinPrice = 0;
 			this.totalMaxPrice = 0;
 			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
-				let cart_index = _.findIndex(this.carts, {cart_id: this.CheckBoxSelected[index]});
+				let cart_index = _.findIndex(this.carts, {
+					cart_id: this.CheckBoxSelected[index],
+				});
 				// console.log(cart_index);
 				// console.log();
 				// console.log(this.carts[index].min_price+ '*' + this.carts[index].qty);
@@ -383,65 +411,62 @@ export default {
 	},
 	methods: {
 		minusQty(index) {
-			if (this.carts[index].qty > 0) {
+			if (this.carts[index].qty > 1) {
+				let payload = {
+					type: false,
+					cart_id: this.carts[index].cart_id,
+				};
 				this.carts[index].qty -= 1;
+
+				this.$store.dispatch("carts/adjustQty", payload);
+			} else {
+				this.deleteCart(false, index);
 			}
 		},
 		plusQty(index) {
+			let payload = {
+				type: true,
+				cart_id: this.carts[index].cart_id,
+			};
 			this.carts[index].qty += 1;
+			this.$store.dispatch("carts/adjustQty", payload);
 		},
-		deleteCart(CheckBoxSelected) {
-			iziToast.question({
-				color: "#acbd90",
-				timeout: false,
-				close: true,
-				overlay: true,
-				icon: "material-icons",
-				iconText: "question_mark",
-				displayMode: "once",
-				id: "question",
-				zindex: 999,
-				progressBarColor: "#87BD43",
-				message: "Apakah anda yakin ingin menghapus?",
-				position: "center",
-				buttons: [
-					[
-						"<button><b>YA</b></button>",
-						(instance, toast) => {
-							instance.hide(
-								{ transitionOutMobile: "fadeOutLeft" },
-								toast,
-								"button"
-							);
-							this.$store
-								.dispatch("carts/removeCarts", CheckBoxSelected)
-								.then((response) => {
-									this.removeCartsArray(CheckBoxSelected);
-								})
-								.catch((e) => {
-									iziToast.error({
-										title: "Ooops error :( ",
-										message: "Ccoba lagi nanti.",
-										position: "topCenter",
-										timeout: 4500,
-										// ballon:true,
-										transitionInMobile: "fadeInLeft",
-										transitionOutMobile: "fadeOutLeft",
-										displayMode: 2,
-									});
-									console.log();
-								});
-						},
-					],
-					[
-						"<button>TIDAK</button>",
-						function (instance, toast) {
-							instance.hide({ transitionOut: "fadeOut" }, toast, "button");
-						},
-						true,
-					],
-				],
-			});
+		deleteCart(condition, index = null) {
+			this.dialog = true;
+			let array = [];
+			if (this.CheckBoxSelected.length !== 0 && condition) {
+				for (let index = 0; index < this.CheckBoxSelected.length; index++) {
+					array.push(this.CheckBoxSelected[index]);
+				}
+				this.deletedCart = array;
+			} else {
+				if (index !== null) {
+					array.push(this.carts[index].cart_id);
+					this.deletedCart = array;
+				}
+			}
+		},
+		deleteCartAction(selectedItem) {
+			this.$store
+				.dispatch("carts/removeCarts", selectedItem)
+				.then((response) => {
+					this.dialog = false
+					this.removeCartsArray(selectedItem);
+				})
+				.catch((e) => {
+					this.dialog = false
+					iziToast.error({
+						title: "Ooops error :( ",
+						message: "Coba lagi nanti.",
+						position: "topCenter",
+						timeout: 4500,
+						// ballon:true,
+						transitionInMobile: "fadeInLeft",
+						transitionOutMobile: "fadeOutLeft",
+						displayMode: 2,
+					});
+					// console.log();
+				});
 		},
 		removeCartsArray(array) {
 			// console.log(array);

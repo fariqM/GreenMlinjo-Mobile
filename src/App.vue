@@ -89,4 +89,16 @@ export default {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/* remove input arrow from input number form */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 </style>

@@ -33,6 +33,8 @@ async function getToken() {
   return value;
 };
 
+// element.requestFullscreen()
+
 // preparation for bearer key (if its exist)
 let mlinjo_key = null;
 async function prepare() {

@@ -75,9 +75,13 @@ export default {
             })
         })
     },
-    // adjustQty(state, payload){
-    //     return new Promise((resolve, reject) => {
-    //         axios.post("carts/adjust-qty", {type:payload.type, })
-    //     })
-    // }
+    adjustQty(state, payload){
+        return new Promise((resolve, reject) => {
+            axios.post(`carts/adjust-qty/${payload.cart_id}`, {type:payload.type, }).then(response => {
+                resolve(response)
+            }).catch(e => {
+                reject(e)
+            })
+        })
+    }
 }
