@@ -3,42 +3,104 @@
 		<v-main>
 			<router-view />
 		</v-main>
-		<v-bottom-navigation
-			v-model="value"
-			color="primary"
-			width="100%"
-			max-width="30.5rem"
-			absolute
-			style="margin-left: auto; margin-right: auto; right: 0; left: 0"
-		>
-			<v-btn value="Home" :to="{ name: 'home' }">
-				<span>Utama</span>
-				<v-icon>mdi-home-outline</v-icon>
-			</v-btn>
 
-			<v-btn value="Pesanan" :to="{ name: 'pesanan' }">
-				<span>Pesananan</span>
-				<v-icon>mdi-script-text-outline</v-icon>
-			</v-btn>
-			<v-btn value="Notifikasi" :to="{ name: 'notification' }">
-				<span>Notifikasi</span>
-				<v-icon>mdi-bell-outline</v-icon>
-			</v-btn>
-
-			<v-btn value="Akun" :to="{ name: 'profile' }">
-				<span>Akun</span>
-				<v-icon>mdi-account-circle-outline</v-icon>
-			</v-btn>
-		</v-bottom-navigation>
+		<bottom-nav
+			:options="options"
+			v-model="selected"
+			:foregroundColor="'#87BD43'"
+		></bottom-nav>
 	</div>
 </template>
 
 <script>
+// import VueBottomNavigation from "bottom-navigation-vue";
+import BottomNav from "../components/BottomNavigation.vue";
+
 export default {
+	components: {
+		BottomNav,
+	},
 	data() {
 		return {
 			value: "Home",
+			// selected: 1,
+			// selectedMenu: 3,
+			options: [
+				{
+					id: 1,
+					icon: "mdi-home-outline",
+					title: "Utama",
+					path: { name: "home" },
+				},
+				{
+					id: 2,
+					icon: "mdi-script-text-outline",
+					title: "Order",
+					path: { name: "pesanan" },
+				},
+				{
+					id: 3,
+					icon: "mdi-forum-outline",
+					title: "Lainnya",
+					badge: 15,
+					path: { name: "chat" },
+
+					// childs: [
+					// 	{
+					// 		id: 101,
+					// 		icon: "mdi-book-open-outline",
+					// 		title: "Products",
+					// 		badge: 8,
+					// 	},
+					// 	{ id: 102, icon: "mdi-message-video", title: "Discount" },
+					// 	{ id: 103, icon: "mdi-charity", title: "Gifts", badge: 7 },
+					// ],
+				},
+				{
+					id: 4,
+					icon: "mdi-bell-outline",
+					title: "Notifikasiion",
+					path: { name: "notification" },
+				},
+				{
+					id: 5,
+					icon: "mdi-account-circle-outline",
+					title: "Akun",
+					path: { name: "profile" },
+				},
+			],
 		};
+	},
+	watch: {
+		// selected: function (newVal, oldVal) {
+		// 	// console.log(newVal);
+		// },
+	},
+	computed: {
+		selected: {
+			get: function () {
+
+				let currentRouteName = this.$router.history.current.name;
+				switch (currentRouteName) {
+					case "home":
+						return 1;
+						break;
+					case "pesanan":
+						return 2;
+						break;
+					case "chat":
+						return 3;
+						break;
+					case "notification":
+						return 4;
+						break;
+					default:
+						return 5;
+						break;
+				}
+			},
+			set: function () {},
+		},
 	},
 };
 </script>

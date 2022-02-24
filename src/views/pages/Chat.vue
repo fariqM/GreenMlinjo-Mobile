@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
 import { SwipeableBottomSheet } from "vue-swipeable-bottom-sheet";
 
 export default {

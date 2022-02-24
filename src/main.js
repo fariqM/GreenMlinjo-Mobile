@@ -7,7 +7,6 @@ import AXIOS from "axios";
 import { Capacitor, Plugins } from '@capacitor/core';
 import izi_Toast from 'izitoast'
 
-
 // iziToast
 window.iziToast = izi_Toast
 
