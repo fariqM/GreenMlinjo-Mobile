@@ -224,17 +224,4 @@ export default {
 	border-color: transparent transparent #000 transparent;
 	border-radius: 0 0 240px 50%/60px;
 }
-.title-text {
-	color: rgba(0, 0, 0, 0.87);
-	font-size: 0.9rem;
-	font-weight: 500;
-}
-.subtitle-text {
-	color: #6c6c6c;
-	font-size: 0.8rem;
-}
-.header-list {
-	font-size: 0.9rem !important;
-	font-weight: 800;
-}
 </style>

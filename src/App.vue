@@ -50,6 +50,19 @@ export default {
 	font-size: 0.9rem;
 	font-weight: 500;
 }
+.title-text {
+	color: rgba(0, 0, 0, 0.87);
+	font-size: 0.9rem !important;
+	font-weight: 500;
+}
+.subtitle-text {
+	color: #6c6c6c;
+	font-size: 0.8rem !important;
+}
+.header-list {
+	font-size: 0.9rem !important;
+	font-weight: 800;
+}
 .empty-outer {
 	display: table;
 	position: absolute;
