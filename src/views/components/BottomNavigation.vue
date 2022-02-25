@@ -327,6 +327,7 @@ input {
 	align-items: flex-end;
 	bottom: 0;
 	width: 100%;
+	max-width: 30.5rem;
 	z-index: 2147483647;
 	height: 60px;
 	background: var(--color-foreground);

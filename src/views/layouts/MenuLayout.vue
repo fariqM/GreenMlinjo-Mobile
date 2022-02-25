@@ -59,8 +59,9 @@ export default {
 				{
 					id: 4,
 					icon: "mdi-bell-outline",
-					title: "Notifikasiion",
+					title: "Notifikasi",
 					path: { name: "notification" },
+					badge: 2,
 				},
 				{
 					id: 5,

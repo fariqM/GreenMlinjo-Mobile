@@ -81,11 +81,11 @@ const routes = [
       name: 'profile',
       component: Profile,
     },
-    {
-      path: 'chat',
-      name: 'chat',
-      component: Profile,
-    }
+    // {
+    //   path: 'chat',
+    //   name: 'chat',
+    //   component: Profile,
+    // }
     ],
   },
   {
