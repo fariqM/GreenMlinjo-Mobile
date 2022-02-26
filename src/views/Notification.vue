@@ -3,10 +3,10 @@
 		<!-- <mlj-toolbar :loading="loading" :page="'Notifikasi'"></mlj-toolbar> -->
 
 		<v-tabs right align-with-title >
-			<v-tab style="font-size: 0.8rem"> Promo </v-tab>
-			<v-tab style="font-size: 0.8rem"> Belum dibaca </v-tab>
-			<v-tab style="font-size: 0.8rem"> {{ windowsHeight }} </v-tab>
-			<v-tab style="font-size: 0.8rem"> Admin </v-tab>
+			<v-tab style="font-size: 0.8rem">Promo</v-tab>
+			<v-tab style="font-size: 0.8rem">Belumdibaca</v-tab>
+			<v-tab style="font-size: 0.8rem">Voucher</v-tab>
+			<v-tab style="font-size: 0.8rem">Admin</v-tab>
 		</v-tabs>
 
 		<v-sheet class="overflow-y-auto" :max-height="windowsHeight - 108 + 'px'">
@@ -128,13 +128,3 @@ export default {
 	},
 };
 </script>
-
-<style>
-.v-slide-group__next {
-	min-width: 0px !important;
-	flex: 0 !important;
-}
-.v-tab--active {
-	font-weight: 700 !important;
-}
-</style>

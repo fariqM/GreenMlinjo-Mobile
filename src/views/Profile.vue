@@ -41,7 +41,7 @@
 
 		<v-card class="mt-2">
 			<div
-				class="d-flex justify-space-between align-center "
+				class="d-flex justify-space-between align-center"
 				style="padding: 10px 10px 0px 10px"
 			>
 				<div class="header-list">Transaksi</div>
@@ -162,7 +162,7 @@
 				block
 				color="warning"
 				:loading="logoutLoading"
-				@click="logoutLoading = !logoutLoading"
+				@click="LogoutAction"
 			>
 				Logout akun
 				<v-icon class="ml-1">mdi-logout</v-icon>
@@ -172,6 +172,8 @@
 </template>
 
 <script>
+import { Plugins } from "@capacitor/core";
+
 export default {
 	data() {
 		return {
@@ -211,6 +213,25 @@ export default {
 			url: __BASE_URL__,
 			logoutLoading: false,
 		};
+	},
+	methods: {
+		async LogoutAction() {
+			const { Geolocation } = Plugins;
+
+			// let status = await Network.getStatus();
+			const coordinates = await Geolocation.getCurrentPosition();
+			console.log('Current', coordinates);
+			this.logoutLoading = true;
+			setTimeout(() => {
+				this.logoutLoading = false;
+				iziToast.show({
+					theme: "dark",
+					position: "center",
+					title: false,
+					message: "cjek",
+				});
+			}, 200);
+		},
 	},
 };
 </script>

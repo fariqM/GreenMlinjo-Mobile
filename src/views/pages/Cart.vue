@@ -36,7 +36,7 @@
 								alt=""
 								style="max-height: 12rem; max-width: 15rem"
 							/>
-							<div style="font-size: 1.6rem; font-weight: 500; color: #67c93e">
+							<div style="font-size: 1.4rem; font-weight: 500; color: #67c93e">
 								Yahh keranjang kamu masih kosong
 							</div>
 						</div>

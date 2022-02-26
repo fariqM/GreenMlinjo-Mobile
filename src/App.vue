@@ -32,6 +32,13 @@ export default {
 .v-application--wrap {
 	align-items: center;
 }
+.v-slide-group__next {
+	min-width: 0px !important;
+	flex: 0 !important;
+}
+.v-tab--active {
+	font-weight: 700 !important;
+}
 .normal-text {
 	color: #6c6c6c;
 	font-size: 0.7rem;
