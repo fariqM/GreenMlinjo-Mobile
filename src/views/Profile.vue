@@ -1,5 +1,9 @@
 <template>
-	<v-sheet class="overflow-y-auto pb-3" max-height="92vh">
+	<v-sheet
+		class="overflow-y-auto pb-3"
+		max-height="92vh"
+		style="background-color: #f5f5f5"
+	>
 		<div class="" style="max-height: 10.5rem">
 			<v-list two-line class="pt-0 primary" style="max-height: 9rem">
 				<v-list-item class="">
@@ -21,7 +25,7 @@
 				<div>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 220">
 						<path
-							fill="#fff"
+							fill="#F5F5F5"
 							fill-opacity="1"
 							d="M0,96L80,85.3C160,75,320,53,480,74.7C640,96,800,160,960,165.3C1120,171,1280,117,1360,90.7L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
 						></path>
@@ -35,10 +39,10 @@
 			</div>
 		</div>
 
-		<div>
+		<v-card class="mt-2">
 			<div
-				class="d-flex justify-space-between align-center mt-3"
-				style="padding: 0px 10px"
+				class="d-flex justify-space-between align-center "
+				style="padding: 10px 10px 0px 10px"
 			>
 				<div class="header-list">Transaksi</div>
 			</div>
@@ -56,96 +60,101 @@
 						<v-icon>mdi-chevron-right</v-icon>
 					</div>
 				</div>
-				<v-divider></v-divider>
+				<v-divider v-if="i !== menus.length - 1"></v-divider>
 			</div>
-		</div>
+		</v-card>
 
-		<div
-			class="d-flex justify-space-between align-center mt-3"
-			style="padding: 0px 10px"
-		>
-			<div class="title-text">Beli lagi yuk</div>
-			<div class="subtitle-text" style="color: #87bd43 !important">
-				Lihat lainnya
-			</div>
-		</div>
-
-		<!-- Rekomendasi -->
-		<v-row no-gutters justify="center">
-			<v-col
-				class="d-flex justify-center"
-				style="padding: 0px"
-				cols="6"
-				sm="7"
-				v-for="(item, i) in 4"
-				:key="i"
+		<v-card style="padding-top: 0px" class="mt-3">
+			<div
+				class="d-flex justify-space-between align-center"
+				style="padding: 10px 10px 0px 10px"
 			>
-				<v-card class="d-flex noselect ma-1 pa-1" max-width="10rem" v-ripple>
-					<div>
-						<v-avatar tile size="60">
-							<v-img :src="url + 'storage/images/products/wortel.jpg'"></v-img>
-						</v-avatar>
-					</div>
-					<div class="ml-1 mr-1 d-flex align-center">
-						<div>
-							<div class="title-text ellipsis-text" style="max-width: 5.7rem">
-								Paket Empon 1232
-							</div>
+				<div class="title-text">Beli lagi yuk</div>
+				<div class="subtitle-text" style="color: #87bd43 !important">
+					Lihat lainnya
+				</div>
+			</div>
 
-							<div
-								class="product-price-text ellipsis-text"
-								style="max-width: 5.7rem"
-							>
-								Rp 12.000 - Rp 13.000
-							</div>
-							<div class="subtitle-text" style="font-size: 0.7rem">
-								Dibeli 1 kali
+			<!-- Rekomendasi -->
+			<v-row no-gutters justify="center">
+				<v-col
+					class="d-flex justify-center"
+					style="padding: 0px"
+					cols="6"
+					sm="7"
+					v-for="(item, i) in 4"
+					:key="i"
+				>
+					<div class="d-flex noselect ma-1 pa-1" max-width="10rem" v-ripple>
+						<div>
+							<v-avatar tile size="60">
+								<v-img
+									:src="url + 'storage/images/products/wortel.jpg'"
+								></v-img>
+							</v-avatar>
+						</div>
+						<div class="ml-1 mr-1 d-flex align-center">
+							<div>
+								<div class="title-text ellipsis-text" style="max-width: 5.7rem">
+									Paket Empon 1232
+								</div>
+
+								<div
+									class="product-price-text ellipsis-text"
+									style="max-width: 5.7rem"
+								>
+									Rp 12.000 - Rp 13.000
+								</div>
+								<div class="subtitle-text" style="font-size: 0.7rem">
+									Dibeli 1 kali
+								</div>
 							</div>
 						</div>
 					</div>
-				</v-card>
-			</v-col>
-		</v-row>
+				</v-col>
+			</v-row>
+		</v-card>
 
 		<!-- Menu list bantuan -->
-		<div class="d-flex justify-space-between align-center header-list">
-			<div
-				style="
-					padding: 0px 10px;
-					font-size: 0.9rem !important;
-					font-weight: 800;
-					margin-top: 1.5rem;
-				"
-			>
-				Bantuan Pengguna
-			</div>
-		</div>
-		<div>
-			<div
-				v-for="(menu, i) in menus2"
-				:key="i"
-				v-ripple
-				style="padding: 0 1rem"
-			>
-				<div class="d-flex justify-space-between align-center py-2">
-					<div>
-						<div class="title-text">
-							{{ menu.title }}
-						</div>
-						<div class="subtitle-text">
-							{{ menu.subtitle }}
-						</div>
-					</div>
-					<div>
-						<v-icon>mdi-chevron-right</v-icon>
-					</div>
+		<v-card class="mt-3">
+			<div class="d-flex justify-space-between header-list">
+				<div
+					style="
+						padding: 10px 10px 0px 10px;
+						font-size: 0.9rem !important;
+						font-weight: 800;
+					"
+				>
+					Bantuan Pengguna
 				</div>
-
-				<v-divider v-if="i !== 1"></v-divider>
 			</div>
-		</div>
+			<div>
+				<div
+					v-for="(menu, i) in menus2"
+					:key="i"
+					v-ripple
+					style="padding: 0 1rem"
+				>
+					<div class="d-flex justify-space-between align-center py-2">
+						<div>
+							<div class="title-text">
+								{{ menu.title }}
+							</div>
+							<div class="subtitle-text">
+								{{ menu.subtitle }}
+							</div>
+						</div>
+						<div>
+							<v-icon>mdi-chevron-right</v-icon>
+						</div>
+					</div>
 
-		<div class="my-3 px-2">
+					<v-divider v-if="i !== 1"></v-divider>
+				</div>
+			</div>
+		</v-card>
+
+		<v-card class="mt-3 mb-2 px-2 py-2">
 			<v-btn
 				outlined
 				large
@@ -158,7 +167,7 @@
 				Logout akun
 				<v-icon class="ml-1">mdi-logout</v-icon>
 			</v-btn>
-		</div>
+		</v-card>
 	</v-sheet>
 </template>
 

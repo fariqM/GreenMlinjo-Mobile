@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-main>
+		<v-main >
 			<router-view />
 		</v-main>
 
@@ -38,13 +38,6 @@ export default {
 					title: "Pesanan Saya",
 					path: { name: "pesanan" },
 				},
-				// {
-				// 	id: 3,
-				// 	icon: "mdi-forum-outline",
-				// 	title: "Lainnya",
-				// 	badge: 15,
-				// 	path: { name: "chat" },
-				// },
 				{
 					id: 3,
 					icon: "mdi-bell-outline",
@@ -78,14 +71,11 @@ export default {
 					case "pesanan":
 						return 2;
 						break;
-					case "chat":
+					case "notification":
 						return 3;
 						break;
-					case "notification":
-						return 4;
-						break;
 					default:
-						return 5;
+						return 4;
 						break;
 				}
 			},

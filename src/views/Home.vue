@@ -1,12 +1,14 @@
 <template>
 	<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
-	<div>
+	<div >
 		<appbar :loading="loadingBar"></appbar>
-		<div>
+
+		<div >
 			<v-sheet
 				id="scrolling-techniques-3"
 				class="overflow-y-auto"
 				max-height="92vh"
+				style="background-color: #F5F5F5;"
 			>
 				<!-- Corousels Section-->
 				<home-corousels :skeleton="skeleton_show"></home-corousels>
@@ -24,8 +26,8 @@
 
 				<!-- Recomendation Section -->
 
-				<costumscroll :ops="ops" class="pa-2">
-					<v-sheet width="1000" max-height="100px" class="d-flex align-center">
+				<costumscroll :ops="ops" class="pa-2" >
+					<v-sheet width="1000" max-height="100px" class="d-flex align-center" style="background-color: #F5F5F5;">
 						<!-- <v-card elevation="2"> -->
 						<recom-item
 							v-for="(item, i) in recom_items"
@@ -346,7 +348,7 @@ export default {
 <style>
 .paket-section {
 	padding: 1px 5px 5px 5px;
-	background-color: rgb(231 231 231 / 46%);
+	/* background-color: rgb(231 231 231 / 46%); */
 	border-radius: 5%;
 	margin: 5px 5px 5px 5px;
 }

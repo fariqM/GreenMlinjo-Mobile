@@ -1,54 +1,82 @@
 <template>
 	<div>
-		<mlj-toolbar :loading="loading" :page="'Notifikasi'"></mlj-toolbar>
+		<!-- <mlj-toolbar :loading="loading" :page="'Notifikasi'"></mlj-toolbar> -->
 
-		<v-tabs
-			background-color="primary"
-			height="1.6rem"
-			right
-			align-with-title
-			:hide-slider="true"
-		>
-			<v-tab style="font-size: 0.7rem"> Promo </v-tab>
-			<v-tab style="font-size: 0.7rem"> Belum dibaca </v-tab>
-			<v-tab style="font-size: 0.7rem"> Voucher </v-tab>
-			<v-tab style="font-size: 0.7rem"> Admin </v-tab>
+		<v-tabs right align-with-title >
+			<v-tab style="font-size: 0.8rem"> Promo </v-tab>
+			<v-tab style="font-size: 0.8rem"> Belum dibaca </v-tab>
+			<v-tab style="font-size: 0.8rem"> {{ windowsHeight }} </v-tab>
+			<v-tab style="font-size: 0.8rem"> Admin </v-tab>
 		</v-tabs>
-		<v-list two-line>
-			<v-list-item-group class="">
-				<div v-for="(item, i) in items" :key="i">
-					<v-list-item
-						:style="
-							item.read ? { 'background-color': '#87bd4342 !important' } : {}
-						"
-					>
-						<v-list-item-content class="pa-0">
-							<v-list-item-title class="title-text">{{
-								item.title
-							}}</v-list-item-title>
 
-							<v-list-item-subtitle
-								class="text--primary"
-								style="font-size: 0.8rem"
-								v-text="item.headline"
-							></v-list-item-subtitle>
+		<v-sheet class="overflow-y-auto" :max-height="windowsHeight - 108 + 'px'">
 
-							<v-list-item-subtitle
-								v-html="item.subtitle"
-								style="font-size: 0.7rem"
-							></v-list-item-subtitle>
-						</v-list-item-content>
+			<v-list two-line class="py-0" style="background-color: #F5F5F5;">
+				<v-list-item-group class="">
+					<!-- <div v-for="(item, i) in items" :key="i">
+						<v-list-item
+							:style="
+								item.read ? { 'background-color': '#87bd4342 !important' } : {}
+							"
+						>
+							<v-list-item-content class="pa-0">
+								<v-list-item-title class="title-text">{{
+									item.title
+								}}</v-list-item-title>
 
-						<v-list-item-action class="">
-							<v-list-item-action-text
-								v-text="item.action"
-							></v-list-item-action-text>
-						</v-list-item-action>
-					</v-list-item>
-					<v-divider v-if="i < items.length - 1"></v-divider>
-				</div>
-			</v-list-item-group>
-		</v-list>
+								<v-list-item-subtitle
+									class="text--primary"
+									style="font-size: 0.8rem"
+									v-text="item.headline"
+								></v-list-item-subtitle>
+
+								<v-list-item-subtitle
+									v-html="item.subtitle"
+									style="font-size: 0.7rem"
+								></v-list-item-subtitle>
+							</v-list-item-content>
+
+							<v-list-item-action class="">
+								<v-list-item-action-text
+									v-text="item.action"
+								></v-list-item-action-text>
+							</v-list-item-action>
+						</v-list-item>
+						<v-divider v-if="i < items.length - 1"></v-divider>
+					</div> -->
+					<div v-for="(item, i) in 14" :key="i">
+						<v-list-item
+							:style="
+								item.read ? { 'background-color': '#87bd4342 !important' } : {}
+							"
+						>
+							<v-list-item-content class="pa-0">
+								<v-list-item-title class="title-text"
+									>Promosi</v-list-item-title
+								>
+
+								<v-list-item-subtitle
+									class="text--primary"
+									style="font-size: 0.8rem"
+									>Promosi</v-list-item-subtitle
+								>
+
+								<v-list-item-subtitle style="font-size: 0.7rem">
+									<b>Stok terbatas!!! </b>
+									Minyak goreng 2 liter cuma Rp 25.000. Beli sekarang keburu
+									habis !
+								</v-list-item-subtitle>
+							</v-list-item-content>
+
+							<v-list-item-action class="">
+								<v-list-item-action-text>1 jam lalu</v-list-item-action-text>
+							</v-list-item-action>
+						</v-list-item>
+						<v-divider v-if="i < 10 - 1"></v-divider>
+					</div>
+				</v-list-item-group>
+			</v-list>
+		</v-sheet>
 	</div>
 </template>
 
@@ -58,6 +86,7 @@ export default {
 		return {
 			loading: false,
 			selected: [2],
+			windowsHeight: window.innerHeight,
 			items: [
 				{
 					action: "15 menit lalu",
@@ -104,5 +133,8 @@ export default {
 .v-slide-group__next {
 	min-width: 0px !important;
 	flex: 0 !important;
+}
+.v-tab--active {
+	font-weight: 700 !important;
 }
 </style>
