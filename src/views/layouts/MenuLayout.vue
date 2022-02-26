@@ -35,36 +35,25 @@ export default {
 				{
 					id: 2,
 					icon: "mdi-script-text-outline",
-					title: "Order",
+					title: "Pesanan Saya",
 					path: { name: "pesanan" },
 				},
+				// {
+				// 	id: 3,
+				// 	icon: "mdi-forum-outline",
+				// 	title: "Lainnya",
+				// 	badge: 15,
+				// 	path: { name: "chat" },
+				// },
 				{
 					id: 3,
-					icon: "mdi-forum-outline",
-					title: "Lainnya",
-					badge: 15,
-					path: { name: "chat" },
-
-					// childs: [
-					// 	{
-					// 		id: 101,
-					// 		icon: "mdi-book-open-outline",
-					// 		title: "Products",
-					// 		badge: 8,
-					// 	},
-					// 	{ id: 102, icon: "mdi-message-video", title: "Discount" },
-					// 	{ id: 103, icon: "mdi-charity", title: "Gifts", badge: 7 },
-					// ],
-				},
-				{
-					id: 4,
 					icon: "mdi-bell-outline",
 					title: "Notifikasi",
 					path: { name: "notification" },
 					badge: 2,
 				},
 				{
-					id: 5,
+					id: 4,
 					icon: "mdi-account-circle-outline",
 					title: "Akun",
 					path: { name: "profile" },

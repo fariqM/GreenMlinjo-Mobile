@@ -23,7 +23,7 @@
 
 				<div class="btn-title">
 					<slot name="title" :props="button">
-						{{ button.title }}
+						<b>{{ button.title }}</b>
 					</slot>
 				</div>
 
@@ -54,9 +54,9 @@
 								<v-icon color="primary">{{ child.icon }}</v-icon>
 							</slot>
 							<span class="btn-child-title">
-								<slot name="child-title" :props="child" >
+								<slot name="child-title" :props="child">
 									<!-- <v-chip x-small class="px-1">{{child.title}}</v-chip> -->
-									<b style="color:black;">{{ child.title }}</b>
+									<b style="color: black">{{ child.title }}</b>
 								</slot>
 							</span>
 
@@ -313,7 +313,12 @@ export default {
 	width: var(--width-parent);
 	height: 60px;
 	z-index: -1;
-	background: linear-gradient(180deg, rgba(36,13,0,0) 0%, rgba(39,145,20,0) 55%, var(--color-foreground) 100%);
+	background: linear-gradient(
+		180deg,
+		rgba(36, 13, 0, 0) 0%,
+		rgba(39, 145, 20, 0) 55%,
+		var(--color-foreground) 100%
+	);
 }
 
 input {
@@ -358,6 +363,7 @@ input {
 
 .btn-title {
 	position: absolute;
+	top: 40px;
 	color: rgba(0, 0, 0, 0.54);
 	font-size: 10px;
 }
@@ -382,9 +388,20 @@ input {
 }
 
 .checked .btn-title {
-	animation: fadein 200ms;
+	animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both 200ms;
+	/* animation:  */
 	position: absolute;
 	top: 40px;
+}
+
+@keyframes shake {
+	40% {
+		transform: translate3d(0px, -4px, 0);
+	}
+
+	100% {
+		transform: translate3d(0px, 0px, 0);
+	}
 }
 
 .unchecked .active-label {
@@ -392,7 +409,7 @@ input {
 }
 
 .unchecked .btn-title {
-	visibility: hidden;
+	visibility: visible;
 }
 
 #sweep {
