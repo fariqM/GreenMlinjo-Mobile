@@ -62,6 +62,9 @@ export default {
 	font-size: 0.9rem !important;
 	font-weight: 500;
 }
+.link-text {
+	color: #87BD43 !important;
+}
 .subtitle-text {
 	color: #6c6c6c;
 	font-size: 0.8rem !important;

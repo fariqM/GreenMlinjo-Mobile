@@ -9,7 +9,9 @@
 			<v-btn icon @click="navigation_back">
 				<v-icon>mdi-arrow-left</v-icon>
 			</v-btn>
-			<v-app-bar-title>{{ page }}</v-app-bar-title>
+			<v-app-bar-title>
+				<div class="noselect">{{ page }}</div>
+			</v-app-bar-title>
 		</v-app-bar>
 		<v-progress-linear
 			:active="loading"

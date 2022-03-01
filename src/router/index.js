@@ -22,6 +22,7 @@ import Favourites from "../views/pages/Favourites.vue"
 import Carts from "../views/pages/Cart.vue"
 import Chat from "../views/pages/Chat.vue"
 import MapsExample from "../views/pages/ExampleMaps.vue"
+import Shipping from "../views/pages/Shipping.vue"
 
 
 
@@ -63,6 +64,15 @@ const routes = [
     name: 'example',
     component: MapsExample
   },
+  {
+    path: '/order/shipping',
+    name: 'shipping',
+    component: Shipping
+  },
+  
+
+
+
   {
     path: '/app',
     name: 'app-menu',

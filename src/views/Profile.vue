@@ -70,7 +70,7 @@
 				style="padding: 10px 10px 0px 10px"
 			>
 				<div class="title-text">Beli lagi yuk</div>
-				<div class="subtitle-text" style="color: #87bd43 !important">
+				<div class="subtitle-text link-text">
 					Lihat lainnya
 				</div>
 			</div>

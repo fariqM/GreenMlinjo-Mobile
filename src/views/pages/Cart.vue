@@ -307,7 +307,13 @@
 					small
 					>Beli</v-btn
 				>
-				<v-btn v-else elevation="0" color="primary" small @click="makeOrder"
+				<v-btn
+					v-else
+					elevation="0"
+					color="primary"
+					small
+					@click="prepareOrder"
+					:loading="buyBtnLoading"
 					>Beli ({{ CheckBoxSelected.length }})</v-btn
 				>
 			</div>
@@ -348,6 +354,7 @@ export default {
 		return {
 			url: __BASE_URL__,
 			loading: true,
+			buyBtnLoading: false,
 			checkAll: false,
 			deleteBtnText: "Hapus",
 			deleteBtnDisabled: true,
@@ -402,6 +409,25 @@ export default {
 		this.getCarts();
 	},
 	methods: {
+		prepareOrder() {
+			this.buyBtnLoading = true;
+			// console.log(this.CheckBoxSelected);
+			let order_items = [];
+			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
+				let product = _.find(this.carts, (cart) => {
+					return cart.cart_id == this.CheckBoxSelected[index];
+				});
+				order_items.push(product);
+			}
+			// console.log(order_items);
+			setTimeout(() => {
+				this.buyBtnLoading = false;
+				this.$router.push({
+					name: "shipping",
+					params: { order_items: order_items },
+				});
+			}, 1000);
+		},
 		makeOrder() {
 			let products = {};
 			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
