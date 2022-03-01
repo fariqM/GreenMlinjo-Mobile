@@ -1,7 +1,7 @@
-import { Plugins } from '@capacitor/core';
-import axios from 'axios';
-
-const { Storage } = Plugins;
+// import { Plugins } from '@capacitor/core';
+// import axios from 'axios';
+import { Storage } from '@capacitor/storage';
+// const { Storage } = Plugins;
 
 
 async function setItem(token) {

@@ -172,7 +172,8 @@
 </template>
 
 <script>
-import { Plugins } from "@capacitor/core";
+// import { Geolocation } from '@capacitor/geolocation';
+import {Example} from "experiment"
 
 export default {
 	data() {
@@ -216,11 +217,12 @@ export default {
 	},
 	methods: {
 		async LogoutAction() {
-			const { Geolocation } = Plugins;
+		// 	const { Geolocation } = Plugins;
 
 			// let status = await Network.getStatus();
-			const coordinates = await Geolocation.getCurrentPosition();
-			console.log('Current', coordinates);
+			// const coordinates = await Geolocation.getCurrentPosition();
+			// console.log(coordinates);
+			Example.present({message:'tess'});
 			this.logoutLoading = true;
 			setTimeout(() => {
 				this.logoutLoading = false;

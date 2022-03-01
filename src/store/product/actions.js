@@ -1,5 +1,6 @@
-import { Plugins } from '@capacitor/core';
-const { Storage } = Plugins;
+// import { Plugins } from '@capacitor/core';
+// const { Storage } = Plugins;
+import { Storage } from '@capacitor/storage';
 
 async function getItem(key) {
     const { value } = await Storage.get({ key: key });

@@ -1,6 +1,7 @@
-import { Plugins } from '@capacitor/core';
+// import { Plugins } from '@capacitor/core';
 
-const { Storage } = Plugins;
+// const { Storage } = Plugins;
+import { Storage } from '@capacitor/storage';
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
