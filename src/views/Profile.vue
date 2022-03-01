@@ -173,7 +173,7 @@
 
 <script>
 // import { Geolocation } from '@capacitor/geolocation';
-import {Example} from "experiment"
+// import {Example} from "experiment"
 
 export default {
 	data() {
@@ -222,7 +222,7 @@ export default {
 			// let status = await Network.getStatus();
 			// const coordinates = await Geolocation.getCurrentPosition();
 			// console.log(coordinates);
-			Example.present({message:'tess'});
+			// Example.present({message:'tess'});
 			this.logoutLoading = true;
 			setTimeout(() => {
 				this.logoutLoading = false;

@@ -15,7 +15,7 @@
 				<!-- End Corousels Section -->
 
 				<!-- Area Section -->
-				<div @click="skeleton_show = !skeleton_show">
+				<div @click="$router.push({name:'example'})">
 					<location-area :skeleton="skeleton_show"></location-area>
 				</div>
 				<!-- End Area Section -->

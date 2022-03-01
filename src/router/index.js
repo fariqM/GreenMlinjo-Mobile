@@ -21,7 +21,7 @@ import Profile from '../views/Profile.vue'
 import Favourites from "../views/pages/Favourites.vue"
 import Carts from "../views/pages/Cart.vue"
 import Chat from "../views/pages/Chat.vue"
-
+import MapsExample from "../views/pages/ExampleMaps.vue"
 
 
 
@@ -59,6 +59,11 @@ const routes = [
     component: Chat
   },
   {
+    path: '/maps-example',
+    name: 'example',
+    component: MapsExample
+  },
+  {
     path: '/app',
     name: 'app-menu',
     component: LayoutMenu,
@@ -82,11 +87,11 @@ const routes = [
       name: 'profile',
       component: Profile,
     },
-    // {
-    //   path: 'chat',
-    //   name: 'chat',
-    //   component: Profile,
-    // }
+      // {
+      //   path: 'chat',
+      //   name: 'chat',
+      //   component: Profile,
+      // }
     ],
   },
   {

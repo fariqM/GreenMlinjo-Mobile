@@ -1,0 +1,9 @@
+{
+	"appId": "com.mlinjo.v2",
+	"appName": "mlinjo_v2",
+	"webDir": "dist",
+	"bundledWebRuntime": false,
+	"server": {
+		"cleartext": true
+	}
+}

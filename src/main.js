@@ -14,7 +14,7 @@ window.iziToast = izi_Toast
 // base server ip
 // const { SplashScreen } = Plugins
 window.platform = Capacitor.getPlatform();
-const __BASE_URL_SERVER = 'http://192.168.1.2:8888/';
+const __BASE_URL_SERVER = 'http://192.168.1.8:8888/';
 const __API_PREFIX = 'api'
 
 // non-auth url
