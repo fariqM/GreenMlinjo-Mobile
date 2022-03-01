@@ -4,16 +4,17 @@
 
 		<v-tabs right align-with-title >
 			<v-tab style="font-size: 0.8rem">Promo</v-tab>
-			<v-tab style="font-size: 0.8rem">Belumdibaca</v-tab>
+			<v-tab style="font-size: 0.8rem">Belum Dibaca</v-tab>
 			<v-tab style="font-size: 0.8rem">Voucher</v-tab>
 			<v-tab style="font-size: 0.8rem">Admin</v-tab>
 		</v-tabs>
+
 
 		<v-sheet class="overflow-y-auto" :max-height="windowsHeight - 108 + 'px'">
 
 			<v-list two-line class="py-0" style="background-color: #F5F5F5;">
 				<v-list-item-group class="">
-					<!-- <div v-for="(item, i) in items" :key="i">
+					<div v-for="(item, i) in items" :key="i">
 						<v-list-item
 							:style="
 								item.read ? { 'background-color': '#87bd4342 !important' } : {}
@@ -43,8 +44,10 @@
 							</v-list-item-action>
 						</v-list-item>
 						<v-divider v-if="i < items.length - 1"></v-divider>
-					</div> -->
-					<div v-for="(item, i) in 14" :key="i">
+					</div>
+
+
+					<!-- <div v-for="(item, i) in 14" :key="i">
 						<v-list-item
 							:style="
 								item.read ? { 'background-color': '#87bd4342 !important' } : {}
@@ -73,7 +76,7 @@
 							</v-list-item-action>
 						</v-list-item>
 						<v-divider v-if="i < 10 - 1"></v-divider>
-					</div>
+					</div> -->
 				</v-list-item-group>
 			</v-list>
 		</v-sheet>

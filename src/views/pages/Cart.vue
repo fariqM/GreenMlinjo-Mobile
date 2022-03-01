@@ -168,6 +168,7 @@
 																@click="minusQty(i)"
 																class="v-input__prepend-inner"
 																style="cursor: pointer"
+																v-ripple
 															>
 																<div
 																	class="
@@ -201,6 +202,7 @@
 																@click="plusQty(i)"
 																class="v-input__append-inner"
 																style="cursor: pointer"
+																v-ripple
 															>
 																<div
 																	class="v-input__icon v-input__icon--append"
@@ -406,14 +408,19 @@ export default {
 				let cart_index = _.findIndex(this.carts, {
 					cart_id: this.CheckBoxSelected[index],
 				});
-				
-				Object.assign(products, {[this.carts[cart_index].id]: { qty: this.carts[cart_index].qty }})
+
+				Object.assign(products, {
+					[this.carts[cart_index].id]: { qty: this.carts[cart_index].qty },
+				});
 			}
-			this.$store.dispatch("orders/makeOrder", products).then(response => {
-				console.log(response);
-			}).catch(e => {
-				console.log(e);
-			})
+			this.$store
+				.dispatch("orders/makeOrder", products)
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
 			// console.log(products);
 		},
 		countTotalPrice() {
