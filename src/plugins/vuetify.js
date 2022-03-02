@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib/framework';
 import '@mdi/font/css/materialdesignicons.css'
+import RupiahIcon from "./rupiah.svg"
 
 Vue.use(Vuetify);
 
@@ -26,5 +27,8 @@ export default new Vuetify({
   },
   icons: {
     iconfont: 'mdi', // default - only for display purposes
+    values:{
+      RupiahIcon: RupiahIcon
+    }
   },
 });

@@ -119,8 +119,15 @@
 												<span>{{ cart.title }} ({{ cart.unit }})</span>
 											</div>
 
-											<div class="product-subtitle-text ml-2 noselect">
+											<div
+												v-if="cart.max_qty_per_unit !== null"
+												class="product-subtitle-text ml-2 noselect"
+											>
 												{{ cart.min_qty_per_unit }}-{{ cart.max_qty_per_unit }}
+												{{ cart.sub_unit }}/{{ cart.unit }}
+											</div>
+											<div v-else class="product-subtitle-text ml-2 noselect">
+												{{ cart.min_qty_per_unit }} 
 												{{ cart.sub_unit }}/{{ cart.unit }}
 											</div>
 
