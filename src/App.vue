@@ -14,6 +14,7 @@ export default {
 		this.$store
 			.dispatch("auth/getCreds")
 			.then((response) => {
+				console.log(response);
 				if (response.status === 200) {
 					console.log("set user success");
 				} else {

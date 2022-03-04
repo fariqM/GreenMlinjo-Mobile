@@ -23,18 +23,34 @@
 							</template>
 						</v-img>
 						<div style="position: absolute">
-							<div style="user-select:none">
+							<div style="user-select: none">
 								<v-btn
 									class="pa-0 mt-1 mr-1"
 									style="min-width: 35px; background-color: #ffffffa1"
 									id="MyBTN12212"
-								>	
-									<div v-if="isLogedIn" style="height: 30px; width: 30px" @click="clickFav(product_id)">
-										<heart-icon  v-if="favourite.length === 0" :isFavourite="false" :product_id="product_id"/>
-										<heart-icon v-else :isFavourite="true" :product_id="product_id"/>
+								>
+									<div
+										v-if="isLogedIn"
+										style="height: 30px; width: 30px"
+										@click="clickFav(product_id)"
+									>
+										<heart-icon
+											v-if="favourite.length === 0"
+											:isFavourite="false"
+											:product_id="product_id"
+										/>
+										<heart-icon
+											v-else
+											:isFavourite="true"
+											:product_id="product_id"
+										/>
 									</div>
-									<div v-else style="height: 30px; width: 30px" @click="clickFav(product_id)" >
-										<heart-disabled-icon/>
+									<div
+										v-else
+										style="height: 30px; width: 30px"
+										@click="clickFav(product_id)"
+									>
+										<heart-disabled-icon />
 									</div>
 								</v-btn>
 							</div>
@@ -57,9 +73,18 @@
 							{{ title }}
 						</v-card-title>
 						<v-card-subtitle
+							v-if="max_qty_per_unit !== null"
 							style="padding: 5px 5px; color: #8b8b8b; font-size: 0.7rem"
 						>
 							{{ min_qty_per_unit }}-{{ max_qty_per_unit }} {{ sub_unit }}/{{
+								unit
+							}}
+						</v-card-subtitle>
+						<v-card-subtitle
+							v-else
+							style="padding: 5px 5px; color: #8b8b8b; font-size: 0.7rem"
+						>
+							{{ min_qty_per_unit }} {{ sub_unit }}/{{
 								unit
 							}}
 						</v-card-subtitle>
@@ -104,15 +129,15 @@
 
 <script>
 import HeartIcon from "../../components/icon/Heart.vue";
-import CartIcon from "../../components/icon/Cart.vue"
-import HeartDisabledIcon from "../../components/icon/HeartDisabled.vue"
+import CartIcon from "../../components/icon/Cart.vue";
+import HeartDisabledIcon from "../../components/icon/HeartDisabled.vue";
 import { mapGetters } from "vuex";
 
 export default {
 	components: {
 		HeartIcon,
 		CartIcon,
-		HeartDisabledIcon
+		HeartDisabledIcon,
 	},
 	data() {
 		return {
@@ -133,8 +158,8 @@ export default {
 		favourite: Array,
 		images: Array,
 	},
-	computed:{
-		...mapGetters({isLogedIn: "auth/getUserStatus"})
+	computed: {
+		...mapGetters({ isLogedIn: "auth/getUserStatus" }),
 	},
 	methods: {
 		numberWithCommas(x) {
@@ -146,23 +171,26 @@ export default {
 			this.$store.dispatch("favourites/addFavourites", product_id);
 		},
 		clickFav(product_id) {
-			this.$store.dispatch("favourites/addFavourites", product_id).then(response => {
-				// console.log(response);
-			}).catch(e => {
-				if (e.response) {
-					if (e.response.status === 401 || e.response.status === 406) {
-						this.redirectLogin()
+			this.$store
+				.dispatch("favourites/addFavourites", product_id)
+				.then((response) => {
+					// console.log(response);
+				})
+				.catch((e) => {
+					if (e.response) {
+						if (e.response.status === 401 || e.response.status === 406) {
+							this.redirectLogin();
+						}
 					}
-				}
-				console.log(e);
-			})
+					console.log(e);
+				});
 			// console.log("ok");
 		},
-		redirectLogin(){
+		redirectLogin() {
 			setTimeout(() => {
-				this.$router.push({name:'login'})
+				this.$router.push({ name: "login" });
 			}, 500);
-		}
+		},
 	},
 };
 </script>

@@ -74,10 +74,11 @@
 						</div>
 					</div>
 					<div class="d-flex justify-space-between align-center mt-1 pr-1">
-						<div class="normal-text" style="font-weight: 600">
+						
+						<div class="status-text" >
 							{{ order.order_status }}
 						</div>
-						<div class="normal-text" style="font-weight: 600">
+						<div class="status-text">
 							{{ order.driver_status }}
 						</div>
 					</div>
@@ -170,4 +171,9 @@ export default {
 </script>
 
 <style>
+.status-text{
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: rgba(0, 0, 0, 0.87);
+}
 </style>

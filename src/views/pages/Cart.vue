@@ -327,7 +327,7 @@
 		</div>
 
 		<!-- modal -->
-		<v-dialog v-model="dialog" max-width="290">
+		<v-dialog v-model="dialog" max-width="290" persistent>
 			<v-card>
 				<v-card-title class="text-h6"> Hapus barang ini ? </v-card-title>
 

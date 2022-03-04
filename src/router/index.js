@@ -18,6 +18,8 @@ import Pesanan from '../views/Pesanan.vue'
 import Profile from '../views/Profile.vue'
 
 // other page
+import TestingPage from "../views/components/Testing.vue"
+
 import Favourites from "../views/pages/Favourites.vue"
 import Carts from "../views/pages/Cart.vue"
 import Chat from "../views/pages/Chat.vue"
@@ -69,6 +71,12 @@ const routes = [
     name: 'shipping',
     component: Shipping
   },
+  {
+    path: '/testing-devs',
+    name: 'testing',
+    component: TestingPage
+  },
+  
   
 
 

@@ -159,6 +159,7 @@ export default {
 					}, 800);
 				})
 				.catch((e) => {
+					this.overlay = false;
 					this.loading = false;
 					iziToast.error({
 						title: "Oops ! Kayaknya ada masalah :( ",

@@ -1,21 +1,21 @@
 <template>
 	<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
-	<div >
+	<div>
 		<appbar :loading="loadingBar"></appbar>
 
-		<div >
+		<div>
 			<v-sheet
 				id="scrolling-techniques-3"
 				class="overflow-y-auto"
 				max-height="92vh"
-				style="background-color: #F5F5F5;"
+				style="background-color: #f5f5f5"
 			>
 				<!-- Corousels Section-->
 				<home-corousels :skeleton="skeleton_show"></home-corousels>
 				<!-- End Corousels Section -->
 
 				<!-- Area Section -->
-				<div @click="$router.push({name:'example'})">
+				<div @click="$router.push({ name: 'testing' })">
 					<location-area :skeleton="skeleton_show"></location-area>
 				</div>
 				<!-- End Area Section -->
@@ -26,8 +26,13 @@
 
 				<!-- Recomendation Section -->
 
-				<costumscroll :ops="ops" class="pa-2" >
-					<v-sheet width="1000" max-height="100px" class="d-flex align-center" style="background-color: #F5F5F5;">
+				<costumscroll :ops="ops" class="pa-2">
+					<v-sheet
+						width="1000"
+						max-height="100px"
+						class="d-flex align-center"
+						style="background-color: #f5f5f5"
+					>
 						<!-- <v-card elevation="2"> -->
 						<recom-item
 							v-for="(item, i) in recom_items"
@@ -59,7 +64,11 @@
 						</v-subheader>
 					</div>
 
-					<v-row no-gutters justify="space-around">
+					<v-row
+						no-gutters
+						justify="space-around"
+						v-if="ProductTerlaris.length > 0"
+					>
 						<products-card
 							v-for="(product, i) in ProductTerlaris"
 							:skeleton="skeleton.product_terlaris"
@@ -76,6 +85,40 @@
 							:images="product.images"
 							:testing_log="'ini list produk 2'"
 						></products-card>
+					</v-row>
+
+					<v-row
+						class="my-2"
+						no-gutters
+						justify="space-around"
+						v-if="skeleton_show"
+					>
+						<v-col
+							cols="6"
+							sm="5"
+							md="5"
+							class="py-2"
+							style="padding: 10px 5px 5px 5px"
+							v-for="(item, i) in 6"
+							:key="i"
+						>
+							<skeleton width="100%" height="12rem" :radius="3" />
+						</v-col>
+					</v-row>
+
+					<v-row
+						no-gutters
+						justify="center"
+						align="center"
+						class="pb-3"
+						v-if="error_ilust"
+					>
+						<div>
+							<not-found />
+						</div>
+						<div>
+							<h4 class="link-text mb-3">Opps kayaknya ada masalah koneksi</h4>
+						</div>
 					</v-row>
 				</div>
 
@@ -130,6 +173,7 @@ import LocationArea from "./components/home/LocationArea.vue";
 import HomeCorousels from "./components/home/HomeCorousel.vue";
 import Wallet from "./components/home/Wallet.vue";
 import ProductsCard from "./components/home/ProductCard.vue";
+import notFound from "./components/ilustration/404.vue";
 
 export default {
 	components: {
@@ -140,6 +184,7 @@ export default {
 		HomeCorousels,
 		Wallet,
 		ProductsCard,
+		notFound,
 	},
 	watch: {
 		// ProductTerlaris: function (newValue, oldValue) {
@@ -165,6 +210,7 @@ export default {
 			lazy_ramadan: false,
 			skeleton_show: true,
 			show: false,
+			error_ilust:false,
 			products: [
 				{
 					id: 1,
@@ -316,11 +362,20 @@ export default {
 				// console.log(result);
 				this.loadingBar = false;
 				this.skeleton_show = false;
+				this.error_ilust = false
 				this.skeleton.product_terlaris = false;
 			})
 			.catch((e) => {
+				this.error_ilust =true
+				this.loadingBar = false;
+				this.skeleton_show = false;
+				this.skeleton.product_terlaris = false;
 				// console.log(e);
 			});
+
+		setTimeout(() => {
+			console.log(this.ProductTerlaris);
+		}, 1000);
 		// this.$store.dispatch("getFirstTime").then((hasil) => {
 		// 	console.log("first time => " + hasil);
 		// });

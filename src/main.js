@@ -6,20 +6,22 @@ import vuetify from './plugins/vuetify'
 import AXIOS from "axios";
 import { Storage } from '@capacitor/storage';
 import { Capacitor } from '@capacitor/core';
-import izi_Toast from 'izitoast'
 
 // iziToast
+import izi_Toast from 'izitoast'
+import "./plugins/iziToast.min.css"
 window.iziToast = izi_Toast
 
 // base server ip
 // const { SplashScreen } = Plugins
 window.platform = Capacitor.getPlatform();
-const __BASE_URL_SERVER = 'http://192.168.1.8:8888/';
+const __BASE_URL_SERVER = 'http://192.168.1.7:8888/';
 const __API_PREFIX = 'api'
 
 // non-auth url
 window.axios_open = AXIOS.create({
-  baseURL: `${__BASE_URL_SERVER}${__API_PREFIX}`
+  baseURL: `${__BASE_URL_SERVER}${__API_PREFIX}`,
+  timeout: 3000,
 });
 window.__BASE_URL__ = __BASE_URL_SERVER
 
@@ -44,11 +46,13 @@ async function prepare() {
     // SplashScreen.hide();
     mlinjo_key = token
     axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/v1/`;
-    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
+    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`;
+    axios.defaults.timeout = 5000;
   }).catch(e => {
     SplashScreen.hide();
     axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/v1/`;
-    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`
+    axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`;
+    axios.defaults.timeout = 5000;
   })
   // if (platform == 'android') {
 
