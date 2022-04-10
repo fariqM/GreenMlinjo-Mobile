@@ -11,7 +11,7 @@
 				style="background-color: #f5f5f5"
 			>
 				<!-- Corousels Section-->
-				<home-corousels :skeleton="skeleton_show"></home-corousels>
+				<home-corousels :skeleton="skeleton_show" style="margin-top: 56px"></home-corousels>
 				<!-- End Corousels Section -->
 
 				<!-- Area Section -->

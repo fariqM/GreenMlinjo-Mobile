@@ -51,7 +51,7 @@
 
 					<div class="d-flex">
 						<v-avatar tile size="75">
-							<v-img :src="url + 'storage/images/products/wortel.jpg'"></v-img>
+							<v-img :src="url + order.img_url"></v-img>
 						</v-avatar>
 
 						<div
@@ -119,6 +119,7 @@ export default {
 					total_min_price: 12000,
 					total_max_price: 14000,
 					order_status: "Dikemas",
+					img_url: "storage/images/products/empon_3.jpg",
 					driver_status: "Driver sedang antre...",
 				},
 				{
@@ -130,6 +131,7 @@ export default {
 					total_min_price: 12000,
 					total_max_price: 14000,
 					order_status: "Diantar",
+					img_url: "storage/images/products/tahu_susu.webp",
 					driver_status: "Driver sedang menuju alamat anda.",
 				},
 			],

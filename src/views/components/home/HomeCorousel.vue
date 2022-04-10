@@ -24,7 +24,7 @@
 		>
 			<v-carousel-item v-for="(item, i) in images" :key="i" class="info">
 				<v-img
-					height="250"
+					height="220"
 					:src="image"
 					gradient="to top right, rgb(72 255 82 / 7%), rgb(160 255 40 / 8%)"
 				>
@@ -56,7 +56,7 @@ export default {
 	data() {
 		return {
 			corrousel: 0,
-			image: "/assets/images/sayur.png",
+			image: "/assets/images/carousel.jpeg",
 			images: [
 				"assets/images/box.png",
 				"assets/images/small_box.png",
