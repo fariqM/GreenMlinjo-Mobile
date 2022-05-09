@@ -16,11 +16,14 @@
 									<v-icon size="20">mdi-map-marker-radius-outline</v-icon>
 									<div class="subtitle-text ml-1">Alamat Pengiriman</div>
 								</div>
-								<div class="subtitle-text link-text">Pilih Alamat Lain</div>
+								<div class="subtitle-text link-text" @click="showAddressDialog">
+									Pilih Alamat Lain
+								</div>
 							</div>
 							<v-divider class="ma-1"></v-divider>
 							<div style="min-width: 100%" class="px-2 pt-2">
 								<div
+									@click="showAddressDialog"
 									v-ripple
 									class="
 										d-flex
@@ -341,7 +344,13 @@ export default {
 		};
 	},
 	mounted() {
-		this.order_items = this.$router.history.current.params.order_items;
+		if (this.$router.history.current.params.order_items) {
+			this.order_items = this.$router.history.current.params.order_items;
+			this.$store.commit("setcheckOut", this.order_items);
+		} else {
+			this.afterMapping = true;
+			this.order_items = this.$store.getters.getcheckOut;
+		}
 		console.log(this.order_items);
 	},
 	computed: {
@@ -361,6 +370,12 @@ export default {
 		},
 	},
 	methods: {
+		closeAddressDialog() {
+			this.addressDialog = false;
+		},
+		showAddressDialog() {
+			this.$router.push({name:"address"})
+		},
 		makeOrder() {
 			console.log(this.order_items);
 		},

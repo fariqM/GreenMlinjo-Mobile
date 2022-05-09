@@ -27,18 +27,22 @@ export default {
     state: {
         user: {},
         isLogedIn: false,
+        address: []
     },
     mutations: {
         setUser(state, payload) {
             state.user = payload.user
             state.isLogedIn = payload.isLogedIn
         },
+        setAddress(state, payload) {
+            state.address = payload
+        }
     },
     actions: {
         loginAction(state, payload) {
             return new Promise((resolve, reject) => {
                 axios_open.post('login', payload).then(response => {
-                    state.commit("setUser", {user: response.data.user, isLogedIn: true})
+                    state.commit("setUser", { user: response.data.user, isLogedIn: true })
                     // console.log(response);
                     setItem(response.data.token).then(setComplete => {
                         resolve(response);
@@ -70,10 +74,31 @@ export default {
                     reject(err);
                 })
             });
-        }
+        },
+        getAddress(state) {
+            return new Promise((resolve, reject) => {
+                axios.get('get-my-address').then(response => {
+                    state.commit("setAddress", response.data.data)
+                    resolve(response)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+        addAddress(state, payload) {
+            return new Promise((resolve, reject) => {
+                axios.post('create-new-address', payload).then(response => {
+                    resolve(response)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
     },
     getters: {
         getUser: state => state.user,
-        getUserStatus: state => state.isLogedIn
+        getUserStatus: state => state.isLogedIn,
+        getAddress: state => state.address
+
     }
 }

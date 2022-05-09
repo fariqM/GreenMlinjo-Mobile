@@ -23,8 +23,11 @@ import TestingPage from "../views/components/Testing.vue"
 import Favourites from "../views/pages/Favourites.vue"
 import Carts from "../views/pages/Cart.vue"
 import Chat from "../views/pages/Chat.vue"
-import MapsExample from "../views/pages/ExampleMaps.vue"
+import MapsExample from "../views/components/Maps"
 import Shipping from "../views/pages/Shipping.vue"
+import Address from "../views/pages/Address.vue"
+import AddAddress from "../views/pages/AddAddress.vue"
+
 
 
 
@@ -72,14 +75,27 @@ const routes = [
     component: Shipping
   },
   {
+    path: '/address',
+    name: 'address',
+    component: Address
+  },
+  {
+    path: '/address/new',
+    name: 'address.new',
+    component: AddAddress
+  },
+  {
+    path: '/order/shipping',
+    name: 'shipping',
+    component: Shipping
+  },
+
+
+  {
     path: '/testing-devs',
     name: 'testing',
     component: TestingPage
   },
-  
-  
-
-
 
   {
     path: '/app',
