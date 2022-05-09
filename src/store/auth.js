@@ -94,6 +94,15 @@ export default {
                 })
             })
         },
+        chooseAddress(state, payload){
+            return new Promise((resolve, reject) => {
+                axios.put(`choose-address/${payload}`).then(response => {
+                    resolve(response)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        }
     },
     getters: {
         getUser: state => state.user,
