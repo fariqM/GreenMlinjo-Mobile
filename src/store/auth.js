@@ -27,7 +27,8 @@ export default {
     state: {
         user: {},
         isLogedIn: false,
-        address: []
+        address: [],
+        choosenAddress: null,
     },
     mutations: {
         setUser(state, payload) {
@@ -36,6 +37,9 @@ export default {
         },
         setAddress(state, payload) {
             state.address = payload
+        },
+        setChoosenAddress(state, payload){
+            state.choosenAddress = payload
         }
     },
     actions: {
@@ -102,12 +106,27 @@ export default {
                     reject(e)
                 })
             })
+        },
+        getChoosenAddress(state){
+            return new Promise((resolve, reject) => {
+                axios.get('get-choosen-address').then(response => {
+                    state.commit("setChoosenAddress", response.data.data)
+                    resolve(response)
+                }).catch(e => {
+                    if (e.response) {
+                        if (e.response.status === 404) {
+                            state.commit("setChoosenAddress", null)
+                        }
+                    }
+                    reject(e)
+                })
+            })
         }
     },
     getters: {
         getUser: state => state.user,
         getUserStatus: state => state.isLogedIn,
-        getAddress: state => state.address
-
+        getAddress: state => state.address,
+        getChoosenAddress: state => state.choosenAddress
     }
 }

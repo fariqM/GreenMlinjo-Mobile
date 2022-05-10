@@ -127,7 +127,7 @@
 												{{ cart.sub_unit }}/{{ cart.unit }}
 											</div>
 											<div v-else class="product-subtitle-text ml-2 noselect">
-												{{ cart.min_qty_per_unit }} 
+												{{ cart.min_qty_per_unit }}
 												{{ cart.sub_unit }}/{{ cart.unit }}
 											</div>
 
@@ -414,6 +414,7 @@ export default {
 	mounted() {
 		this.onResize();
 		this.getCarts();
+		this.getChoosenAddress();
 	},
 	methods: {
 		prepareOrder() {
@@ -564,6 +565,18 @@ export default {
 		},
 		onResize() {
 			this.tesHeight = window.innerHeight;
+		},
+		getChoosenAddress() {
+			this.$store
+				.dispatch("auth/getChoosenAddress")
+				.then((response) => {})
+				.catch((e) => {
+					if (e.response) {
+						if (e.response.status !== 404) {
+							console.log(e.response);
+						}
+					}
+				});
 		},
 	},
 };

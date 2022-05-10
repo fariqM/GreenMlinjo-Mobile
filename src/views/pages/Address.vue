@@ -108,7 +108,6 @@ export default {
 			this.$emit("closeDialog");
 		},
 		fetchAddress(refetch = false) {
-			
 			if (refetch) {
 				this.btnLoadin = false;
 				this.showDialog = false;
@@ -132,11 +131,23 @@ export default {
 				.dispatch("auth/chooseAddress", this.addressChoosed)
 				.then((response) => {
 					this.fetchAddress(true);
-					// console.log(response);
+					this.getChoosenAddress();
 				})
 				.catch((e) => {
 					this.showDialog = false;
 					console.log(e);
+				});
+		},
+		getChoosenAddress() {
+			this.$store
+				.dispatch("auth/getChoosenAddress")
+				.then((response) => {})
+				.catch((e) => {
+					if (e.response) {
+						if (e.response.status !== 404) {
+							console.log(e.response);
+						}
+					}
 				});
 		},
 	},

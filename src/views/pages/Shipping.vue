@@ -16,12 +16,20 @@
 									<v-icon size="20">mdi-map-marker-radius-outline</v-icon>
 									<div class="subtitle-text ml-1">Alamat Pengiriman</div>
 								</div>
-								<div class="subtitle-text link-text" @click="showAddressDialog">
+								<div
+									class="subtitle-text link-text"
+									@click="showAddressDialog"
+									v-if="choosenAddress !== null"
+								>
 									Pilih Alamat Lain
 								</div>
 							</div>
 							<v-divider class="ma-1"></v-divider>
-							<div style="min-width: 100%" class="px-2 pt-2">
+							<div
+								style="min-width: 100%"
+								class="px-2 pt-2"
+								v-if="choosenAddress === null"
+							>
 								<div
 									@click="showAddressDialog"
 									v-ripple
@@ -34,8 +42,13 @@
 										address-box-empty
 									"
 								>
-									MOHON LENGKAPI ALAMAT
+									MOHON PILIH ALAMAT
 								</div>
+							</div>
+							<div style="min-width: 100%" class="px-2 pt-2 product-title-text" v-else>
+								<div>{{choosenAddress.contact}} | {{choosenAddress.phone}}</div>
+								<div>{{choosenAddress.road}} ({{choosenAddress.details}})</div>
+								<div>{{choosenAddress.full_address}}</div>
 							</div>
 						</v-card>
 
@@ -332,6 +345,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
 	data() {
 		return {
@@ -351,7 +366,9 @@ export default {
 			this.afterMapping = true;
 			this.order_items = this.$store.getters.getcheckOut;
 		}
-		console.log(this.order_items);
+		// console.log(this.order_items);
+
+		this.getChoosenAddress();
 	},
 	computed: {
 		TotalPrice: function () {
@@ -368,13 +385,28 @@ export default {
 				max: max_total_price,
 			};
 		},
+		...mapGetters({
+			choosenAddress: "auth/getChoosenAddress",
+		}),
 	},
 	methods: {
+		getChoosenAddress() {
+			this.$store
+				.dispatch("auth/getChoosenAddress")
+				.then((response) => {})
+				.catch((e) => {
+					if (e.response) {
+						if (e.response.status !== 404) {
+							console.log(e.response);
+						}
+					}
+				});
+		},
 		closeAddressDialog() {
 			this.addressDialog = false;
 		},
 		showAddressDialog() {
-			this.$router.push({name:"address"})
+			this.$router.push({ name: "address" });
 		},
 		makeOrder() {
 			console.log(this.order_items);
