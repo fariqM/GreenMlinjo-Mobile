@@ -384,11 +384,11 @@
 										<div class="total-text px-1">
 											<div>Total Minimal</div>
 											<div class="text-end">
-												Rp {{ numberWithCommas(TotalPrice.min + 2000) }}
+												Rp {{ numberWithCommas(TotalPrice.min) }}
 											</div>
 											<div>Total Maksimal</div>
 											<div class="text-end">
-												Rp {{ numberWithCommas(TotalPrice.max + 2000) }}
+												Rp {{ numberWithCommas(TotalPrice.max) }}
 											</div>
 										</div>
 									</div>
@@ -422,8 +422,8 @@
 						class="product-price-text ellipsis-text text-center noselect"
 						style="max-width: 7rem; min-width: 100%"
 					>
-						Rp {{ numberWithCommas(TotalPrice.min + 2000) }} - Rp
-						{{ numberWithCommas(TotalPrice.max + 2000) }}
+						Rp {{ numberWithCommas(TotalPrice.min) }} - Rp
+						{{ numberWithCommas(TotalPrice.max) }}
 					</div>
 				</div>
 
@@ -635,6 +635,8 @@ export default {
 		TotalPrice: function () {
 			let min_total_price = 0;
 			let max_total_price = 0;
+			const shippingCost = 10000;
+			const handlingCost = 2000;
 
 			let isChooseProductVoucher = false;
 			let isChooseShippingVoucher = false;
@@ -668,10 +670,10 @@ export default {
 						this.discountShipping = element.discount;
 
 						max_total_price -= Math.ceil(
-							10000 * (element.discount / 100)
+							shippingCost * (element.discount / 100)
 						);
 						min_total_price -= Math.ceil(
-							10000 * (element.discount / 100)
+							shippingCost * (element.discount / 100)
 						);
 					} else {
 						this.discountShippingType = element.discount_type;
@@ -690,6 +692,8 @@ export default {
 				this.discountShipping = 0;
 			}
 
+			min_total_price += shippingCost + handlingCost;
+			max_total_price += shippingCost + handlingCost;
 			return {
 				min: min_total_price,
 				max: max_total_price,
@@ -783,16 +787,13 @@ export default {
 			return newDate;
 		},
 		getVouchers() {
-			this.$store
-				.dispatch("vouchers/getVouchers")
-				.then((response) => console.log(response))
-				.catch((e) => {
-					if (e.response) {
-						if (e.response.status !== 404) {
-							console.log(e.response);
-						}
+			this.$store.dispatch("vouchers/getVouchers").catch((e) => {
+				if (e.response) {
+					if (e.response.status !== 404) {
+						console.log(e.response);
 					}
-				});
+				}
+			});
 		},
 		getChoosenAddress() {
 			this.$store.dispatch("auth/getChoosenAddress").catch((e) => {
