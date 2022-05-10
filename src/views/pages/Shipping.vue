@@ -45,10 +45,19 @@
 									MOHON PILIH ALAMAT
 								</div>
 							</div>
-							<div style="min-width: 100%" class="px-2 pt-2 product-title-text" v-else>
-								<div>{{choosenAddress.contact}} | {{choosenAddress.phone}}</div>
-								<div>{{choosenAddress.road}} ({{choosenAddress.details}})</div>
-								<div>{{choosenAddress.full_address}}</div>
+							<div
+								style="min-width: 100%"
+								class="px-2 pt-2 product-title-text"
+								v-else
+							>
+								<div>
+									{{ choosenAddress.contact }} | {{ choosenAddress.phone }}
+								</div>
+
+								<div>
+									{{ choosenAddress.road }} ({{ choosenAddress.details }})
+								</div>
+								<div>{{ choosenAddress.full_address }}</div>
 							</div>
 						</v-card>
 
@@ -176,7 +185,7 @@
 						<!-- voucer -->
 						<v-card class="mt-3">
 							<v-list class="pa-0">
-								<v-list-item link class="px-2">
+								<v-list-item link class="px-2" @click="voucherDialog = true">
 									<v-list-item-avatar class="pa-0 text-center mr-1">
 										<v-btn icon outlined color="error" :ripple="false" plain>
 											<v-icon color="error">mdi-ticket-percent-outline</v-icon>
@@ -254,24 +263,106 @@
 									</div>
 									<div class="total-text px-1">
 										<div>Harga Minimal</div>
-										<div class="text-end">
-											Rp {{ numberWithCommas(TotalPrice.min) }}
+
+										<div class="text-end" v-if="discountProduct === 0">
+											Rp {{ numberWithCommas(SubTotalPrice.min) }}
 										</div>
+										<div
+											class="text-end"
+											v-if="
+												discountProduct !== 0 &&
+												discountProductType === 'percent'
+											"
+										>
+											Rp <s>{{ numberWithCommas(SubTotalPrice.min) }}</s>
+											<span style="color: #09893c" class="ml-2">
+												{{
+													numberWithCommas(
+														Math.floor(
+															SubTotalPrice.min -
+																SubTotalPrice.min * (discountProduct / 100)
+														)
+													)
+												}}
+											</span>
+										</div>
+
 										<div>Harga Maksimal</div>
-										<div class="text-end">
-											Rp {{ numberWithCommas(TotalPrice.max) }}
+										<div class="text-end" v-if="discountProduct === 0">
+											Rp {{ numberWithCommas(SubTotalPrice.max) }}
+										</div>
+										<div
+											class="text-end"
+											v-if="
+												discountProduct !== 0 &&
+												discountProductType === 'percent'
+											"
+										>
+											Rp <s>{{ numberWithCommas(SubTotalPrice.max) }}</s>
+											<span style="color: #09893c" class="ml-2">
+												{{
+													numberWithCommas(
+														Math.floor(
+															SubTotalPrice.max -
+																SubTotalPrice.max * (discountProduct / 100)
+														)
+													)
+												}}
+											</span>
+										</div>
+										<div
+											class="text-end"
+											v-if="
+												discountProduct !== 0 && discountProductType === 'price'
+											"
+										>
+											Rp <s>{{ numberWithCommas(SubTotalPrice.max) }}</s>
+											<span style="color: #09893c" class="ml-2">
+												{{ numberWithCommas(SubTotalPrice - discountProduct) }}
+											</span>
 										</div>
 									</div>
 								</div>
 								<v-divider></v-divider>
 								<div class="total-text px-1">
 									<div>Biaya Pengiriman</div>
-									<div class="text-end">Rp {{ numberWithCommas(10000) }}</div>
+									<div class="text-end" v-if="discountShipping === 0">
+										Rp {{ numberWithCommas(10000) }}
+									</div>
+									<div
+										class="text-end"
+										v-if="
+											discountShipping !== 0 && discountShippingType === 'price'
+										"
+									>
+										Rp <s>{{ numberWithCommas(10000) }}</s>
+										<span style="color: #09893c" class="ml-2">
+											{{ numberWithCommas(10000 - discountShipping) }}
+										</span>
+									</div>
+
 									<div>
 										Biaya Penanganan
 										<v-icon x-small> mdi-help-circle-outline </v-icon>
 									</div>
 									<div class="text-end">Rp {{ numberWithCommas(2000) }}</div>
+								</div>
+
+								<v-divider></v-divider>
+
+								<div class="total-text px-1">
+									<div>Diskon Pembelian</div>
+									<div
+										class="text-end"
+										:style="{ color: discountProduct === 0 ? '' : '#09893C' }"
+									>
+										{{ discountProduct }}%
+									</div>
+									<!-- <div>
+										Diskon Pengiriman
+										<v-icon x-small> mdi-help-circle-outline </v-icon>
+									</div>
+									<div class="text-end" :style="{color:discountShipping === 0 ? '':'#09893C'}">{{ discountShipping }}%</div> -->
 								</div>
 								<v-divider></v-divider>
 								<div class="py-3">
@@ -293,11 +384,11 @@
 										<div class="total-text px-1">
 											<div>Total Minimal</div>
 											<div class="text-end">
-												Rp {{ numberWithCommas(TotalPrice.min + 10000 + 2000) }}
+												Rp {{ numberWithCommas(TotalPrice.min + 2000) }}
 											</div>
 											<div>Total Maksimal</div>
 											<div class="text-end">
-												Rp {{ numberWithCommas(TotalPrice.max + 10000 + 2000) }}
+												Rp {{ numberWithCommas(TotalPrice.max + 2000) }}
 											</div>
 										</div>
 									</div>
@@ -331,23 +422,167 @@
 						class="product-price-text ellipsis-text text-center noselect"
 						style="max-width: 7rem; min-width: 100%"
 					>
-						Rp {{ numberWithCommas(TotalPrice.min + 10000 + 2000) }} - Rp
-						{{ numberWithCommas(TotalPrice.max + 10000 + 2000) }}
+						Rp {{ numberWithCommas(TotalPrice.min + 2000) }} - Rp
+						{{ numberWithCommas(TotalPrice.max + 2000) }}
 					</div>
 				</div>
 
-				<v-btn elevation="0" color="primary" small @click="makeOrder"
+				<v-btn
+					elevation="0"
+					color="primary"
+					small
+					@click="makeOrder"
+					:disabled="btnDisabled"
 					>Buat Pesanan</v-btn
 				>
 			</div>
 		</div>
+
+		<!-- dialog -->
+		<v-dialog v-model="voucherDialog" persistent fullscreen>
+			<v-toolbar color="primary" elevation="0" tile dense absolute width="100%">
+				<v-btn icon @click="voucherDialog = false">
+					<v-icon>mdi-arrow-left</v-icon>
+				</v-btn>
+				<v-toolbar-title>Pilih Voucher</v-toolbar-title>
+			</v-toolbar>
+
+			<v-sheet class="overflow-y-auto white" height="calc(100vh - 48px)">
+				<v-subheader
+					style="margin-top: 48px"
+					class="py-0 px-2 mb-0 title-voucher"
+					>Voucher Diskon Produk</v-subheader
+				>
+				<div class="px-2 py-0" v-for="(voucher, i) in vouchers" :key="i">
+					<div
+						class="voucher-box d-flex"
+						v-if="voucher.voucher_type === 'product'"
+					>
+						<div class="box-circle-product">
+							<div class="half-circle"></div>
+							<div class="d-flex align-center" style="width: fit-content">
+								<product-discount class="mr-1" />
+							</div>
+							<v-checkbox
+								class="pa-0"
+								style="position: absolute"
+								:value="voucher"
+								v-model="selectedVoucher"
+							></v-checkbox>
+						</div>
+						<div class="px-1">
+							<div class="title-text">
+								{{ voucher.title }}
+							</div>
+							<div
+								class="subtitle-text"
+								v-if="voucher.discount_type === 'percent'"
+							>
+								Diskon
+								<b style="color: rgb(90 161 0)">{{ voucher.discount }}% </b>
+								tanpa minimal pembelian.
+							</div>
+							<div
+								class="subtitle-text"
+								v-if="voucher.discount_type === 'price'"
+							>
+								Diskon
+								<b style="color: rgb(90 161 0)">Rp {{ voucher.discount }} </b>
+								tanpa minimal pembelian.
+							</div>
+							<div class="normal-text">
+								berlaku sampai : {{ formatDate(voucher.exp) }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<v-divider class="mt-4 mb-1" />
+
+				<v-subheader class="py-0 px-2 mb-0 title-voucher"
+					>Voucher Diskon Pengiriman</v-subheader
+				>
+				<div
+					class="px-2 py-0"
+					v-for="(voucher, i) in vouchers"
+					:key="i + 'key'"
+				>
+					<div
+						class="voucher-box d-flex"
+						v-if="voucher.voucher_type === 'shipping'"
+					>
+						<div class="box-circle-shipping">
+							<div class="half-circle"></div>
+							<div class="d-flex align-center" style="width: fit-content">
+								<delivery-icon />
+							</div>
+							<v-checkbox
+								class="pa-0"
+								style="position: absolute"
+								:value="voucher"
+								v-model="selectedVoucher"
+							></v-checkbox>
+						</div>
+						<div class="px-1">
+							<div class="title-text">
+								{{ voucher.title }}
+							</div>
+							<div
+								class="subtitle-text"
+								v-if="voucher.discount_type === 'percent'"
+							>
+								Diskon
+								<b style="color: rgb(90 161 0)">{{ voucher.discount }}% </b>
+								tanpa minimal pembelian.
+							</div>
+							<div
+								class="subtitle-text"
+								v-if="voucher.discount_type === 'price'"
+							>
+								Diskon
+								<b style="color: rgb(90 161 0)">Rp{{ voucher.discount }} </b>
+								tanpa minimal pembelian.
+							</div>
+							<div class="normal-text">
+								berlaku sampai : {{ formatDate(voucher.exp) }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					style="
+						position: absolute;
+						bottom: 0;
+						width: 100%;
+						height: 50px;
+						background: #fff;
+					"
+					class="pa-2"
+				>
+					<v-btn
+						@click="voucherDialog = false"
+						block
+						color="primary"
+						:disabled="selectedVoucher.length === 0 ? true : false"
+						>Pilih voucher</v-btn
+					>
+				</div>
+			</v-sheet>
+		</v-dialog>
 	</div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import DeliveryIcon from "../components/icon/Delivery.vue";
+import ProductDiscount from "../components/icon/ProuctDiscount.vue";
 
 export default {
+	components: {
+		DeliveryIcon,
+		ProductDiscount,
+	},
 	data() {
 		return {
 			windowWidth: window.innerWidth,
@@ -356,6 +591,13 @@ export default {
 			url: __BASE_URL__,
 			order_items: [],
 			notes: [],
+			voucherDialog: false,
+			selectedVoucher: [],
+			discountProduct: 0,
+			discountProductType: null,
+			discountShipping: 0,
+			discountShippingType: null,
+			// btnDisabled: false,
 		};
 	},
 	mounted() {
@@ -369,9 +611,14 @@ export default {
 		// console.log(this.order_items);
 
 		this.getChoosenAddress();
+		this.getVouchers();
+	},
+	watch: {
+		// selectedVoucher: function (newVal) {
+		// },
 	},
 	computed: {
-		TotalPrice: function () {
+		SubTotalPrice: function () {
 			let min_total_price = 0;
 			let max_total_price = 0;
 
@@ -385,15 +632,160 @@ export default {
 				max: max_total_price,
 			};
 		},
+		TotalPrice: function () {
+			let min_total_price = 0;
+			let max_total_price = 0;
+
+			let isChooseProductVoucher = false;
+			let isChooseShippingVoucher = false;
+
+			min_total_price = this.SubTotalPrice.min;
+			max_total_price = this.SubTotalPrice.max;
+
+			this.selectedVoucher.forEach((element) => {
+				if (Object.values(element).includes("product")) {
+					isChooseProductVoucher = true;
+				} else if (Object.values(element).includes("shipping")) {
+					isChooseShippingVoucher = true;
+				}
+				if (element.voucher_type === "product") {
+					if (element.discount_type === "percent") {
+						this.discountProductType = element.discount_type;
+						this.discountProduct = element.discount;
+						max_total_price -= Math.ceil(
+							max_total_price * (element.discount / 100)
+						);
+						min_total_price -= Math.ceil(
+							min_total_price * (element.discount / 100)
+						);
+					} else {
+						max_total_price -= element.discount;
+						min_total_price -= element.discount;
+					}
+				} else if (element.voucher_type === "shipping") {
+					if (element.discount_type === "percent") {
+						this.discountShippingType = element.discount_type;
+						this.discountShipping = element.discount;
+
+						max_total_price -= Math.ceil(
+							10000 * (element.discount / 100)
+						);
+						min_total_price -= Math.ceil(
+							10000 * (element.discount / 100)
+						);
+					} else {
+						this.discountShippingType = element.discount_type;
+						this.discountShipping = element.discount;
+
+						max_total_price -= element.discount;
+						min_total_price -= element.discount;
+					}
+				}
+			});
+
+			if (!isChooseProductVoucher) {
+				this.discountProduct = 0;
+			}
+			if (!isChooseShippingVoucher) {
+				this.discountShipping = 0;
+			}
+
+			return {
+				min: min_total_price,
+				max: max_total_price,
+			};
+		},
 		...mapGetters({
 			choosenAddress: "auth/getChoosenAddress",
+			vouchers: "vouchers/getVouchers",
 		}),
+		btnDisabled: function () {
+			let disabled = false;
+			if (this.choosenAddress === null) {
+				disabled = true;
+			}
+			return disabled;
+		},
 	},
 	methods: {
-		getChoosenAddress() {
+		formatDate(date) {
+			const [year, month, day] = [...date.split("-")];
+			const monthIndex = month - 1;
+
+			var date = new Date(year, monthIndex, day);
+			var tahun = date.getFullYear();
+			var bulan = date.getMonth();
+			var tanggal = date.getDate();
+			var hari = date.getDay();
+			switch (hari) {
+				case 0:
+					hari = "Minggu";
+					break;
+				case 1:
+					hari = "Senin";
+					break;
+				case 2:
+					hari = "Selasa";
+					break;
+				case 3:
+					hari = "Rabu";
+					break;
+				case 4:
+					hari = "Kamis";
+					break;
+				case 5:
+					hari = "Jum'at";
+					break;
+				case 6:
+					hari = "Sabtu";
+					break;
+			}
+			switch (bulan) {
+				case 0:
+					bulan = "Januari";
+					break;
+				case 1:
+					bulan = "Februari";
+					break;
+				case 2:
+					bulan = "Maret";
+					break;
+				case 3:
+					bulan = "April";
+					break;
+				case 4:
+					bulan = "Mei";
+					break;
+				case 5:
+					bulan = "Juni";
+					break;
+				case 6:
+					bulan = "Juli";
+					break;
+				case 7:
+					bulan = "Agustus";
+					break;
+				case 8:
+					bulan = "September";
+					break;
+				case 9:
+					bulan = "Oktober";
+					break;
+				case 10:
+					bulan = "November";
+					break;
+				case 11:
+					bulan = "Desember";
+					break;
+			}
+
+			let newDate = tanggal + " " + bulan + " " + tahun;
+			return newDate;
+		},
+		getVouchers() {
 			this.$store
-				.dispatch("auth/getChoosenAddress")
-				.then((response) => {})
+				.dispatch("vouchers/getVouchers")
+				.then((response) => console.log(response))
 				.catch((e) => {
 					if (e.response) {
 						if (e.response.status !== 404) {
@@ -402,6 +794,15 @@ export default {
 					}
 				});
 		},
+		getChoosenAddress() {
+			this.$store.dispatch("auth/getChoosenAddress").catch((e) => {
+				if (e.response) {
+					if (e.response.status !== 404) {
+						console.log(e.response);
+					}
+				}
+			});
+		},
 		closeAddressDialog() {
 			this.addressDialog = false;
 		},
@@ -409,7 +810,29 @@ export default {
 			this.$router.push({ name: "address" });
 		},
 		makeOrder() {
-			console.log(this.order_items);
+			let form = {
+				market_id: 1,
+				address:
+					this.choosenAddress.contact +
+					" | " +
+					this.choosenAddress.phone +
+					" \n " +
+					this.choosenAddress.road +
+					" " +
+					this.choosenAddress.details +
+					" \n " +
+					this.choosenAddress.full_address,
+				total_max_price: this.TotalPrice.max,
+				total_min_price: this.TotalPrice.min,
+				product_discount: 0,
+				paid: null,
+				payment_type: "COD",
+				shipping_discount: 0,
+				order_product: this.order_items,
+			};
+			console.log("form", form);
+			console.log("total price", this.TotalPrice);
+			console.log("order items", this.order_items);
 		},
 		onResize() {
 			this.windowWidth = window.innerWidth;
@@ -424,6 +847,63 @@ export default {
 </script>
 
 <style>
+.title-voucher {
+	height: 30px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #000 !important;
+}
+.box-circle-product {
+	width: 90px;
+	height: 59px;
+	border-right: 1px dashed #d4d4d4;
+	background: linear-gradient(
+		90deg,
+		rgba(135, 189, 67, 1) 0%,
+		rgba(180, 240, 106, 1) 40%,
+		rgba(255, 255, 255, 1) 100%
+	);
+	display: grid;
+	justify-content: end;
+}
+.box-circle-shipping {
+	width: 90px;
+	height: 59px;
+	border-right: 1px dashed #d4d4d4;
+	background: linear-gradient(
+		90deg,
+		rgba(251, 138, 60, 1) 0%,
+		rgba(255, 218, 192, 1) 70%,
+		rgba(255, 255, 255, 1) 100%
+	);
+	display: grid;
+	justify-content: end;
+}
+.half-circle {
+	/* Create the circle */
+	width: 59.5px;
+	height: 59px;
+	/* border: 1px solid #a3a3a3; */
+	border-radius: 50%;
+	background: #fff;
+	/* Halve the circle */
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+	/* Rotate the circle */
+	transform: rotate(45deg);
+	position: absolute;
+	left: -20px;
+
+	/* Legacy vendor prefixes that you probably don't need... */
+}
+.voucher-box {
+	border-top: 1px solid #a3a3a3;
+	border-right: 1px solid #a3a3a3;
+	border-bottom: 1px solid #a3a3a3;
+	min-height: 61px;
+	border-radius: 4px;
+	/* border-radius: 4px; */
+}
 .address-box-empty {
 	width: 100%;
 	color: #ff000075;
