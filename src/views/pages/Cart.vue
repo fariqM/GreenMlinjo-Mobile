@@ -139,8 +139,7 @@
 														class="product-price-text ellipsis-text noselect"
 														style="max-width: 95px"
 													>
-														Rp {{ numberWithCommas(cart.min_price) }} - Rp
-														{{ numberWithCommas(cart.max_price) }}
+														Rp {{ numberWithCommas(cart.price) }}
 													</div>
 												</div>
 												<div
@@ -302,8 +301,7 @@
 						class="product-price-text ellipsis-text text-center noselect"
 						style="max-width: 7rem; min-width: 100%"
 					>
-						Rp {{ numberWithCommas(totalMinPrice) }} - Rp
-						{{ numberWithCommas(totalMaxPrice) }}
+						Rp {{ numberWithCommas(totalPrice) }}
 					</div>
 				</div>
 
@@ -311,6 +309,7 @@
 					v-if="CheckBoxSelected.length === 0"
 					elevation="0"
 					color="primary"
+					disabled
 					small
 					>Beli</v-btn
 				>
@@ -371,8 +370,7 @@ export default {
 			adjusMinustState: null,
 			heightWindows: window.innerHeight,
 			tesHeight: null,
-			totalMinPrice: 0,
-			totalMaxPrice: 0,
+			totalPrice:0,
 			dialog: false,
 		};
 	},
@@ -458,21 +456,14 @@ export default {
 			// console.log(products);
 		},
 		countTotalPrice() {
-			// count total
-			this.totalMinPrice = 0;
-			this.totalMaxPrice = 0;
+			let newTotalPrice = 0;
 			for (let index = 0; index < this.CheckBoxSelected.length; index++) {
 				let cart_index = _.findIndex(this.carts, {
 					cart_id: this.CheckBoxSelected[index],
 				});
-				// console.log(cart_index);
-				// console.log();
-				// console.log(this.carts[index].min_price+ '*' + this.carts[index].qty);
-				this.totalMinPrice +=
-					this.carts[cart_index].min_price * this.carts[cart_index].qty;
-				this.totalMaxPrice +=
-					this.carts[cart_index].max_price * this.carts[cart_index].qty;
+				newTotalPrice += this.carts[cart_index].price * this.carts[cart_index].qty;
 			}
+			this.totalPrice = newTotalPrice
 		},
 		minusQty(index) {
 			if (this.carts[index].qty > 1) {

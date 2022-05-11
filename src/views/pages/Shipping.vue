@@ -3,400 +3,359 @@
 		<v-main>
 			<div style="height: 100%; background-color: #f5f5f5" v-resize="onResize">
 				<mlj-toolbar :loading="loading" :page="'Pengiriman'"></mlj-toolbar>
-
-				<v-sheet
-					class="overflow-y-auto"
-					:max-height="windowsHeight - 110 + 'px'"
+				<my-scroll
+					ref="vs"
+					:ops="ops"
+					:style="{ 'max-height': windowsHeight - 110 + 'px' }"
 				>
-					<div class="my-2">
-						<!-- Address -->
-						<v-card class="noselect py-3">
-							<div class="d-flex align-end justify-space-between px-1 py-1">
-								<div class="d-flex align-end">
-									<v-icon size="20">mdi-map-marker-radius-outline</v-icon>
-									<div class="subtitle-text ml-1">Alamat Pengiriman</div>
-								</div>
-								<div
-									class="subtitle-text link-text"
-									@click="showAddressDialog"
-									v-if="choosenAddress !== null"
-								>
-									Pilih Alamat Lain
-								</div>
-							</div>
-							<v-divider class="ma-1"></v-divider>
-							<div
-								style="min-width: 100%"
-								class="px-2 pt-2"
-								v-if="choosenAddress === null"
-							>
-								<div
-									@click="showAddressDialog"
-									v-ripple
-									class="
-										d-flex
-										justify-center
-										align-center
-										subtitle-text
-										rounded
-										address-box-empty
-									"
-								>
-									MOHON PILIH ALAMAT
-								</div>
-							</div>
-							<div
-								style="min-width: 100%"
-								class="px-2 pt-2 product-title-text"
-								v-else
-							>
-								<div>
-									{{ choosenAddress.contact }} | {{ choosenAddress.phone }}
-								</div>
-
-								<div>
-									{{ choosenAddress.road }} ({{ choosenAddress.details }})
-								</div>
-								<div>{{ choosenAddress.full_address }}</div>
-							</div>
-						</v-card>
-
-						<!-- Item Order -->
-						<v-card class="noselect pa-3 mt-2">
-							<div class="d-flex align-end">
-								<v-btn
-									depressed
-									icon
-									color="primary"
-									small
-									outlined
-									tile
-									:ripple="false"
-								>
-									<v-icon>mdi-store-outline</v-icon>
-								</v-btn>
-
-								<div class="ml-1" style="font-size: 1rem; font-weight: 500">
-									Pasar Blauran
-								</div>
-							</div>
-
-							<v-subheader
-								class="pa-0"
-								style="font-weight: 500; text-decoration: underline"
-								>Macam barang : {{ order_items.length }}</v-subheader
-							>
-
-							<div class="order-box rounded">
-								<div v-for="(item, i) in order_items" :key="i" class="mb-3">
-									<div class="d-flex">
-										<v-avatar size="75" tile>
-											<img
-												:src="url + 'storage/images/products/wortel.jpg'"
-												alt="alt"
-											/>
-										</v-avatar>
-										<div
-											class="d-flex flex-column ml-1"
-											:style="{ width: windowWidth - 115 + 'px' }"
-											style="max-width: calc(30.5rem - 115px)"
-										>
-											<div class="product-title-text ellipsis-text">
-												{{ item.title }}
-											</div>
-											<div class="product-subtitle-text ellipsis-text">
-												{{ item.description }}
-											</div>
-											<div class="mt-auto">
-												<div class="product-price-text ellipsis-text">
-													Rp {{ numberWithCommas(item.min_price) }} - Rp
-													{{ numberWithCommas(item.max_price) }}
-												</div>
-												<div
-													v-if="item.max_qty_per_unit !== null"
-													class="qty-text ellipsis-text"
-												>
-													x{{ item.qty }} {{ item.unit }} ({{
-														item.min_qty_per_unit * item.qty
-													}}-{{ item.max_qty_per_unit * item.qty }}
-													{{ item.sub_unit }})
-												</div>
-												<div v-else class="qty-text ellipsis-text">
-													x{{ item.qty }} {{ item.unit }} ({{
-														item.min_qty_per_unit * item.qty
-													}}
-													{{ item.sub_unit }})
-												</div>
-											</div>
-											<!-- <v-divider></v-divider> -->
-										</div>
+					<v-sheet :max-height="windowsHeight - 110 + 'px'" max-width="99vw">
+						<div class="my-2">
+							<!-- Address -->
+							<v-card class="noselect py-3">
+								<div class="d-flex align-end justify-space-between px-1 py-1">
+									<div class="d-flex align-end">
+										<v-icon size="20">mdi-map-marker-radius-outline</v-icon>
+										<div class="subtitle-text ml-1">Alamat Pengiriman</div>
 									</div>
-									<v-divider class="my-1"></v-divider>
 									<div
-										class=""
-										style="
-											display: grid;
-											grid-template-columns: auto 1fr;
-											align-items: center;
-										"
+										class="subtitle-text link-text"
+										@click="showAddressDialog"
+										v-if="choosenAddress !== null"
 									>
-										<div style="font-size: 0.8rem; margin-right: 5px">
-											Catatan :
-										</div>
-										<!-- <v-spacer></v-spacer> -->
-										<!-- <input type="text" style="outline: none;font-size: 0.8rem"> -->
-
-										<v-text-field
-											class="pb-1"
-											dense
-											hide-details
-											v-model="item.notes"
-											style="font-size: 0.8rem"
-											single-line
-										></v-text-field>
+										Pilih Alamat Lain
 									</div>
-									<!-- <v-divider class="my-1"></v-divider> -->
+								</div>
+								<v-divider class="ma-1"></v-divider>
+								<div
+									style="min-width: 100%"
+									class="px-2 pt-2"
+									v-if="choosenAddress === null"
+								>
 									<div
+										@click="showAddressDialog"
+										v-ripple
 										class="
 											d-flex
+											justify-center
 											align-center
-											justify-space-between
-											px-1
-											py-2
-											mt-1
+											subtitle-text
 											rounded
-										"
-										style="font-size: 0.8rem; background-color: #e3e3e3ad"
-									>
-										<div style="font-weight: 500">Subtotal :</div>
-										<div style="font-weight: 500">
-											Rp {{ numberWithCommas(item.min_price * item.qty) }} - Rp
-											{{ numberWithCommas(item.max_price * item.qty) }}
-										</div>
-									</div>
-									<v-divider
-										v-if="i !== order_items.length - 1"
-										class="my-2"
-									></v-divider>
-								</div>
-							</div>
-						</v-card>
-
-						<!-- voucer -->
-						<v-card class="mt-3">
-							<v-list class="pa-0">
-								<v-list-item link class="px-2" @click="voucherDialog = true">
-									<v-list-item-avatar class="pa-0 text-center mr-1">
-										<v-btn icon outlined color="error" :ripple="false" plain>
-											<v-icon color="error">mdi-ticket-percent-outline</v-icon>
-										</v-btn>
-									</v-list-item-avatar>
-
-									<v-list-item-content>
-										<v-list-item-title class="product-title-text">
-											Gunakan voucher kupon
-										</v-list-item-title>
-
-										<v-list-item-subtitle class="product-subtitle-text">
-											Pilih voucher untuk mendapatkan potongan!
-										</v-list-item-subtitle>
-									</v-list-item-content>
-
-									<v-list-item-action>
-										<v-btn icon :ripple="false" plain>
-											<v-icon color="grey lighten-1">mdi-chevron-right</v-icon>
-										</v-btn>
-									</v-list-item-action>
-								</v-list-item>
-
-								<v-divider></v-divider>
-
-								<v-list-item link class="px-2">
-									<v-list-item-avatar class="pa-0 text-center mr-1">
-										<v-btn icon outlined color="primary" :ripple="false" plain>
-											<v-icon color="primary">mdi-cash</v-icon>
-										</v-btn>
-									</v-list-item-avatar>
-
-									<v-list-item-content>
-										<v-list-item-title class="product-title-text">
-											Metode Pembayaran
-										</v-list-item-title>
-									</v-list-item-content>
-
-									<div class="d-flex align-center">
-										<!-- <div class="product-title-text accent">COD</div> -->
-										<v-list-item-title class="product-title-text">
-											COD
-										</v-list-item-title>
-										<v-btn
-											icon
-											:ripple="false"
-											plain
-											text
-											style="font-size: 0.7rem"
-										>
-											<v-icon color="grey lighten-1">mdi-chevron-right</v-icon>
-										</v-btn>
-									</div>
-								</v-list-item>
-							</v-list>
-						</v-card>
-
-						<!-- Total Price -->
-						<v-card class="mt-3">
-							<v-subheader
-								class="px-1 my-1"
-								style="font-size: 1rem; font-weight: 600; max-height: 24px"
-								>*Ringkasan Belanja</v-subheader
-							>
-							<div class="px-3">
-								<div style="">
-									<div
-										class="total-text"
-										style="font-size: 0.9rem; font-weight: 600"
-									>
-										<div>
-											Perkiraan Subtotal
-											<v-icon small> mdi-help-circle-outline </v-icon>
-										</div>
-									</div>
-									<div class="total-text px-1">
-										<div>Harga Minimal</div>
-
-										<div class="text-end" v-if="discountProduct === 0">
-											Rp {{ numberWithCommas(SubTotalPrice.min) }}
-										</div>
-										<div
-											class="text-end"
-											v-if="
-												discountProduct !== 0 &&
-												discountProductType === 'percent'
-											"
-										>
-											Rp <s>{{ numberWithCommas(SubTotalPrice.min) }}</s>
-											<span style="color: #09893c" class="ml-2">
-												{{
-													numberWithCommas(
-														Math.floor(
-															SubTotalPrice.min -
-																SubTotalPrice.min * (discountProduct / 100)
-														)
-													)
-												}}
-											</span>
-										</div>
-
-										<div>Harga Maksimal</div>
-										<div class="text-end" v-if="discountProduct === 0">
-											Rp {{ numberWithCommas(SubTotalPrice.max) }}
-										</div>
-										<div
-											class="text-end"
-											v-if="
-												discountProduct !== 0 &&
-												discountProductType === 'percent'
-											"
-										>
-											Rp <s>{{ numberWithCommas(SubTotalPrice.max) }}</s>
-											<span style="color: #09893c" class="ml-2">
-												{{
-													numberWithCommas(
-														Math.floor(
-															SubTotalPrice.max -
-																SubTotalPrice.max * (discountProduct / 100)
-														)
-													)
-												}}
-											</span>
-										</div>
-										<div
-											class="text-end"
-											v-if="
-												discountProduct !== 0 && discountProductType === 'price'
-											"
-										>
-											Rp <s>{{ numberWithCommas(SubTotalPrice.max) }}</s>
-											<span style="color: #09893c" class="ml-2">
-												{{ numberWithCommas(SubTotalPrice - discountProduct) }}
-											</span>
-										</div>
-									</div>
-								</div>
-								<v-divider></v-divider>
-								<div class="total-text px-1">
-									<div>Biaya Pengiriman</div>
-									<div class="text-end" v-if="discountShipping === 0">
-										Rp {{ numberWithCommas(10000) }}
-									</div>
-									<div
-										class="text-end"
-										v-if="
-											discountShipping !== 0 && discountShippingType === 'price'
+											address-box-empty
 										"
 									>
-										Rp <s>{{ numberWithCommas(10000) }}</s>
-										<span style="color: #09893c" class="ml-2">
-											{{ numberWithCommas(10000 - discountShipping) }}
-										</span>
+										MOHON PILIH ALAMAT
+									</div>
+								</div>
+								<div
+									style="min-width: 100%"
+									class="px-2 pt-2 product-title-text"
+									v-else
+								>
+									<div>
+										{{ choosenAddress.contact }} | {{ choosenAddress.phone }}
 									</div>
 
 									<div>
-										Biaya Penanganan
-										<v-icon x-small> mdi-help-circle-outline </v-icon>
+										{{ choosenAddress.road }} ({{ choosenAddress.details }})
 									</div>
-									<div class="text-end">Rp {{ numberWithCommas(2000) }}</div>
+									<div>{{ choosenAddress.full_address }}</div>
+								</div>
+							</v-card>
+
+							<!-- Item Order -->
+							<v-card class="noselect pa-3 mt-2">
+								<div class="d-flex align-end">
+									<v-btn
+										depressed
+										icon
+										color="primary"
+										small
+										outlined
+										tile
+										:ripple="false"
+									>
+										<v-icon>mdi-store-outline</v-icon>
+									</v-btn>
+
+									<div class="ml-1" style="font-size: 1rem; font-weight: 500">
+										Pasar Blauran
+									</div>
 								</div>
 
-								<v-divider></v-divider>
+								<v-subheader
+									class="pa-0"
+									style="font-weight: 500; text-decoration: underline"
+									>Macam barang : {{ order_items.length }}</v-subheader
+								>
 
-								<div class="total-text px-1">
-									<div>Diskon Pembelian</div>
-									<div
-										class="text-end"
-										:style="{ color: discountProduct === 0 ? '' : '#09893C' }"
-									>
-										{{ discountProduct }}%
-									</div>
-									<!-- <div>
-										Diskon Pengiriman
-										<v-icon x-small> mdi-help-circle-outline </v-icon>
-									</div>
-									<div class="text-end" :style="{color:discountShipping === 0 ? '':'#09893C'}">{{ discountShipping }}%</div> -->
-								</div>
-								<v-divider></v-divider>
-								<div class="py-3">
-									<div
-										style="
-											outline: rgb(255 0 0) dashed 2px;
-											outline-offset: 3px;
-										"
-									>
+								<div class="order-box rounded">
+									<div v-for="(item, i) in order_items" :key="i" class="mb-3">
+										<div class="d-flex">
+											<v-avatar size="75" tile>
+												<img
+													:src="url + 'storage/images/products/wortel.jpg'"
+													alt="alt"
+												/>
+											</v-avatar>
+											<div
+												class="d-flex flex-column ml-1"
+												:style="{ width: windowWidth - 115 + 'px' }"
+												style="max-width: calc(30.5rem - 115px)"
+											>
+												<div class="product-title-text ellipsis-text">
+													{{ item.title }}
+												</div>
+												<div class="product-subtitle-text ellipsis-text">
+													{{ item.description }}
+												</div>
+												<div class="mt-auto">
+													<div class="product-price-text ellipsis-text">
+														Rp {{ numberWithCommas(item.price) }}
+													</div>
+													<div
+														v-if="item.max_qty_per_unit !== null"
+														class="qty-text ellipsis-text"
+													>
+														x{{ item.qty }} {{ item.unit }} ({{
+															item.min_qty_per_unit * item.qty
+														}}-{{ item.max_qty_per_unit * item.qty }}
+														{{ item.sub_unit }})
+													</div>
+													<div v-else class="qty-text ellipsis-text">
+														x{{ item.qty }} {{ item.unit }} ({{
+															item.min_qty_per_unit * item.qty
+														}}
+														{{ item.sub_unit }})
+													</div>
+												</div>
+												<!-- <v-divider></v-divider> -->
+											</div>
+										</div>
+										<v-divider class="my-1"></v-divider>
 										<div
-											class="total-text"
-											style="font-size: 0.9rem; font-weight: 600"
+											class=""
+											style="
+												display: grid;
+												grid-template-columns: auto 1fr;
+												align-items: center;
+											"
 										>
-											<div>
-												Perkiraan Total Pembayaran
-												<v-icon small> mdi-help-circle-outline </v-icon>
+											<div style="font-size: 0.8rem; margin-right: 5px">
+												Catatan :
+											</div>
+											<!-- <v-spacer></v-spacer> -->
+											<!-- <input type="text" style="outline: none;font-size: 0.8rem"> -->
+
+											<v-text-field
+												class="pb-1"
+												dense
+												hide-details
+												v-model="item.notes"
+												style="font-size: 0.8rem"
+												single-line
+											></v-text-field>
+										</div>
+										<!-- <v-divider class="my-1"></v-divider> -->
+										<div
+											class="
+												d-flex
+												align-center
+												justify-space-between
+												px-1
+												py-2
+												mt-1
+												rounded
+											"
+											style="font-size: 0.8rem; background-color: #e3e3e3ad"
+										>
+											<div style="font-weight: 500">Subtotal :</div>
+											<div style="font-weight: 500">
+												Rp {{ numberWithCommas(item.price * item.qty) }}
 											</div>
 										</div>
-										<div class="total-text px-1">
-											<div>Total Minimal</div>
-											<div class="text-end">
-												Rp {{ numberWithCommas(TotalPrice.min) }}
-											</div>
-											<div>Total Maksimal</div>
-											<div class="text-end">
-												Rp {{ numberWithCommas(TotalPrice.max) }}
+										<v-divider
+											v-if="i !== order_items.length - 1"
+											class="my-2"
+										></v-divider>
+									</div>
+								</div>
+							</v-card>
+
+							<!-- voucer -->
+							<v-card class="mt-3">
+								<v-list class="pa-0">
+									<v-list-item link class="px-2" @click="voucherDialog = true">
+										<v-list-item-avatar class="pa-0 text-center mr-1">
+											<v-btn icon outlined color="error" :ripple="false" plain>
+												<v-icon color="error"
+													>mdi-ticket-percent-outline</v-icon
+												>
+											</v-btn>
+										</v-list-item-avatar>
+
+										<v-list-item-content>
+											<v-list-item-title class="product-title-text">
+												Gunakan voucher kupon
+											</v-list-item-title>
+
+											<v-list-item-subtitle class="product-subtitle-text">
+												Pilih voucher untuk mendapatkan potongan!
+											</v-list-item-subtitle>
+										</v-list-item-content>
+
+										<v-list-item-action>
+											<v-btn icon :ripple="false" plain>
+												<v-icon color="grey lighten-1"
+													>mdi-chevron-right</v-icon
+												>
+											</v-btn>
+										</v-list-item-action>
+									</v-list-item>
+
+									<v-divider></v-divider>
+
+									<v-list-item link class="px-2">
+										<v-list-item-avatar class="pa-0 text-center mr-1">
+											<v-btn
+												icon
+												outlined
+												color="primary"
+												:ripple="false"
+												plain
+											>
+												<v-icon color="primary">mdi-cash</v-icon>
+											</v-btn>
+										</v-list-item-avatar>
+
+										<v-list-item-content>
+											<v-list-item-title class="product-title-text">
+												Metode Pembayaran
+											</v-list-item-title>
+										</v-list-item-content>
+
+										<div class="d-flex align-center">
+											<!-- <div class="product-title-text accent">COD</div> -->
+											<v-list-item-title class="product-title-text">
+												COD
+											</v-list-item-title>
+											<v-btn
+												icon
+												:ripple="false"
+												plain
+												text
+												style="font-size: 0.7rem"
+											>
+												<v-icon color="grey lighten-1"
+													>mdi-chevron-right</v-icon
+												>
+											</v-btn>
+										</div>
+									</v-list-item>
+								</v-list>
+							</v-card>
+
+							<!-- Total Price -->
+							<v-card class="mt-3">
+								<v-subheader
+									class="px-1 my-1"
+									style="font-size: 1rem; font-weight: 600; max-height: 24px"
+									>*Ringkasan Belanja</v-subheader
+								>
+								<div class="px-3">
+									<div
+										class="total-text total-subheader"
+										v-if="selectedVoucher.length > 0"
+									>
+										<div>Voucher dipakai :</div>
+									</div>
+									<div
+										class="voucher-text mb-2"
+										v-if="selectedVoucher.length > 0"
+									>
+										<li
+											style="color: #09893c"
+											v-for="(voucher, i) in selectedVoucher"
+											:key="i"
+										>
+											{{ voucher.description }}
+										</li>
+									</div>
+									<v-divider v-if="selectedVoucher.length > 0" />
+
+									<div class="total-text total-subheader">
+										<div>Jumlah Subtotal</div>
+										<div class="text-end" v-if="discountProduct === 0">
+											Rp {{ numberWithCommas(SubTotalPrice) }}
+										</div>
+										<div
+											class="text-end"
+											v-if="
+												discountProduct !== 0 &&
+												discountProductType === 'percent'
+											"
+										>
+											Rp <s>{{ numberWithCommas(SubTotalPrice) }}</s>
+											<span style="color: #09893c" class="ml-2">
+												{{
+													numberWithCommas(
+														Math.floor(
+															SubTotalPrice -
+																SubTotalPrice * (discountProduct / 100)
+														)
+													)
+												}}
+											</span>
+										</div>
+									</div>
+									<v-divider></v-divider>
+									<div class="total-text px-1">
+										<div>Biaya Pengiriman</div>
+										<div class="text-end" v-if="discountShipping === 0">
+											Rp {{ numberWithCommas(10000) }}
+										</div>
+										<div
+											class="text-end"
+											v-if="
+												discountShipping !== 0 &&
+												discountShippingType === 'price'
+											"
+										>
+											Rp <s>{{ numberWithCommas(10000) }}</s>
+											<span style="color: #09893c" class="ml-2">
+												{{ numberWithCommas(10000 - discountShipping) }}
+											</span>
+										</div>
+
+										<div>
+											Biaya Penanganan
+											<v-icon x-small> mdi-help-circle-outline </v-icon>
+										</div>
+										<div class="text-end">Rp {{ numberWithCommas(2000) }}</div>
+									</div>
+
+									<!-- <v-divider v-if="selectedVoucher.length > 0"></v-divider> -->
+
+									<v-divider></v-divider>
+									<div class="py-3">
+										<div
+											style="
+												outline: rgb(255 0 0) dashed 2px;
+												outline-offset: 3px;
+											"
+										>
+											<div class="total-text total-subheader">
+												<div>Total Keseluruhan</div>
+												<div class="text-end">
+													Rp {{ numberWithCommas(TotalPrice) }}
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</v-card>
-					</div>
-				</v-sheet>
+							</v-card>
+						</div>
+					</v-sheet>
+				</my-scroll>
 			</div>
 		</v-main>
 
@@ -420,21 +379,36 @@
 					</div>
 					<div
 						class="product-price-text ellipsis-text text-center noselect"
-						style="max-width: 7rem; min-width: 100%"
+						style="
+							max-width: 7rem;
+							min-width: 100%;
+							font-size: 1.1rem;
+							font-weight: 600;
+						"
 					>
-						Rp {{ numberWithCommas(TotalPrice.min) }} - Rp
-						{{ numberWithCommas(TotalPrice.max) }}
+						Rp {{ numberWithCommas(TotalPrice) }}
 					</div>
 				</div>
 
 				<v-btn
+					v-if="btnDisabled"
+					elevation="0"
+					color="primary"
+					small
+					@click="scrollToTop"
+				>
+					Pilih Alamat</v-btn
+				>
+				<v-btn
+					v-else
 					elevation="0"
 					color="primary"
 					small
 					@click="makeOrder"
-					:disabled="btnDisabled"
-					>Buat Pesanan</v-btn
 				>
+					Buat Pesanan</v-btn
+				>
+
 			</div>
 		</div>
 
@@ -539,9 +513,8 @@
 								class="subtitle-text"
 								v-if="voucher.discount_type === 'price'"
 							>
-								Diskon
+								Diskon ongkir
 								<b style="color: rgb(90 161 0)">Rp{{ voucher.discount }} </b>
-								tanpa minimal pembelian.
 							</div>
 							<div class="normal-text">
 								berlaku sampai : {{ formatDate(voucher.exp) }}
@@ -577,11 +550,13 @@
 import { mapGetters } from "vuex";
 import DeliveryIcon from "../components/icon/Delivery.vue";
 import ProductDiscount from "../components/icon/ProuctDiscount.vue";
+import MyScroll from "vuescroll";
 
 export default {
 	components: {
 		DeliveryIcon,
 		ProductDiscount,
+		MyScroll,
 	},
 	data() {
 		return {
@@ -597,6 +572,58 @@ export default {
 			discountProductType: null,
 			discountShipping: 0,
 			discountShippingType: null,
+			discountTotal: {
+				product: 0,
+				shipping: 0,
+			},
+			ops: {
+				vuescroll: {
+					mode: "native",
+					sizeStrategy: "percent",
+					detectResize: true,
+					/** Enable locking to the main axis if user moves only slightly on one of them at start */
+					locking: true,
+				},
+				scrollPanel: {
+					initialScrollY: false,
+					initialScrollX: false,
+					scrollingX: true,
+					scrollingY: true,
+					speed: 300,
+					easing: 'easeInCubic',
+					verticalNativeBarPos: "right",
+					maxHeight: "100%",
+					// maxHeight: "300",
+				},
+				rail: {
+					background: "#87BD43",
+					opacity: 0,
+					size: "3px",
+					specifyBorderRadius: false,
+					gutterOfEnds: null,
+					gutterOfSide: "2px",
+					keepShow: false,
+				},
+				bar: {
+					showDelay: 500,
+					onlyShowBarOnScroll: false,
+					keepShow: false,
+					background: "#87BD43",
+					opacity: 1,
+					hoverStyle: true,
+					specifyBorderRadius: false,
+					minSize: 0,
+					size: "5px",
+					disable: false,
+				},
+				scrollButton: {
+					enable: false,
+					background: "#87BD43",
+					opacity: 1,
+					step: 180,
+					mousedownStep: 30,
+				},
+			},
 			// btnDisabled: false,
 		};
 	},
@@ -612,6 +639,7 @@ export default {
 
 		this.getChoosenAddress();
 		this.getVouchers();
+		console.log(this.$refs.addressBox);
 	},
 	watch: {
 		// selectedVoucher: function (newVal) {
@@ -619,30 +647,24 @@ export default {
 	},
 	computed: {
 		SubTotalPrice: function () {
-			let min_total_price = 0;
-			let max_total_price = 0;
+			let total_price = 0;
 
 			this.order_items.forEach((element) => {
-				min_total_price += element.min_price * element.qty;
-				max_total_price += element.max_price * element.qty;
+				total_price += element.price * element.qty;
 			});
 
-			return {
-				min: min_total_price,
-				max: max_total_price,
-			};
+			return total_price;
 		},
 		TotalPrice: function () {
-			let min_total_price = 0;
-			let max_total_price = 0;
+			let total_price = 0;
+
 			const shippingCost = 10000;
 			const handlingCost = 2000;
 
 			let isChooseProductVoucher = false;
 			let isChooseShippingVoucher = false;
 
-			min_total_price = this.SubTotalPrice.min;
-			max_total_price = this.SubTotalPrice.max;
+			total_price = this.SubTotalPrice;
 
 			this.selectedVoucher.forEach((element) => {
 				if (Object.values(element).includes("product")) {
@@ -654,36 +676,29 @@ export default {
 					if (element.discount_type === "percent") {
 						this.discountProductType = element.discount_type;
 						this.discountProduct = element.discount;
-						max_total_price -= Math.ceil(
-							max_total_price * (element.discount / 100)
+
+						total_price -= Math.ceil(
+							this.SubTotalPrice * (element.discount / 100)
 						);
-						min_total_price -= Math.ceil(
-							min_total_price * (element.discount / 100)
-						);
+						console.log("discount ", total_price);
 					} else {
-						max_total_price -= element.discount;
-						min_total_price -= element.discount;
+						total_price -= element.discount;
 					}
 				} else if (element.voucher_type === "shipping") {
 					if (element.discount_type === "percent") {
 						this.discountShippingType = element.discount_type;
 						this.discountShipping = element.discount;
 
-						max_total_price -= Math.ceil(
-							shippingCost * (element.discount / 100)
-						);
-						min_total_price -= Math.ceil(
-							shippingCost * (element.discount / 100)
-						);
+						total_price -= Math.ceil(shippingCost * (element.discount / 100));
 					} else {
 						this.discountShippingType = element.discount_type;
 						this.discountShipping = element.discount;
 
-						max_total_price -= element.discount;
-						min_total_price -= element.discount;
+						total_price -= element.discount;
 					}
 				}
 			});
+			console.log("total ", total_price);
 
 			if (!isChooseProductVoucher) {
 				this.discountProduct = 0;
@@ -692,12 +707,9 @@ export default {
 				this.discountShipping = 0;
 			}
 
-			min_total_price += shippingCost + handlingCost;
-			max_total_price += shippingCost + handlingCost;
-			return {
-				min: min_total_price,
-				max: max_total_price,
-			};
+			total_price += shippingCost + handlingCost;
+
+			return total_price;
 		},
 		...mapGetters({
 			choosenAddress: "auth/getChoosenAddress",
@@ -712,6 +724,15 @@ export default {
 		},
 	},
 	methods: {
+		scrollToTop() {
+			this.$refs["vs"].scrollTo(
+				{
+					y: 0,
+				},
+				500,
+				"easeInQuad"
+			);
+		},
 		formatDate(date) {
 			const [year, month, day] = [...date.split("-")];
 			const monthIndex = month - 1;
@@ -823,8 +844,7 @@ export default {
 					this.choosenAddress.details +
 					" \n " +
 					this.choosenAddress.full_address,
-				total_max_price: this.TotalPrice.max,
-				total_min_price: this.TotalPrice.min,
+				total_price: this.TotalPrice,
 				product_discount: 0,
 				paid: null,
 				payment_type: "COD",
@@ -936,5 +956,17 @@ export default {
 	gap: 0.1rem;
 	color: rgba(0, 0, 0, 0.87);
 	font-weight: 500;
+}
+.voucher-text {
+	font-size: 0.8rem;
+	display: grid;
+	grid-template-columns: auto;
+	gap: 0.1rem;
+	color: rgba(0, 0, 0, 0.87);
+	font-weight: 500;
+}
+.total-subheader {
+	font-size: 0.9rem;
+	font-weight: 600;
 }
 </style>

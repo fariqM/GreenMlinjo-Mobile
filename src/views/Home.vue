@@ -79,8 +79,7 @@
 							:sub_unit="product.sub_unit"
 							:min_qty_per_unit="product.min_qty_per_unit"
 							:max_qty_per_unit="product.max_qty_per_unit"
-							:min_price="product.min_price"
-							:max_price="product.max_price"
+							:price="product.price"
 							:favourite="product.favourites"
 							:images="product.images"
 							:testing_log="'ini list produk 2'"
@@ -211,48 +210,6 @@ export default {
 			skeleton_show: true,
 			show: false,
 			error_ilust:false,
-			products: [
-				{
-					id: 1,
-					title: "Wortel Lokal14",
-					unit: "Kg",
-					sub_unit: "pcs",
-					min_qty_per_unit: 15,
-					max_qty_per_unit: 18,
-					min_price: 12000,
-					max_price: 16000,
-				},
-				{
-					id: 2,
-					title: "Wortel Lokal",
-					unit: "Kg",
-					sub_unit: "pcs",
-					min_qty_per_unit: 15,
-					max_qty_per_unit: 18,
-					min_price: 12000,
-					max_price: 16000,
-				},
-				{
-					id: 3,
-					title: "Wortel Lokal",
-					unit: "Kg",
-					sub_unit: "pcs",
-					min_qty_per_unit: 15,
-					max_qty_per_unit: 18,
-					min_price: 12000,
-					max_price: 16000,
-				},
-				{
-					id: 4,
-					title: "Wortel Lokal",
-					unit: "Kg",
-					sub_unit: "pcs",
-					min_qty_per_unit: 15,
-					max_qty_per_unit: 18,
-					min_price: 12000,
-					max_price: 16000,
-				},
-			],
 			recom_items: [
 				{
 					src: "/assets/icon/flash-sale.png",

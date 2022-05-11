@@ -84,9 +84,7 @@
 							v-else
 							style="padding: 5px 5px; color: #8b8b8b; font-size: 0.7rem"
 						>
-							{{ min_qty_per_unit }} {{ sub_unit }}/{{
-								unit
-							}}
+							{{ min_qty_per_unit }} {{ sub_unit }}/{{ unit }}
 						</v-card-subtitle>
 						<div
 							class="pl-1"
@@ -99,14 +97,11 @@
 								color: #09893c;
 							"
 						>
-							Rp {{ numberWithCommas(min_price) }} - Rp
-							{{ numberWithCommas(max_price) }}
-						</div>
-						<div
-							class="pl-1 normal-text"
-							style="font-weight: 500; font-size: 0.775rem"
-						>
-							/{{ unit }}
+							Rp {{ numberWithCommas(price)}}<span
+								class="pl-1 normal-text"
+								style="font-weight: 500; font-size: 0.775rem"
+								>/{{ unit }}</span
+							>
 						</div>
 					</div>
 				</v-list-item>
@@ -151,8 +146,7 @@ export default {
 		sub_unit: String,
 		min_qty_per_unit: Number,
 		max_qty_per_unit: Number,
-		min_price: Number,
-		max_price: Number,
+		price: Number,
 		product_id: Number,
 		skeleton: Boolean,
 		favourite: Array,
