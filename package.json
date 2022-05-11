@@ -26,6 +26,7 @@
     "rxjs": "^7.5.4",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-step-progress": "^0.3.7",
     "vue-swipeable-bottom-sheet": "0.0.5",
     "vuescroll": "^4.17.3",
     "vuetify": "^2.4.0",

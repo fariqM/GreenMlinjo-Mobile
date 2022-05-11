@@ -8,7 +8,7 @@
 					:ops="ops"
 					:style="{ 'max-height': windowsHeight - 110 + 'px' }"
 				>
-					<v-sheet :max-height="windowsHeight - 110 + 'px'" max-width="99vw">
+					<v-sheet :max-height="windowsHeight - 110 + 'px'" max-width="99.8vw">
 						<div class="my-2">
 							<!-- Address -->
 							<v-card class="noselect py-3">
@@ -399,16 +399,9 @@
 				>
 					Pilih Alamat</v-btn
 				>
-				<v-btn
-					v-else
-					elevation="0"
-					color="primary"
-					small
-					@click="makeOrder"
-				>
+				<v-btn v-else elevation="0" color="primary" small @click="makeOrder">
 					Buat Pesanan</v-btn
 				>
-
 			</div>
 		</div>
 
@@ -590,7 +583,7 @@ export default {
 					scrollingX: true,
 					scrollingY: true,
 					speed: 300,
-					easing: 'easeInCubic',
+					easing: "easeInCubic",
 					verticalNativeBarPos: "right",
 					maxHeight: "100%",
 					// maxHeight: "300",
@@ -639,7 +632,6 @@ export default {
 
 		this.getChoosenAddress();
 		this.getVouchers();
-		console.log(this.$refs.addressBox);
 	},
 	watch: {
 		// selectedVoucher: function (newVal) {
@@ -676,30 +668,33 @@ export default {
 					if (element.discount_type === "percent") {
 						this.discountProductType = element.discount_type;
 						this.discountProduct = element.discount;
-
-						total_price -= Math.ceil(
+						this.discountTotal.product = Math.ceil(
 							this.SubTotalPrice * (element.discount / 100)
 						);
-						console.log("discount ", total_price);
+						// console.log("total disc prod", this.discountTotal.product);
+						total_price -= this.discountTotal.product;
 					} else {
-						total_price -= element.discount;
+						this.discountTotal.product = element.discount;
+						total_price -= this.discountTotal.product;
 					}
 				} else if (element.voucher_type === "shipping") {
 					if (element.discount_type === "percent") {
 						this.discountShippingType = element.discount_type;
 						this.discountShipping = element.discount;
-
-						total_price -= Math.ceil(shippingCost * (element.discount / 100));
+						this.discountTotal.shipping = Math.ceil(
+							shippingCost * (element.discount / 100)
+						);
+						total_price -= this.discountTotal.shipping;
+						// console.log("discountTotal.shipping", this.discountTotal.shipping);
 					} else {
 						this.discountShippingType = element.discount_type;
 						this.discountShipping = element.discount;
-
-						total_price -= element.discount;
+						this.discountTotal.shipping = element.discount;
+						total_price -= this.discountTotal.shipping;
 					}
 				}
 			});
-			console.log("total ", total_price);
-
+			// console.log("total_price", total_price);
 			if (!isChooseProductVoucher) {
 				this.discountProduct = 0;
 			}
@@ -708,6 +703,7 @@ export default {
 			}
 
 			total_price += shippingCost + handlingCost;
+			// console.log("total_price2", total_price);
 
 			return total_price;
 		},
@@ -832,28 +828,53 @@ export default {
 			this.$router.push({ name: "address" });
 		},
 		makeOrder() {
+			let product_voucher_id = null;
+			let shipping_voucher_id = null;
+
+			this.selectedVoucher.forEach((element) => {
+				if (element.voucher_type === "product") {
+					product_voucher_id = element.id;
+				} else if (element.voucher_type === "shipping") {
+					shipping_voucher_id = element.id;
+				}
+			});
+			// console.log("total disc prod", this.discountTotal.product);
 			let form = {
 				market_id: 1,
 				address:
 					this.choosenAddress.contact +
 					" | " +
 					this.choosenAddress.phone +
-					" \n " +
+					" \n" +
 					this.choosenAddress.road +
 					" " +
 					this.choosenAddress.details +
-					" \n " +
+					" \n" +
 					this.choosenAddress.full_address,
+
+				product_voucher_id: product_voucher_id,
+				product_discount: this.discountTotal.product,
+
+				shipping_voucher_id: shipping_voucher_id,
+				shipping_discount: this.discountTotal.shipping,
+
 				total_price: this.TotalPrice,
-				product_discount: 0,
-				paid: null,
 				payment_type: "COD",
-				shipping_discount: 0,
-				order_product: this.order_items,
+				paid: 'pending',
+				order_products: this.order_items,
 			};
-			console.log("form", form);
-			console.log("total price", this.TotalPrice);
-			console.log("order items", this.order_items);
+
+			this.$router.replace({name:"delivery"})
+
+			// console.log("form", form);
+			// this.$store
+			// 	.dispatch("orders/makeOrder", form)
+			// 	.then((response) => {
+			// 		console.log(response);
+			// 	})
+			// 	.catch((e) => {
+			// 		console.log(e);
+			// 	});
 		},
 		onResize() {
 			this.windowWidth = window.innerWidth;

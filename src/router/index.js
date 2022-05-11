@@ -27,6 +27,7 @@ import MapsExample from "../views/components/Maps"
 import Shipping from "../views/pages/Shipping.vue"
 import Address from "../views/pages/Address.vue"
 import AddAddress from "../views/pages/AddAddress.vue"
+import Delivery from "../views/pages/Ordering.vue"
 
 
 
@@ -89,7 +90,11 @@ const routes = [
     name: 'shipping',
     component: Shipping
   },
-
+  {
+    path: '/order/delivery',
+    name: 'delivery',
+    component: Delivery
+  },
 
   {
     path: '/testing-devs',

@@ -1,11 +1,6 @@
 <template>
 	<div v-if="skeleton">
-		<skeleton
-			width="100%"
-			height="250px"
-			animation="wave"
-		>
-		</skeleton>
+		<skeleton width="100%" height="220px" animation="wave"> </skeleton>
 
 		<div class="d-flex justify-space-between align-center pl-2 pr-2 pt-1 pb-1">
 			<skeleton width="40px" height="16px" animation="wave" :radius="8">
@@ -16,6 +11,7 @@
 	</div>
 	<div v-else>
 		<v-carousel
+			v-if="showBar"
 			cycle
 			v-model="corrousel"
 			hide-delimiters
@@ -24,15 +20,17 @@
 		>
 			<v-carousel-item v-for="(item, i) in images" :key="i" class="info">
 				<v-img
-					height="220"
-					:src="image"
+					contain
+					:src="item"
 					gradient="to top right, rgb(72 255 82 / 7%), rgb(160 255 40 / 8%)"
 				>
 				</v-img>
 			</v-carousel-item>
 		</v-carousel>
 
-		<div class="d-flex justify-space-between align-center px-2">
+		<v-img v-if="!showBar" :src="image" contain></v-img>
+
+		<div v-if="showBar" class="d-flex justify-space-between align-center px-2">
 			<div>
 				<span
 					v-for="(item, i) in 3"
@@ -41,7 +39,9 @@
 					:class="[i === corrousel ? 'ccc_active' : '']"
 				/>
 			</div>
-			<router-link :to="{ name: 'login' }" style="text-decoration: none; font-size:0.9rem; font-weight:500"
+			<router-link
+				:to="{ name: 'login' }"
+				style="text-decoration: none; font-size: 0.9rem; font-weight: 500"
 				>lihat semua promo</router-link
 			>
 		</div>
@@ -52,15 +52,16 @@
 export default {
 	props: {
 		skeleton: Boolean,
+		showBar: Boolean,
 	},
 	data() {
 		return {
 			corrousel: 0,
-			image: "/assets/images/carousel.jpeg",
+			image: "/assets/images/carousel3.jpeg",
 			images: [
-				"assets/images/box.png",
-				"assets/images/small_box.png",
-				"assets/images/cart.png",
+				"/assets/images/carousel.jpeg",
+				"/assets/images/carousel3.jpeg",
+				"/assets/images/carousel4.jpeg",
 			],
 		};
 	},
