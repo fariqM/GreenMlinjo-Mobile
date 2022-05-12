@@ -28,6 +28,7 @@ import Shipping from "../views/pages/Shipping.vue"
 import Address from "../views/pages/Address.vue"
 import AddAddress from "../views/pages/AddAddress.vue"
 import Delivery from "../views/pages/Ordering.vue"
+import Blog from "../views/pages/Blog.vue"
 
 
 
@@ -90,6 +91,12 @@ const routes = [
     name: 'delivery',
     component: Delivery
   },
+  {
+    path: '/others/blog',
+    name: 'blog',
+    component: Blog
+  },
+  
 
   {
     path: '/testing-devs',

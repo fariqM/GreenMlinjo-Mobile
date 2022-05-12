@@ -86,17 +86,28 @@
 					</div>
 
 					<v-card style="margin-top: 2rem" v-if="!skeleton_show">
-						<v-expansion-panels class="pa-0">
+						<v-expansion-panels class="pa-0 mb-2">
 							<v-expansion-panel class="pa-0">
-								<v-expansion-panel-header style="min-height:0px"> Detail Alamat </v-expansion-panel-header>
-								<v-expansion-panel-content>
-									<v-textarea :value="lastOrder.address">
-										
+								<v-expansion-panel-header
+									class="pa-2 title-text"
+									style="min-height: 0px"
+								>
+									Detail Alamat
+								</v-expansion-panel-header>
+								<v-expansion-panel-content class="pa-0">
+									<v-textarea
+										class="product-title-text"
+										hide-details="auto"
+										readonly
+										autofocus
+										outlined
+										:value="lastOrder.address"
+									>
 									</v-textarea>
 								</v-expansion-panel-content>
 							</v-expansion-panel>
 						</v-expansion-panels>
-						<div class="d-flex justify-space-between title-text">
+						<div class="d-flex justify-space-between title-text px-2">
 							<span>Detail Pesanan</span>
 							<span>{{ lastOrder.uuid_key }}</span>
 						</div>
@@ -225,13 +236,49 @@
 			</div>
 			<v-btn
 				:disabled="currentStep === 3 ? false : true"
-				@click="getOrder"
+				@click="showDialogConfirm = true"
 				block
 				color="primary"
 			>
 				Pesanan telah diterima
 			</v-btn>
 		</v-card>
+
+		<v-dialog v-model="showDialogConfirm" persistent>
+			<v-card>
+				<div
+					style="
+						display: grid;
+						justify-content: end;
+						margin-top: 3px;
+						position: absolute;
+						width: 99%;
+					"
+				>
+					<v-icon small @click="showDialogConfirm = false">mdi-close</v-icon>
+				</div>
+				<v-card-title class="text-h6">
+					Konfirmasi Pesanan ?
+				</v-card-title>
+				<v-card-text
+					>Pembayaran akan diserahkan kepada penjual melalui driver/platform.</v-card-text
+				>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn
+						color="primary"
+						text
+						@click="confirmOrder"
+						:loading="btnLoadin"
+					>
+						ya
+					</v-btn>
+					<v-btn color="grey darken-1" text @click="showDialogConfirm = false">
+						Batal
+					</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -254,6 +301,8 @@ export default {
 			skeleton_show: true,
 			loading: false,
 			lastOrder: null,
+			btnLoadin:false,
+			showDialogConfirm:false,
 			mySteps: ["Mencari driver", "", "", ""],
 			currentStep: 0,
 			ops: {
@@ -311,6 +360,11 @@ export default {
 		this.getOrder();
 	},
 	methods: {
+		confirmOrder(){
+			this.showDialogConfirm = false
+			console.log('confirmed');
+			console.log("order", this.lastOrder);
+		},
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");
 			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
