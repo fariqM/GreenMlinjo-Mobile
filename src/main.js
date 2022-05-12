@@ -12,6 +12,11 @@ import izi_Toast from 'izitoast'
 import "./plugins/iziToast.min.css"
 window.iziToast = izi_Toast
 
+// tap n hold directive
+var VueTouch = require('vue-touch')
+Vue.use(VueTouch, {name: 'v-touch'})
+
+
 // base server ip
 // const { SplashScreen } = Plugins
 window.platform = Capacitor.getPlatform();

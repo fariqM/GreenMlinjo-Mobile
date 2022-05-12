@@ -1,11 +1,15 @@
 export default {
     namespaced: true,
     state: {
-        orders:[]
+        orders: [],
+        lastOrder: null,
     },
     mutations: {
-        addOrder(state, payload){
+        addOrder(state, payload) {
             state.orders.push(payload)
+        },
+        setLastOrder(state, payload) {
+            state.lastOrder = payload
         }
     },
     actions: {
@@ -17,9 +21,18 @@ export default {
                     reject(e)
                 })
             })
+        },
+        getLastOrder(state, payload) {
+            return new Promise((resolve, reject) => {
+                axios.get(`orders/get-last-order/${payload}`).then(r => {
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
         }
     },
     getters: {
-        getOrders: state => state.orders,
+        getOrders: state => state.lastOrder,
     }
 }

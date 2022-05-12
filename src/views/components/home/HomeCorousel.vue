@@ -1,8 +1,8 @@
 <template>
 	<div v-if="skeleton">
-		<skeleton width="100%" height="220px" animation="wave"> </skeleton>
+		<skeleton width="100%" height="240px" animation="wave"> </skeleton>
 
-		<div class="d-flex justify-space-between align-center pl-2 pr-2 pt-1 pb-1">
+		<div class="d-flex justify-space-between align-center pl-2 pr-2 pt-1 pb-1" v-if="showBar">
 			<skeleton width="40px" height="16px" animation="wave" :radius="8">
 			</skeleton>
 			<skeleton width="140px" height="16px" animation="wave" :radius="3">

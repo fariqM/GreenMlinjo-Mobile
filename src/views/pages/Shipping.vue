@@ -277,7 +277,7 @@
 											v-for="(voucher, i) in selectedVoucher"
 											:key="i"
 										>
-											{{ voucher.description }}
+											{{ voucher.subtitle }}
 										</li>
 									</div>
 									<v-divider v-if="selectedVoucher.length > 0" />
@@ -298,10 +298,7 @@
 											<span style="color: #09893c" class="ml-2">
 												{{
 													numberWithCommas(
-														Math.floor(
-															SubTotalPrice -
-																SubTotalPrice * (discountProduct / 100)
-														)
+														SubTotalPrice - discountTotal.product
 													)
 												}}
 											</span>
@@ -399,7 +396,14 @@
 				>
 					Pilih Alamat</v-btn
 				>
-				<v-btn v-else elevation="0" color="primary" small @click="makeOrder">
+				<v-btn
+					v-else
+					elevation="0"
+					color="primary"
+					small
+					@click="makeOrder"
+					:loading="btnLoading"
+				>
 					Buat Pesanan</v-btn
 				>
 			</div>
@@ -426,8 +430,12 @@
 						v-if="voucher.voucher_type === 'product'"
 					>
 						<div class="box-circle-product">
-							<div class="half-circle"></div>
-							<div class="d-flex align-center" style="width: fit-content">
+							<div class="half-circle" @click="clickVoucher(voucher)"></div>
+							<div
+								class="d-flex align-center"
+								style="width: fit-content"
+								@click="clickVoucher(voucher)"
+							>
 								<product-discount class="mr-1" />
 							</div>
 							<v-checkbox
@@ -437,7 +445,7 @@
 								v-model="selectedVoucher"
 							></v-checkbox>
 						</div>
-						<div class="px-1">
+						<div class="px-1" @click="clickVoucher(voucher)">
 							<div class="title-text">
 								{{ voucher.title }}
 							</div>
@@ -479,8 +487,12 @@
 						v-if="voucher.voucher_type === 'shipping'"
 					>
 						<div class="box-circle-shipping">
-							<div class="half-circle"></div>
-							<div class="d-flex align-center" style="width: fit-content">
+							<div class="half-circle" @click="clickVoucher(voucher)"></div>
+							<div
+								class="d-flex align-center"
+								style="width: fit-content"
+								@click="clickVoucher(voucher)"
+							>
 								<delivery-icon />
 							</div>
 							<v-checkbox
@@ -490,7 +502,7 @@
 								v-model="selectedVoucher"
 							></v-checkbox>
 						</div>
-						<div class="px-1">
+						<div class="px-1" @click="clickVoucher(voucher)">
 							<div class="title-text">
 								{{ voucher.title }}
 							</div>
@@ -510,28 +522,118 @@
 								<b style="color: rgb(90 161 0)">Rp{{ voucher.discount }} </b>
 							</div>
 							<div class="normal-text">
-								berlaku sampai : {{ formatDate(voucher.exp) }}
+								Berlaku sampai : {{ formatDate(voucher.exp) }}
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div
-					style="
-						position: absolute;
-						bottom: 0;
-						width: 100%;
-						height: 50px;
-						background: #fff;
-					"
-					class="pa-2"
-				>
+				<div class="pa-2 bottom-container-voucher">
 					<v-btn
 						@click="voucherDialog = false"
 						block
 						color="primary"
 						:disabled="selectedVoucher.length === 0 ? true : false"
 						>Pilih voucher</v-btn
+					>
+				</div>
+			</v-sheet>
+		</v-dialog>
+
+		<v-dialog fullscreen v-model="voucherDescriptionModal">
+			<v-toolbar color="primary" elevation="0" tile dense absolute width="100%">
+				<v-btn icon @click="voucherDescriptionModal = false">
+					<v-icon>mdi-arrow-left</v-icon>
+				</v-btn>
+				<v-toolbar-title>Deskripsi Voucher</v-toolbar-title>
+			</v-toolbar>
+			<v-sheet
+				class="overflow-y-auto white"
+				height="calc(100vh - 48px)"
+				v-if="clickedVoucher !== null"
+			>
+				<div style="margin-top: 48px; height: 7rem">
+					<img
+						:src="require('../../assets/banner.png')"
+						style="width: 100%; height: 7rem; transform: rotate(180deg)"
+						alt=""
+					/>
+					<div
+						class="py-0 px-5"
+						style="position: absolute; height: auto; width: 100%; top: 5.5rem"
+					>
+						<v-card height="6rem" width="100%" class="d-flex">
+							<div
+								style="
+									width: 30%;
+									height: 100%;
+									background-color: #0fcf72;
+									color: #fff;
+									font-size: 1.2rem;
+									font-weight: 600;
+								"
+								class="pa-3 text-center d-flex align-center"
+							>
+								{{
+									clickedVoucher.voucher_type === "product"
+										? "Diskon Harga"
+										: "Diskon Ongkir"
+								}}
+							</div>
+							<div class="d-flex flex-column justify-center pa-3">
+								<div class="itle-text">
+									{{
+										clickedVoucher.voucher_type === "product"
+											? "Voucher Potongan Harga"
+											: "Voucher Potongan Ongkir"
+									}}
+								</div>
+								<v-chip
+									class="px-1"
+									color="primary"
+									label
+									outlined
+									x-small
+									style="max-width: fit-content"
+									>Semua Metode Pembayaran</v-chip
+								>
+								<div class="normal-text">
+									Berlaku sampai : {{ formatDate(clickedVoucher.exp) }}
+								</div>
+							</div>
+						</v-card>
+						<div style="margin-top: 1rem">
+							<v-textarea
+								outlined
+								label="Deskripsi Voucher"
+								readonly
+								rows="3"
+								autofocus
+								:value="clickedVoucher.description"
+							>
+							</v-textarea>
+						</div>
+					</div>
+				</div>
+				<div class="pa-2 bottom-container-voucher">
+					<v-btn
+						@click="
+							() => {
+								let isVoucherExist = false;
+								selectedVoucher.forEach((element) => {
+									if (element.id === clickedVoucher.id) {
+										isVoucherExist = true;
+									}
+								});
+								if (!isVoucherExist) {
+									selectedVoucher.push(clickedVoucher);
+								}
+								voucherDescriptionModal = false;
+							}
+						"
+						block
+						color="primary"
+						>Gunakan voucher ini</v-btn
 					>
 				</div>
 			</v-sheet>
@@ -556,11 +658,14 @@ export default {
 			windowWidth: window.innerWidth,
 			windowsHeight: window.innerHeight,
 			loading: false,
+			btnLoading: false,
 			url: __BASE_URL__,
 			order_items: [],
 			notes: [],
 			voucherDialog: false,
+			voucherDescriptionModal: false,
 			selectedVoucher: [],
+			clickedVoucher: null,
 			discountProduct: 0,
 			discountProductType: null,
 			discountShipping: 0,
@@ -671,6 +776,13 @@ export default {
 						this.discountTotal.product = Math.ceil(
 							this.SubTotalPrice * (element.discount / 100)
 						);
+
+						if (this.discountTotal.product > element.max_value) {
+							console.log("max");
+							this.discountTotal.product = element.max_value;
+						}
+						console.log("disc", this.discountTotal.product);
+						console.log("max disc", element.max_value);
 						// console.log("total disc prod", this.discountTotal.product);
 						total_price -= this.discountTotal.product;
 					} else {
@@ -684,6 +796,10 @@ export default {
 						this.discountTotal.shipping = Math.ceil(
 							shippingCost * (element.discount / 100)
 						);
+
+						if (this.discountTotal.shipping > element.max_value) {
+							this.discountTotal.shipping = element.max_value;
+						}
 						total_price -= this.discountTotal.shipping;
 						// console.log("discountTotal.shipping", this.discountTotal.shipping);
 					} else {
@@ -720,6 +836,11 @@ export default {
 		},
 	},
 	methods: {
+		clickVoucher(voucher) {
+			this.voucherDescriptionModal = true;
+			this.clickedVoucher = voucher;
+			console.log(this.clickedVoucher);
+		},
 		scrollToTop() {
 			this.$refs["vs"].scrollTo(
 				{
@@ -828,6 +949,7 @@ export default {
 			this.$router.push({ name: "address" });
 		},
 		makeOrder() {
+			this.btnLoading = true;
 			let product_voucher_id = null;
 			let shipping_voucher_id = null;
 
@@ -838,7 +960,7 @@ export default {
 					shipping_voucher_id = element.id;
 				}
 			});
-			// console.log("total disc prod", this.discountTotal.product);
+			console.log("order item ", this.order_items);
 			let form = {
 				market_id: 1,
 				address:
@@ -848,7 +970,9 @@ export default {
 					" \n" +
 					this.choosenAddress.road +
 					" " +
+					"(" +
 					this.choosenAddress.details +
+					")" +
 					" \n" +
 					this.choosenAddress.full_address,
 
@@ -860,21 +984,23 @@ export default {
 
 				total_price: this.TotalPrice,
 				payment_type: "COD",
-				paid: 'pending',
+				paid: "pending",
 				order_products: this.order_items,
 			};
 
-			this.$router.replace({name:"delivery"})
-
 			// console.log("form", form);
-			// this.$store
-			// 	.dispatch("orders/makeOrder", form)
-			// 	.then((response) => {
-			// 		console.log(response);
-			// 	})
-			// 	.catch((e) => {
-			// 		console.log(e);
-			// 	});
+			this.$store
+				.dispatch("orders/makeOrder", form)
+				.then((response) => {
+					this.btnLoading = false;
+					this.$router.replace({ name: "delivery" });
+					this.$store.commit("orders/setLastOrder", response.data.order);
+					console.log(response);
+				})
+				.catch((e) => {
+					this.btnLoading = false;
+					console.log(e);
+				});
 		},
 		onResize() {
 			this.windowWidth = window.innerWidth;
@@ -989,5 +1115,12 @@ export default {
 .total-subheader {
 	font-size: 0.9rem;
 	font-weight: 600;
+}
+.bottom-container-voucher {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 50px;
+	background: #fff;
 }
 </style>

@@ -86,11 +86,6 @@ const routes = [
     component: AddAddress
   },
   {
-    path: '/order/shipping',
-    name: 'shipping',
-    component: Shipping
-  },
-  {
     path: '/order/delivery',
     name: 'delivery',
     component: Delivery
