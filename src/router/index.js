@@ -29,6 +29,7 @@ import Address from "../views/pages/Address.vue"
 import AddAddress from "../views/pages/AddAddress.vue"
 import Delivery from "../views/pages/Ordering.vue"
 import Blog from "../views/pages/Blog.vue"
+import BlogDetail from "../views/pages/BlogDetail.vue"
 
 
 
@@ -96,7 +97,11 @@ const routes = [
     name: 'blog',
     component: Blog
   },
-  
+  {
+    path: '/others/blog/{:post_id}',
+    name: 'blog',
+    component: BlogDetail
+  },
 
   {
     path: '/testing-devs',

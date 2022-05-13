@@ -38,7 +38,7 @@ export default {
         setAddress(state, payload) {
             state.address = payload
         },
-        setChoosenAddress(state, payload){
+        setChoosenAddress(state, payload) {
             state.choosenAddress = payload
         }
     },
@@ -57,6 +57,19 @@ export default {
                     reject(error);
                 })
             });
+        },
+        logoutAction(state) {
+            return new Promise((resolve, reject) => {
+                axios.post('logout').then(r => {
+                    state.commit("setUser", {
+                        user: {},
+                        isLogedIn: false,
+                    })
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
         },
         getCreds(state, payload) {
             return new Promise((resolve, reject) => {
@@ -98,7 +111,7 @@ export default {
                 })
             })
         },
-        chooseAddress(state, payload){
+        chooseAddress(state, payload) {
             return new Promise((resolve, reject) => {
                 axios.put(`choose-address/${payload}`).then(response => {
                     resolve(response)
@@ -107,7 +120,7 @@ export default {
                 })
             })
         },
-        getChoosenAddress(state){
+        getChoosenAddress(state) {
             return new Promise((resolve, reject) => {
                 axios.get('get-choosen-address').then(response => {
                     state.commit("setChoosenAddress", response.data.data)

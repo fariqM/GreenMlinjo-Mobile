@@ -3,7 +3,7 @@
 		<v-main>
 			<mlj-toolbar
 				:loading="loading"
-				:page="'Blog'"
+				:page="'Sedekah Yuk'"
 				:isUseBack="true"
 				:routeTarget="'pesanan'"
 			></mlj-toolbar>
@@ -69,13 +69,7 @@
 						</div>
 						<div class="pa-2">
 							<my-container :ops="ops">
-								<v-sheet
-									style="
-										padding-bottom: 8.5px;
-										display: flex;
-										flex-direction: row;
-									"
-								>
+								<v-sheet class="b-sheet">
 									<v-card
 										width="fit-content"
 										style="margin: 5px"
@@ -89,17 +83,11 @@
 										<v-img
 											height="100"
 											width="150"
-                                            contain
+											contain
 											:src="image"
 										></v-img>
 										<!-- max 35 char -->
-										<v-card-title
-											class="py-0 px-1 title-text mt-2"
-											style="
-												max-width: 150px;
-												line-height: 20px;
-												word-break: break-word;
-											"
+										<v-card-title class="py-0 px-1 mt-2 title-text b-card-title"
 											>Bagi-bagi takjil Warga Kampung Dukuh</v-card-title
 										>
 										<v-card-subtitle
@@ -127,7 +115,7 @@
 						/>
 					</div>
 
-					<v-card elevation="0" class="" tile>
+					<v-card elevation="0" tile>
 						<v-card-title style="font-size: 1.1rem" class="pt-2 pb-2 px-2">
 							<div
 								class="d-flex align-center"
@@ -141,13 +129,7 @@
 						</v-card-title>
 						<div class="pa-2">
 							<my-container :ops="ops">
-								<v-sheet
-									style="
-										padding-bottom: 8.5px;
-										display: flex;
-										flex-direction: row;
-									"
-								>
+								<v-sheet class="b-sheet">
 									<v-card
 										width="fit-content"
 										style="margin: 5px"
@@ -158,19 +140,9 @@
 											'margin-left': n === 1 ? '0px' : '',
 										}"
 									>
-										<v-img
-											height="100"
-											width="150"
-											:src="image"
-										></v-img>
+										<v-img height="100" width="150" :src="image"></v-img>
 										<!-- max 35 char -->
-										<v-card-title
-											class="py-0 px-1 title-text mt-2"
-											style="
-												max-width: 150px;
-												line-height: 20px;
-												word-break: break-word;
-											"
+										<v-card-title class="py-0 px-1 mt-2 title-text b-card-title"
 											>Bagi-bagi Takjil Warga Kampung Dukuh</v-card-title
 										>
 										<v-card-subtitle
@@ -189,6 +161,75 @@
 							</my-container>
 						</div>
 					</v-card>
+
+					<div class="mt-2">
+						<img
+							:src="require('../../assets/infaq.jpeg')"
+							style="width: 100%; height: 200px"
+							alt=""
+						/>
+					</div>
+
+					<v-card elevation="0" tile>
+						<v-card-title style="font-size: 1.1rem" class="pt-2 pb-2 px-2">
+							<div
+								class="d-flex align-center"
+								style="border-bottom: 5px solid #87bd43; padding-bottom: 5px"
+							>
+								<v-icon class="mr-1" color="black"
+									>mdi-hand-heart-outline</v-icon
+								>
+								Infaq Untuk Masjid
+							</div>
+						</v-card-title>
+						<div class="pa-2">
+							<my-container :ops="ops">
+								<div class="pb-2">
+									<v-card class="pa-2 mb-2" v-for="n in 3" :key="n">
+										<div class="d-flex">
+											<div>
+												<v-img
+													height="100"
+													width="150"
+													contain
+													:src="masjid[0]"
+													style="background-color: #f3f3f3"
+												/>
+											</div>
+											<div class="pl-2 d-flex flex-column">
+												<div
+													class="mb-auto title-text b-card-title"
+													style="max-width: 100%"
+												>
+													Pembangunan Masjid Wonocolo
+													<v-icon x-small color="success"
+														>mdi-checkbox-marked-circle-outline</v-icon
+													>
+												</div>
+												<div>
+													<v-divider />
+													<div class="subtitle-text">
+														<b style="color: #000">Rp 15.000.000</b> Dibutuhkan
+													</div>
+													<v-divider />
+													<!-- <v-divider/> -->
+													<div class="subtitle-text">
+														<b style="color: #000">Rp 6.560.000</b> Terkumpul
+													</div>
+													<v-divider />
+												</div>
+											</div>
+										</div>
+										<v-card-actions class="pa-0 pt-2">
+											<v-btn block color="primary" outlined small
+												>Yuk Infaq</v-btn
+											>
+										</v-card-actions>
+									</v-card>
+								</div>
+							</my-container>
+						</div>
+					</v-card>
 				</v-sheet>
 			</my-container>
 			<!-- F7F7F7 -->
@@ -198,10 +239,21 @@
 
 <script>
 import MyContainer from "vuescroll";
+import { mapGetters } from "vuex";
 
 export default {
 	components: {
 		MyContainer,
+	},
+	computed: {
+		...mapGetters({
+			isLogedIn: "auth/getUserStatus",
+		}),
+	},
+	beforeMount(){
+		if (!this.isLogedIn) {
+			this.$router.replace({name:'login'})
+		}
 	},
 	data() {
 		return {
@@ -210,11 +262,12 @@ export default {
 			windowWidth: window.innerWidth,
 			windowsHeight: window.innerHeight,
 			images: [
-				'/assets/images/berbagi_takjil2.jpg',
-				'/assets/images/berbagi_takjil.jpg',
-				'/assets/images/berbagi_takjil2.jpg',
-				'/assets/images/berbagi_takjil.jpg',
+				"/assets/images/berbagi_takjil2.jpg",
+				"/assets/images/berbagi_takjil.jpg",
+				"/assets/images/berbagi_takjil2.jpg",
+				"/assets/images/berbagi_takjil.jpg",
 			],
+			masjid: ["/assets/images/masjid.jpeg", "/assets/images/masjid.jpeg"],
 			ops: {
 				vuescroll: {
 					mode: "native",
@@ -269,4 +322,14 @@ export default {
 </script>
 
 <style>
+.b-card-title {
+	max-width: 150px;
+	line-height: 20px;
+	word-break: break-word;
+}
+.b-sheet {
+	padding-bottom: 8.5px;
+	display: flex;
+	flex-direction: row;
+}
 </style>

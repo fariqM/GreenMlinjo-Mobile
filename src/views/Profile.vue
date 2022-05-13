@@ -6,7 +6,7 @@
 	>
 		<div class="" style="max-height: 10.5rem">
 			<v-list two-line class="pt-0 primary" style="max-height: 9rem">
-				<v-list-item class="">
+				<v-list-item v-if="isLogedIn">
 					<v-list-item-avatar size="70">
 						<v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
 					</v-list-item-avatar>
@@ -19,6 +19,29 @@
 							<v-icon>mdi-menu</v-icon>
 						</v-btn>
 					</v-list-item-action>
+				</v-list-item>
+				<v-list-item v-else>
+					<v-list-item-avatar size="70">
+						<v-img :src="require('../assets/unknown_user.jpg')"></v-img>
+					</v-list-item-avatar>
+					<v-list-item-content>
+						<v-list-item-title>
+							<b>Anda Belum Login</b>
+						</v-list-item-title>
+						<!-- <v-list-item-subtitle>Tolong untuk melakukan melanjutkan pembelia</v-list-item-subtitle> -->
+					</v-list-item-content>
+					<div class="d-flex flex-column">
+						<v-btn small class="mb-2" :to="{ name: 'login' }"> login </v-btn>
+						<v-btn small :to="{ name: 'register' }"> Daftar </v-btn>
+					</div>
+					<!-- <v-list-item-action class="pa-0">
+						<v-btn small>
+							login
+						</v-btn>
+						<v-btn small>
+							Daftar
+						</v-btn>
+					</v-list-item-action> -->
 				</v-list-item>
 
 				<!-- svg wave -->
@@ -33,12 +56,13 @@
 				</div>
 			</v-list>
 			<!-- wallet card -->
-			<div style="position: relative; bottom: 3.1rem" class="">
+			<div style="position: relative; bottom: 3.1rem" class="" v-if="isLogedIn">
 				<v-card class="d-flex justify-center align-center wallet-card-profile">
 				</v-card>
 			</div>
 		</div>
 
+		<!-- transaksi -->
 		<v-card class="mt-2">
 			<div
 				class="d-flex justify-space-between align-center"
@@ -47,7 +71,14 @@
 				<div class="header-list">Transaksi</div>
 			</div>
 			<div v-for="(menu, i) in menus" :key="i" v-ripple style="padding: 0 1rem">
-				<div class="d-flex justify-space-between align-center py-2">
+				<div
+					class="d-flex justify-space-between align-center py-2"
+					@click="
+						isLogedIn
+							? $router.push({ name: menu.route })
+							: $router.push({ name: 'login' })
+					"
+				>
 					<div>
 						<div class="title-text">
 							{{ menu.title }}
@@ -64,15 +95,13 @@
 			</div>
 		</v-card>
 
-		<v-card style="padding-top: 0px" class="mt-3">
+		<v-card style="padding-top: 0px" class="mt-3" v-if="isLogedIn">
 			<div
 				class="d-flex justify-space-between align-center"
 				style="padding: 10px 10px 0px 10px"
 			>
 				<div class="title-text">Beli lagi yuk</div>
-				<div class="subtitle-text link-text">
-					Lihat lainnya
-				</div>
+				<div class="subtitle-text link-text">Lihat lainnya</div>
 			</div>
 
 			<!-- Rekomendasi -->
@@ -154,7 +183,7 @@
 			</div>
 		</v-card>
 
-		<v-card class="mt-3 mb-2 px-2 py-2">
+		<v-card class="mt-3 mb-2 px-2 py-2" v-if="isLogedIn">
 			<v-btn
 				outlined
 				large
@@ -174,6 +203,7 @@
 <script>
 // import { Geolocation } from '@capacitor/geolocation';
 // import {Example} from "experiment"
+import { mapGetters } from "vuex";
 
 export default {
 	data() {
@@ -182,23 +212,27 @@ export default {
 				{
 					title: "Menunggu Pembayaran",
 					subtitle: "Semua transaksi yang belum dibayar",
+					route: "",
 				},
 				{
 					title: "Ulasan",
 					subtitle: "Berikan ulasan dan penilaian produk",
+					route: "",
 				},
 				{
 					title: "Komplain Sebagai Pembeli",
 					subtitle: "Lihat status komplain",
+					route: "",
 				},
 				{
-					title: "Sedekah Uang",
+					title: "Sedekah Yuk...",
 					subtitle: "Bantu ringankan beban saudara kita",
+					route: "blog",
 				},
-				{
-					title: "Sedekah Sayur",
-					subtitle: "Bantu ringankan beban saudara kita",
-				},
+				// {
+				// 	title: "Sedekah Sayur",
+				// 	subtitle: "Bantu ringankan beban saudara kita",
+				// },
 			],
 			menus2: [
 				{
@@ -215,24 +249,34 @@ export default {
 			logoutLoading: false,
 		};
 	},
+	computed: {
+		...mapGetters({
+			isLogedIn: "auth/getUserStatus",
+		}),
+	},
 	methods: {
-		async LogoutAction() {
-		// 	const { Geolocation } = Plugins;
-
-			// let status = await Network.getStatus();
-			// const coordinates = await Geolocation.getCurrentPosition();
-			// console.log(coordinates);
-			// Example.present({message:'tess'});
+		LogoutAction() {
 			this.logoutLoading = true;
-			setTimeout(() => {
-				this.logoutLoading = false;
-				iziToast.show({
-					theme: "dark",
-					position: "center",
-					title: false,
-					message: "cjek",
+
+			this.$store
+				.dispatch("auth/logoutAction")
+				.then((response) => {
+					this.logoutLoading = false;
+					this.$router.replace({ name: "landing" });
+				})
+				.catch((e) => {
+					console.log(e);
 				});
-			}, 200);
+
+			// setTimeout(() => {
+			// 	this.logoutLoading = false;
+			// 	iziToast.show({
+			// 		theme: "dark",
+			// 		position: "center",
+			// 		title: false,
+			// 		message: "cjek",
+			// 	});
+			// }, 200);
 		},
 	},
 };
