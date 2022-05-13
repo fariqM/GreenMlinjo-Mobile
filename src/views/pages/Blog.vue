@@ -32,6 +32,8 @@
 							outlined
 						></v-text-field>
 					</div>
+
+					<!-- kegiatan sekitar -->
 					<v-card elevation="0">
 						<v-card-title style="font-size: 1.1rem" class="pt-2 pb-2 px-2">
 							<div
@@ -115,7 +117,8 @@
 						/>
 					</div>
 
-					<v-card elevation="0" tile>
+					<!-- sedekah -->
+					<v-card elevation="0" tile v-if="!loadingSedekah">
 						<v-card-title style="font-size: 1.1rem" class="pt-2 pb-2 px-2">
 							<div
 								class="d-flex align-center"
@@ -127,33 +130,83 @@
 								Berbagi Bersama Green Mlijo
 							</div>
 						</v-card-title>
+						<div class="px-2">
+							<v-alert
+								border="left"
+								color="info"
+								elevation="2"
+								outlined
+								type="info"
+								dense
+								prominent
+								dismissible
+								v-model="alert2"
+								class="pb-1 pt-1 px-3 mb-0 normal-text"
+								transition="scale-transition"
+								style="
+									line-height: 20px;
+									color: #6c6c6c;
+									font-size: 0.9rem;
+									word-break: break-word;
+								"
+							>
+								Pembelian anda akan langsung disalurkan ke orang kurang mampu
+								disekitar anda.
+							</v-alert>
+						</div>
 						<div class="pa-2">
 							<my-container :ops="ops">
 								<v-sheet class="b-sheet">
 									<v-card
 										width="fit-content"
 										style="margin: 5px"
-										v-for="(image, n) in images"
+										v-for="(product, n) in sedekahProducts"
 										:key="n"
 										:style="{
 											margin: '0px 10px',
 											'margin-left': n === 1 ? '0px' : '',
 										}"
 									>
-										<v-img height="100" width="150" :src="image"></v-img>
+										<v-img
+											height="100"
+											width="150"
+											contain
+											:src="url + product.images[0].url"
+										></v-img>
 										<!-- max 35 char -->
-										<v-card-title class="py-0 px-1 mt-2 title-text b-card-title"
-											>Bagi-bagi Takjil Warga Kampung Dukuh</v-card-title
+										<v-card-title
+											class="py-0 px-1 mt-2 title-text b-card-title"
+											>{{ product.title }}</v-card-title
 										>
 										<v-card-subtitle
 											class="py-0 px-1 subtitle-text"
 											style="margin-top: 1px"
 										>
-											Masjid An-Nur
+											<v-chip
+												class="px-1"
+												color="primary"
+												label
+												outlined
+												x-small
+												style="max-width: fit-content"
+											>
+												Paket Sedekah</v-chip
+											>
+										</v-card-subtitle>
+										<v-card-subtitle
+											class="py-0 px-1 subtitle-text"
+											style="margin-top: 1px"
+										>
+											{{ product.description.substring(0, 38) + "..." }}
 										</v-card-subtitle>
 										<v-card-actions class="py-1 px-1">
-											<v-btn small color="primary" block outlined
-												>Selengkapnya</v-btn
+											<v-btn
+												small
+												color="primary"
+												block
+												outlined
+												@click="productClick(product)"
+												>Lihat</v-btn
 											>
 										</v-card-actions>
 									</v-card>
@@ -161,6 +214,13 @@
 							</my-container>
 						</div>
 					</v-card>
+
+					<div class="text-center my-10" v-if="loadingSedekah">
+						<v-progress-circular
+							indeterminate
+							color="primary"
+						></v-progress-circular>
+					</div>
 
 					<div class="mt-2">
 						<img
@@ -170,6 +230,7 @@
 						/>
 					</div>
 
+					<!-- Infaq -->
 					<v-card elevation="0" tile>
 						<v-card-title style="font-size: 1.1rem" class="pt-2 pb-2 px-2">
 							<div
@@ -233,6 +294,159 @@
 				</v-sheet>
 			</my-container>
 			<!-- F7F7F7 -->
+
+			<v-dialog fullscreen v-model="productSedekahDialog" persistent>
+				<v-toolbar
+					color="primary"
+					elevation="0"
+					tile
+					dense
+					absolute
+					width="100%"
+				>
+					<v-btn icon @click="productSedekahDialog = false">
+						<v-icon>mdi-arrow-left</v-icon>
+					</v-btn>
+					<v-toolbar-title>Paket Sedekah</v-toolbar-title>
+				</v-toolbar>
+
+				<v-card v-if="productClicked !== null" class="overflow-y-auto">
+					<v-img
+						contain
+						style="margin-top: 48px"
+						:src="url + productClicked.images[0].url"
+					></v-img>
+					<v-card-title class="px-2 py-0 mt-2" style="line-height: 25px">
+						{{ productClicked.title }}
+					</v-card-title>
+					<div
+						class="px-2"
+						style="font-size: 1rem; color: rgb(9, 137, 60); font-weight: 500"
+					>
+						Harga : Rp {{ numberWithCommas(productClicked.price) }}
+					</div>
+					<v-card-subtitle class="px-2 py-0">
+						<b>Deskripsi</b> :</v-card-subtitle
+					>
+					<v-card-text class="">
+						<div
+							class="pa-1"
+							style="border: 4px outset #87bd43; border-radius: 4px"
+						>
+							{{ productClicked.description }}
+						</div>
+					</v-card-text>
+
+					<v-card-actions
+						class="mt-auto"
+						style="position: absolute; width: 100%; bottom: 0px"
+					>
+						<v-btn block color="primary" @click="addQtySedekah = true">
+							Beli
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+
+			<v-dialog v-model="addQtySedekah" persistent>
+				<v-card>
+					<div
+						style="
+							display: grid;
+							justify-content: end;
+							margin-top: 3px;
+							position: absolute;
+							width: 99%;
+						"
+					>
+						<v-icon small @click="addQtySedekah = false">mdi-close</v-icon>
+					</div>
+					<v-card-title class="text-h6">
+						Ingin sedekah berapa paket ?
+					</v-card-title>
+					<v-card-text class="py-0 mb-4 d-flex justify-center">
+						<div
+							class="
+								v-input
+								v-input--solo
+								v-input--hide-details
+								v-input--is-label-active
+								v-input--is-dirty
+								v-input--dense
+								theme--light
+								v-text-field
+								v-text-field--outlined
+								v-text-field--is-booted
+								v-text-field--enclosed
+							"
+							style="
+								max-width: 100px;
+								width: 70px;
+								padding: 0px !important;
+								height: 32px;
+							"
+						>
+							<div class="v-input__control">
+								<div
+									class="v-input__slot"
+									style="padding: 0px 0px 0px 0px !important"
+								>
+									<!-- icon minus -->
+									<div
+										@click="minusQty"
+										class="v-input__prepend-inner"
+										style="cursor: pointer"
+										v-ripple
+									>
+										<div class="v-input__icon v-input__icon--prepend-inner">
+											<i
+												aria-hidden="true"
+												class="v-icon notranslate mdi mdi-minus theme--light"
+											></i>
+										</div>
+									</div>
+									<!-- text input quantity-->
+									<div class="v-text-field__slot">
+										<input
+											type="number"
+											step="0.01"
+											style="text-align: center"
+											v-model="jumlahPaket"
+										/>
+									</div>
+
+									<!-- icon plus -->
+									<div
+										@click="plusQty"
+										class="v-input__append-inner"
+										style="cursor: pointer"
+										v-ripple
+									>
+										<div class="v-input__icon v-input__icon--append">
+											<i
+												aria-hidden="true"
+												class="v-icon notranslate mdi mdi-plus theme--light"
+											></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</v-card-text>
+					<v-card-actions class="py-0 pb-3">
+						<v-spacer></v-spacer>
+						<v-btn
+							color="primary"
+							outlined
+							block
+							@click="buySedekahPaket"
+							:disabled="buySedekahDisabled"
+						>
+							Beli
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 		</v-main>
 	</div>
 </template>
@@ -247,20 +461,31 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			isLogedIn: "auth/getUserStatus",
+			sedekahProducts: "products/getSedekahProducts",
 		}),
-	},
-	beforeMount(){
-		if (!this.isLogedIn) {
-			this.$router.replace({name:'login'})
-		}
+		buySedekahDisabled: function () {
+			if (this.jumlahPaket > 0) {
+				return false;
+			} else {
+				return true;
+			}
+		},
 	},
 	data() {
 		return {
+			url: __BASE_URL__,
 			loading: false,
 			alert1: true,
+			alert2: true,
+			addQtySedekah: false,
 			windowWidth: window.innerWidth,
 			windowsHeight: window.innerHeight,
+			loadingKegiatan: false,
+			loadingSedekah: true,
+			loadingInfaq: false,
+			productSedekahDialog: false,
+			productClicked: null,
+			jumlahPaket: 0,
 			images: [
 				"/assets/images/berbagi_takjil2.jpg",
 				"/assets/images/berbagi_takjil.jpg",
@@ -317,6 +542,60 @@ export default {
 				},
 			},
 		};
+	},
+	beforeRouteEnter(to, from, next) {
+		axios
+			.get("inspect")
+			.then((r) => {
+				if (r.status === 200) {
+					next();
+				} else {
+					next({ name: "login" });
+				}
+			})
+			.catch((e) => {
+				next({ name: "login" });
+			});
+	},
+	mounted() {
+		this.getSedekahProduct();
+	},
+	methods: {
+		buySedekahPaket() {
+			this.$store.commit("others/addQty", this.jumlahPaket);
+		},
+		numberWithCommas(x) {
+			var parts = x.toString().split(".");
+			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			return parts.join(".");
+		},
+		productClick(product) {
+			this.jumlahPaket = 0;
+			this.productClicked = product;
+			this.$store.commit("others/setSelectedSedekah", product);
+			this.productSedekahDialog = true;
+		},
+		getSedekahProduct() {
+			this.loadingSedekah = true;
+			this.$store
+				.dispatch("products/setProductSedekah")
+				.then((response) => {
+					this.loadingSedekah = false;
+					console.log(response);
+				})
+				.catch((e) => {
+					this.loadingSedekah = false;
+					console.log(e);
+				});
+		},
+		minusQty() {
+			if (this.jumlahPaket > 0) {
+				this.jumlahPaket -= 1;
+			}
+		},
+		plusQty() {
+			this.jumlahPaket += 1;
+		},
 	},
 };
 </script>

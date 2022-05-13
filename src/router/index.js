@@ -30,6 +30,7 @@ import AddAddress from "../views/pages/AddAddress.vue"
 import Delivery from "../views/pages/Ordering.vue"
 import Blog from "../views/pages/Blog.vue"
 import BlogDetail from "../views/pages/BlogDetail.vue"
+import Sedekah from "../views/pages/OrderingSedekah.vue"
 
 
 
@@ -99,9 +100,16 @@ const routes = [
   },
   {
     path: '/others/blog/{:post_id}',
-    name: 'blog',
+    name: 'blog.details',
     component: BlogDetail
   },
+  {
+    path: '/sedekah/confirm',
+    name: 'sedekah',
+    component: Sedekah
+  },
+
+  
 
   {
     path: '/testing-devs',

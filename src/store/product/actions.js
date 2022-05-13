@@ -40,12 +40,22 @@ export default {
                         } else {
                             reject(e)
                         }
-                        
+
                     })
                 }
                 // console.log(token);
             }).catch(error => {
                 reject(error)
+            })
+        })
+    },
+    setProductSedekah(state) {
+        return new Promise((resolve, reject) => {
+            axios.get('products/sedekah-product').then(r => {
+                state.commit("setSedekahProduct", r.data.data)
+                resolve(r)
+            }).catch(e => {
+                reject(e)
             })
         })
     }
