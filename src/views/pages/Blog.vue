@@ -362,7 +362,7 @@
 						<v-icon small @click="addQtySedekah = false">mdi-close</v-icon>
 					</div>
 					<v-card-title class="text-h6">
-						Ingin sedekah berapa paket ?
+						Ingin sedekah berapa paket?
 					</v-card-title>
 					<v-card-text class="py-0 mb-4 d-flex justify-center">
 						<div
@@ -441,6 +441,7 @@
 							block
 							@click="buySedekahPaket"
 							:disabled="buySedekahDisabled"
+							:loading="buySedekahLoading"
 						>
 							Beli
 						</v-btn>
@@ -475,6 +476,7 @@ export default {
 		return {
 			url: __BASE_URL__,
 			loading: false,
+			buySedekahLoading: false,
 			alert1: true,
 			alert2: true,
 			addQtySedekah: false,
@@ -562,7 +564,13 @@ export default {
 	},
 	methods: {
 		buySedekahPaket() {
+			this.buySedekahLoading = true
 			this.$store.commit("others/addQty", this.jumlahPaket);
+			setTimeout(() => {
+				this.buySedekahLoading = false
+				this.$router.push({name:"sedekah"})
+			}, 500);
+
 		},
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");
