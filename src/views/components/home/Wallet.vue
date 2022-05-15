@@ -2,14 +2,17 @@
 	<div class="d-flex justify-space-around py-1 px-1">
 		<skeleton height="4.4rem" width="50%" v-if="skeleton" :radius="3" />
 
-		<v-card class="d-flex align-center pa-3" elevation="2" v-else>
+		<v-card class="d-flex align-center pa-3" elevation="2" v-if="!skeleton && isLogedIn">
 			<v-avatar tile size="40">
 				<img :src="'/assets/icon/wallet.png'" :alt="'qr-code'" />
 			</v-avatar>
 			<div class="ml-1">
 				<h4 class="normal-text text-center">Saldo saya</h4>
-				<h2 class="normal-text text-center" style="font-size: 1.2rem; color:#fb8a3c">
-					Rp 40.000
+				<h2
+					class="normal-text text-center"
+					style="font-size: 1.2rem; color: #fb8a3c"
+				>
+					Rp{{ numberWithCommas(balance) }}
 				</h2>
 			</div>
 		</v-card>
@@ -46,9 +49,24 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
 	props: {
 		skeleton: Boolean,
+	},
+	computed: {
+		...mapGetters({
+			balance: "auth/getBalance",
+			isLogedIn: "auth/getUserStatus"
+		}),
+	},
+	methods: {
+		numberWithCommas(x) {
+			var parts = x.toString().split(".");
+			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			return parts.join(".");
+		},
 	},
 };
 </script>

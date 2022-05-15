@@ -31,6 +31,7 @@ import Delivery from "../views/pages/Ordering.vue"
 import Blog from "../views/pages/Blog.vue"
 import BlogDetail from "../views/pages/BlogDetail.vue"
 import Sedekah from "../views/pages/OrderingSedekah.vue"
+import PaymentMethod from "../views/pages/Payment"
 
 
 
@@ -108,6 +109,12 @@ const routes = [
     name: 'sedekah',
     component: Sedekah
   },
+  {
+    path: '/payment-method',
+    name: 'payment.method',
+    component: PaymentMethod
+  },
+  
 
   
 

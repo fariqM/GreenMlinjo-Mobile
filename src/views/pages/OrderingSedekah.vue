@@ -6,10 +6,10 @@
 				<my-scroll
 					ref="vs"
 					:ops="ops"
-					:style="{ 'height': windowsHeight - 110 + 'px' }"
+					:style="{ height: windowsHeight - 110 + 'px' }"
 				>
 					<v-sheet max-width="99.8vw">
-						<div >
+						<div>
 							<!-- Item Order -->
 							<v-card class="noselect pa-3">
 								<div class="d-flex align-end">
@@ -55,7 +55,7 @@
 												</div>
 											</div>
 										</div>
-                                        <v-divider class="my-1"></v-divider>
+										<v-divider class="my-1"></v-divider>
 										<div class="text-center">
 											<div
 												class="product-price-text ellipsis-text"
@@ -65,10 +65,16 @@
 											</div>
 										</div>
 										<v-divider class="my-1"></v-divider>
-                                        <div class="total-text total-subheader d-flex justify-space-between">
-                                            <span>Jumlah :</span>
-                                            <span>x{{ sedekahProduct.qty }}</span>
-                                        </div>
+										<div
+											class="
+												total-text total-subheader
+												d-flex
+												justify-space-between
+											"
+										>
+											<span>Jumlah :</span>
+											<span>x{{ sedekahProduct.qty }}</span>
+										</div>
 										<div
 											class=""
 											style="
@@ -82,7 +88,7 @@
 													font-size: 0.8rem;
 													margin-right: 5px;
 													height: 100%;
-                                                    padding-top: 10px
+													padding-top: 10px;
 												"
 												class="d-flex align-start"
 											>
@@ -93,10 +99,10 @@
 												dense
 												hide-details="auto"
 												solo
-                                                flat
-												style="font-size: 0.8rem;"
+												flat
+												style="font-size: 0.8rem"
 												auto-grow
-                                                v-model="notes"
+												v-model="notes"
 											>
 											</v-textarea>
 											<!-- <v-text-field
@@ -112,6 +118,59 @@
 										</div>
 									</div>
 								</div>
+							</v-card>
+
+							<!-- Metode Pembayaran -->
+							<v-card class="mt-3">
+								<v-list class="pa-0">
+									<v-list-item
+										link
+										class="px-2"
+										:to="{ name: 'payment.method' }"
+									>
+										<v-list-item-avatar class="pa-0 text-center mr-1">
+											<v-btn
+												icon
+												outlined
+												color="primary"
+												:ripple="false"
+												plain
+											>
+												<v-icon color="primary">mdi-cash</v-icon>
+											</v-btn>
+										</v-list-item-avatar>
+
+										<v-list-item-content>
+											<v-list-item-title class="product-title-text">
+												Metode Pembayaran
+											</v-list-item-title>
+										</v-list-item-content>
+
+										<div class="d-flex align-center">
+											<!-- <div class="product-title-text accent">COD</div> -->
+											<v-list-item-title class="product-title-text">
+												{{
+													selectedPayment === null
+														? "Belum dipilih"
+														: selectedPayment === 2
+														? "MlijoPay"
+														: "COD"
+												}}
+											</v-list-item-title>
+											<v-btn
+												icon
+												:ripple="false"
+												plain
+												text
+												style="font-size: 0.7rem"
+											>
+												<v-icon color="grey lighten-1"
+													>mdi-chevron-right</v-icon
+												>
+											</v-btn>
+										</div>
+									</v-list-item>
+								</v-list>
 							</v-card>
 
 							<!-- Total Price -->
@@ -182,6 +241,7 @@
 					small
 					@click="makeOrder"
 					:loading="btnLoading"
+					:disabled="btnDisabled"
 				>
 					Bayar</v-btn
 				>
@@ -281,17 +341,22 @@ export default {
 	computed: {
 		...mapGetters({
 			sedekahProduct: "others/getSelectedSedekah",
+			selectedPayment: "others/getSelectedPayment",
 		}),
 		btnDisabled: function () {
-			return true;
+			if (this.selectedPayment === null) {
+				return true;
+			} else {
+				return false;
+			}
 		},
 	},
 	methods: {
 		makeOrder() {
-            let form = Object.assign({}, this.sedekahProduct);
-            form.notes = this.notes
-            console.log("form", form);
-        },
+			let form = Object.assign({}, this.sedekahProduct);
+			form.notes = this.notes;
+			console.log("form", form);
+		},
 		onResize() {
 			this.windowWidth = window.innerWidth;
 		},

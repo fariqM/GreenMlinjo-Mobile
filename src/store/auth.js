@@ -1,6 +1,7 @@
 // import { Plugins } from '@capacitor/core';
 // import axios from 'axios';
 import { Storage } from '@capacitor/storage';
+// import axios from 'axios';
 // const { Storage } = Plugins;
 
 
@@ -29,6 +30,7 @@ export default {
         isLogedIn: false,
         address: [],
         choosenAddress: null,
+        balance:null,
     },
     mutations: {
         setUser(state, payload) {
@@ -40,6 +42,9 @@ export default {
         },
         setChoosenAddress(state, payload) {
             state.choosenAddress = payload
+        },
+        setBalance(state, payload){
+            state.balance = payload
         }
     },
     actions: {
@@ -77,6 +82,7 @@ export default {
                     // console.log(response);
                     if (response.status === 200) {
                         state.commit("setUser", { user: response.data.client, isLogedIn: true })
+                        state.dispatch("getBalance")
                         resolve(response);
                     } else {
                         reject(response);
@@ -91,6 +97,17 @@ export default {
                     reject(err);
                 })
             });
+        },
+        getBalance(state){
+            return new Promise((resolve, reject) => {
+                axios.get("blc/get-balance").then(r => {
+                    // console.log(r);
+                    state.commit("setBalance", r.data.balance.balance)
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
         },
         getAddress(state) {
             return new Promise((resolve, reject) => {
@@ -140,6 +157,7 @@ export default {
         getUser: state => state.user,
         getUserStatus: state => state.isLogedIn,
         getAddress: state => state.address,
-        getChoosenAddress: state => state.choosenAddress
+        getChoosenAddress: state => state.choosenAddress,
+        getBalance: state => state.balance
     }
 }

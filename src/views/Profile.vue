@@ -57,13 +57,48 @@
 			</v-list>
 			<!-- wallet card -->
 			<div style="position: relative; bottom: 3.1rem" class="" v-if="isLogedIn">
-				<v-card class="d-flex justify-center align-center wallet-card-profile">
+				<v-card
+					class="wallet-card-profile px-4"
+					style="
+						display: grid;
+						grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+						place-items: center;
+						height: 6rem;
+						align-items: stretch;
+						padding-top: 1rem;
+					"
+				>
+					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
+						<div class="d-flex flex-column text-center">
+							<v-icon color="primary">mdi-wallet-plus-outline</v-icon>
+							<span class="mt-2">Isi Saldo</span>
+						</div>
+					</div>
+					<v-divider
+						vertical
+						inset
+						style="min-height: 0; max-height: calc(100% - 28px)"
+					/>
+					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
+						<div class="d-flex flex-column">
+							<v-icon color="primary">mdi-swap-horizontal</v-icon>
+							<span class="mt-2">Transfer</span>
+						</div>
+					</div>
+					<v-divider vertical style="min-height: 0; max-height: calc(100% - 28px)" />
+					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
+						<div class="d-flex flex-column">
+							<v-icon color="primary">mdi-cash-fast</v-icon>
+							<span class="mt-2">Transfer Ke Bank</span>
+						</div>
+					</div>
+					<!-- <v-divider vertical /> -->
 				</v-card>
 			</div>
 		</div>
 
 		<!-- transaksi -->
-		<v-card class="mt-2">
+		<v-card class="mt-8">
 			<div
 				class="d-flex justify-space-between align-center"
 				style="padding: 10px 10px 0px 10px"
@@ -242,6 +277,20 @@ export default {
 				{
 					title: "Chat Admin",
 					subtitle: "Online service untuk pengguna",
+				},
+			],
+			walletMenu: [
+				{
+					text: "Isi Saldo",
+					icon: "mdi-wallet-plus-outline",
+				},
+				{
+					text: "Transfer",
+					icon: "mdi-swap-horizontal",
+				},
+				{
+					text: "Transfer ke Bank",
+					icon: "mdi-cash-fast",
 				},
 			],
 			menus3: [{ title: "Edit Profil" }, { title: "Logout" }],

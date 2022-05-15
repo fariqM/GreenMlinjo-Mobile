@@ -310,7 +310,7 @@
 					<v-toolbar-title>Paket Sedekah</v-toolbar-title>
 				</v-toolbar>
 
-				<v-card v-if="productClicked !== null" class="overflow-y-auto">
+				<v-sheet v-if="productClicked !== null" class="overflow-y-auto " height="calc(100vh - 48px)">
 					<v-img
 						contain
 						style="margin-top: 48px"
@@ -338,14 +338,14 @@
 					</v-card-text>
 
 					<v-card-actions
-						class="mt-auto"
+						class="mt-auto white"
 						style="position: absolute; width: 100%; bottom: 0px"
 					>
 						<v-btn block color="primary" @click="addQtySedekah = true">
 							Beli
 						</v-btn>
 					</v-card-actions>
-				</v-card>
+				</v-sheet>
 			</v-dialog>
 
 			<v-dialog v-model="addQtySedekah" persistent>
