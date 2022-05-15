@@ -68,10 +68,10 @@
 						padding-top: 1rem;
 					"
 				>
-					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
-						<div class="d-flex flex-column text-center">
+					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43" @click="$router.push({name:'topup'})">
+						<div class="d-flex flex-column" >
 							<v-icon color="primary">mdi-wallet-plus-outline</v-icon>
-							<span class="mt-2">Isi Saldo</span>
+							<span class="mt-2" style="text-align: center;">Isi Saldo</span>
 						</div>
 					</div>
 					<v-divider
@@ -82,14 +82,14 @@
 					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
 						<div class="d-flex flex-column">
 							<v-icon color="primary">mdi-swap-horizontal</v-icon>
-							<span class="mt-2">Transfer</span>
+							<span class="mt-2" style="text-align: center;">Transfer</span>
 						</div>
 					</div>
 					<v-divider vertical style="min-height: 0; max-height: calc(100% - 28px)" />
 					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
 						<div class="d-flex flex-column">
 							<v-icon color="primary">mdi-cash-fast</v-icon>
-							<span class="mt-2">Transfer Ke Bank</span>
+							<span class="mt-2" style="text-align: center;">Transfer Ke Bank</span>
 						</div>
 					</div>
 					<!-- <v-divider vertical /> -->

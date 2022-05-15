@@ -32,6 +32,7 @@ import Blog from "../views/pages/Blog.vue"
 import BlogDetail from "../views/pages/BlogDetail.vue"
 import Sedekah from "../views/pages/OrderingSedekah.vue"
 import PaymentMethod from "../views/pages/Payment"
+import TopUp from "../views/pages/Topup.vue"
 
 
 
@@ -113,6 +114,11 @@ const routes = [
     path: '/payment-method',
     name: 'payment.method',
     component: PaymentMethod
+  },
+  {
+    path: '/topup',
+    name: 'topup',
+    component: TopUp
   },
   
 
