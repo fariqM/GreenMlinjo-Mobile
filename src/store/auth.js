@@ -52,8 +52,8 @@ export default {
             return new Promise((resolve, reject) => {
                 axios_open.post('login', payload).then(response => {
                     state.commit("setUser", { user: response.data.user, isLogedIn: true })
-                    // console.log(response);
                     setItem(response.data.token).then(setComplete => {
+                        state.dispatch("getBalance")
                         resolve(response);
                     }).catch(e => {
                         reject(e);
@@ -101,7 +101,7 @@ export default {
         getBalance(state){
             return new Promise((resolve, reject) => {
                 axios.get("blc/get-balance").then(r => {
-                    // console.log(r);
+                    console.log("get balance");
                     state.commit("setBalance", r.data.balance.balance)
                     resolve(r)
                 }).catch(e => {

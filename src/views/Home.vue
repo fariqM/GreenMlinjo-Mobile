@@ -11,7 +11,11 @@
 				style="background-color: #f5f5f5"
 			>
 				<!-- Corousels Section-->
-				<home-corousels :skeleton="skeleton_show" :showBar="true" style="margin-top: 56px"></home-corousels>
+				<home-corousels
+					:skeleton="skeleton_show"
+					:showBar="true"
+					style="margin-top: 56px"
+				></home-corousels>
 				<!-- End Corousels Section -->
 
 				<!-- Area Section -->
@@ -209,7 +213,7 @@ export default {
 			lazy_ramadan: false,
 			skeleton_show: true,
 			show: false,
-			error_ilust:false,
+			error_ilust: false,
 			recom_items: [
 				{
 					src: "/assets/icon/flash-sale.png",
@@ -313,17 +317,18 @@ export default {
 	},
 	mounted() {
 		// console.log(this.CurrentUser);
+		this.$store.dispatch("auth/getBalance");
 		this.$store
 			.dispatch("products/setProductTerlaris")
 			.then((result) => {
 				// console.log(result);
 				this.loadingBar = false;
 				this.skeleton_show = false;
-				this.error_ilust = false
+				this.error_ilust = false;
 				this.skeleton.product_terlaris = false;
 			})
 			.catch((e) => {
-				this.error_ilust =true
+				this.error_ilust = true;
 				this.loadingBar = false;
 				this.skeleton_show = false;
 				this.skeleton.product_terlaris = false;
