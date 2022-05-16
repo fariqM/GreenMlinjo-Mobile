@@ -2,7 +2,7 @@
 	<div class="d-flex justify-space-around py-1 px-1">
 		<skeleton height="4.4rem" width="50%" v-if="skeleton" :radius="3" />
 
-		<v-card class="d-flex align-center pa-3" elevation="2" v-if="!skeleton && isLogedIn">
+		<v-card class="d-flex align-center pa-3" elevation="2" v-if="!skeleton && balance!==null">
 			<v-avatar tile size="40">
 				<img :src="'/assets/icon/wallet.png'" :alt="'qr-code'" />
 			</v-avatar>

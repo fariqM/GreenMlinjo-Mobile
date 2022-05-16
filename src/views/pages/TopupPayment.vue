@@ -87,7 +87,7 @@
 			</my-scroll>
 		</v-main>
 		<div class="pa-2 bottom-container-payment">
-			<v-btn @click="routeBack" block color="primary" :loading="btnLoading" :disabled="btnDisabled"
+			<v-btn @click="confirmPayment" block color="primary" :loading="btnLoading" :disabled="btnDisabled"
 				>Konfirmasi</v-btn
 			>
 		</div>

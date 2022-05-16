@@ -20,6 +20,8 @@ import Profile from '../views/Profile.vue'
 // other page
 import TestingPage from "../views/components/Testing.vue"
 
+import AccountSetting from "../views/pages/AccountSetting.vue"
+import ChangeProfile from "../views/pages/ChangeProfile.vue"
 import Favourites from "../views/pages/Favourites.vue"
 import Carts from "../views/pages/Cart.vue"
 import Chat from "../views/pages/Chat.vue"
@@ -67,6 +69,16 @@ const routes = [
     path: '/my-carts',
     name: 'carts',
     component: Carts
+  },
+  {
+    path: '/account-settings',
+    name: 'account.setting',
+    component: AccountSetting
+  },
+  {
+    path: '/profile-settings',
+    name: 'profile.setting',
+    component: ChangeProfile
   },
   {
     path: '/chat-list',
@@ -133,10 +145,10 @@ const routes = [
     name: 'topup.process',
     component: TopupProcess
   },
-  
-  
 
-  
+
+
+
 
   {
     path: '/testing-devs',

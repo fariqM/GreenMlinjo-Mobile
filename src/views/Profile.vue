@@ -15,8 +15,8 @@
 						<v-list-item-subtitle>Pengguna Aktif</v-list-item-subtitle>
 					</v-list-item-content>
 					<v-list-item-action>
-						<v-btn icon>
-							<v-icon>mdi-menu</v-icon>
+						<v-btn icon :to="{name:'account.setting'}">
+							<v-icon>mdi-cog-outline</v-icon>
 						</v-btn>
 					</v-list-item-action>
 				</v-list-item>
@@ -76,7 +76,6 @@
 					</div>
 					<v-divider
 						vertical
-						inset
 						style="min-height: 0; max-height: calc(100% - 28px)"
 					/>
 					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
