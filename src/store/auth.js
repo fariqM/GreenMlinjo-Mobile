@@ -1,7 +1,6 @@
 // import { Plugins } from '@capacitor/core';
 // import axios from 'axios';
 import { Storage } from '@capacitor/storage';
-// import axios from 'axios';
 // const { Storage } = Plugins;
 
 
@@ -103,6 +102,15 @@ export default {
                 axios.get("blc/get-balance").then(r => {
                     console.log("get balance");
                     state.commit("setBalance", r.data.balance.balance)
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+        makeTopup(state, payload){
+            return new Promise((resolve, reject) => {
+                axios.post("blc/topup", payload).then(r => {
                     resolve(r)
                 }).catch(e => {
                     reject(e)

@@ -17,61 +17,76 @@
 					:max-height="windowsHeight - 100 + 'px'"
 					max-width="99.8vw"
 				>
-					<v-list>
-						<v-list-item>
-							<v-list-item-avatar tile class="pa-0">
-								<v-img src="/assets/images/alfamaret.png" contain></v-img>
-							</v-list-item-avatar>
-							<v-list-item-content>
-								<v-list-item-title>Alfamart / Alfamidi</v-list-item-title>
-							</v-list-item-content>
-						</v-list-item>
-						<v-divider inset />
-						<v-list-item>
-							<v-list-item-avatar tile class="pa-0" />
-							<v-list-item-content>
-								<v-list-item-title>No. Handphone</v-list-item-title>
-								<v-list-item-subtitle>082745556772</v-list-item-subtitle>
-							</v-list-item-content>
-						</v-list-item>
-					</v-list>
-
-					<v-list class="mt-2">
-						<v-list-item>
-							<v-list-item-title>Instruksi Pembayaran</v-list-item-title>
-						</v-list-item>
-						<v-list-item>
-							<ul class="numbered-list">
-								<li>AngularJS</li>
-								<li>Yii</li>
-								<li>Symfony</li>
-								<li>Ruby on Rails</li>
-								<li>Laravel</li>
-							</ul>
-							<!-- <ul style="list-style-type: number">
-								<li v-for="n in 4" :key="n">tes</li>
-							</ul> -->
-						</v-list-item>
-					</v-list>
+					<indomaret v-if="topupMethod.type === 5" />
+					<alfamaret v-if="topupMethod.type === 4" />
+					<bank-payment
+						v-if="topupMethod.type === 1"
+						:bankId="topupMethod.bankId"
+					/>
 				</v-sheet>
 			</my-scroll>
 		</v-main>
 		<div class="pa-2 bottom-container-payment">
-			<v-btn @click="routeBack" block color="primary">OK</v-btn>
+			<v-btn @click="sendTopup" block color="primary">OK</v-btn>
+		</div>
+		<v-overlay :value="overlay">
+			<v-progress-circular indeterminate size="30"></v-progress-circular>
+		</v-overlay>
+		<div class="text-center">
+			<v-dialog v-model="isTopupSuccess">
+				<v-card class="">
+					<v-card-title style="font-size: 1rem; justify-content: space-around"
+						>Pembayaran Berhasil!</v-card-title
+					>
+					<v-card-actions>
+						<v-btn block color="primary" :to="{name:'home'}">Kembali</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+			<v-dialog v-model="isTopupFailed">
+				<v-card class="">
+					<v-card-title style="font-size: 1rem; justify-content: space-around"
+						>Pembayaran Gagal!</v-card-title
+					>
+					<v-card-subtitle style="font-size: 0.8rem; justify-content: space-around"
+						>Mohon coba lain waktu.</v-card-subtitle
+					>
+					<v-card-actions>
+						<v-btn block color="primary" :to="{name:'home'}">Kembali</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 		</div>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import MyScroll from "vuescroll";
+import Indomaret from "../components/payment/Indomaret.vue";
+import Alfamaret from "../components/payment/Alfamaret.vue";
+import BankPayment from "../components/payment/Bank.vue";
 
 export default {
 	components: {
 		MyScroll,
+		Indomaret,
+		Alfamaret,
+		BankPayment,
+	},
+	computed: {
+		...mapGetters({
+			topupMethod: "others/getTopupMethod",
+			nominalTopup: "others/getNominalTopup",
+		}),
 	},
 	data() {
 		return {
+			dialog: false,
+			overlay: false,
 			loading: false,
+			isTopupSuccess: false,
+			isTopupFailed: false,
 			url: __BASE_URL__,
 			windowWidth: window.innerWidth,
 			windowsHeight: window.innerHeight,
@@ -125,7 +140,21 @@ export default {
 			},
 		};
 	},
+
 	methods: {
+		sendTopup() {
+			this.overlay = true;
+			this.$store
+				.dispatch("auth/makeTopup", { balance: this.nominalTopup })
+				.then((response) => {
+					this.isTopupSuccess = true
+					this.overlay = false;
+				})
+				.catch((e) => {
+					this.isTopupFailed = true
+					console.log(e);
+				});
+		},
 		routeBack() {
 			this.$router.back();
 		},
@@ -133,31 +162,3 @@ export default {
 };
 </script>
 
-<style lang="scss">
-ul.numbered-list {
-	counter-reset: li;
-	list-style-type: none;
-	font-size: 14px;
-	line-height: 18px;
-	padding-left: 10px;
-
-	li {
-		position: relative;
-		padding: 5px 0 5px 30px;
-
-		&:before {
-			content: counter(li);
-			counter-increment: li;
-			height: 20px;
-			width: 20px;
-			border: 1px solid blue;
-			border-radius: 50%;
-			color: red;
-			text-align: center;
-			position: absolute;
-			left: 0;
-			top: 4px;
-		}
-	}
-}
-</style>

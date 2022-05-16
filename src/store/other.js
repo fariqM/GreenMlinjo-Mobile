@@ -26,7 +26,7 @@ export default {
                                     "Pilih Menu <b>Bayar/Beli</b>",
                                     "Pilih Menu <b>Lainnya > MultiPayment</b>",
                                     "Masukkan kode <b>6278</b>",
-                                    "Masukkan Nomor Virtual Account <span>62783243464</span>",
+                                    "Masukkan Nomor Virtual Account <span>__phone</span>",
                                     "Periksa layar konfirmasi dan tekan <b>Ya</b>",
                                 ],
                             },
@@ -38,7 +38,7 @@ export default {
                                     "Pilih Menu <b>Bayar</b>",
                                     "Pilih Menu <b>e-Commerce</b>",
                                     "Pilih Penyedia Layanan: <b>Green Mlijo</b>",
-                                    "Masukkan Nomor Virtual Account <span>62783243464</span>",
+                                    "Masukkan Nomor Virtual Account <span>__phone</span>",
                                     "Periksa layar konfirmasi dan tekan <b>Ya</b>",
                                 ],
                             },
@@ -60,7 +60,7 @@ export default {
                                     "Pilih Menu <b>Bayar/Beli</b>",
                                     "Pilih Menu <b>Lainnya > MultiPayment</b>",
                                     "Masukkan kode <b>6278</b>",
-                                    "Masukkan Nomor Virtual Account <span>62783243464</span>",
+                                    "Masukkan Nomor Virtual Account <span>__phone</span>",
                                     "Periksa layar konfirmasi dan tekan <b>Ya</b>",
                                 ],
                             },
@@ -72,7 +72,7 @@ export default {
                                     "Pilih Menu <b>Bayar</b>",
                                     "Pilih Menu <b>e-Commerce</b>",
                                     "Pilih Penyedia Layanan: <b>Green Mlijo</b>",
-                                    "Masukkan Nomor Virtual Account <span>62783243464</span>",
+                                    "Masukkan Nomor Virtual Account <span>__phone</span>",
                                     "Periksa layar konfirmasi dan tekan <b>Ya</b>",
                                 ],
                             },
@@ -100,6 +100,7 @@ export default {
             bankId:null,
         },
         selectedPayment:null,
+        nominalTopup:null,
     },
     mutations: {
         setSelectedSedekah(state, payload) {
@@ -115,6 +116,9 @@ export default {
             state.topupMethod.type = payload.type
             state.topupMethod.bankId = payload.bankId
         },
+        setNominalTopup(state, payload){
+            state.nominalTopup = payload
+        }
     },
     actions: {
 
@@ -124,5 +128,8 @@ export default {
         getPaymentMethod: state => state.paymentMethod,
         getSelectedPayment: state => state.selectedPayment,
         getTopupMethod: state => state.topupMethod,
+        getNominalTopup: state => state.nominalTopup,
+
+        
     }
 }

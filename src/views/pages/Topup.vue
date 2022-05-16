@@ -57,7 +57,7 @@
 			</div>
 		</v-main>
 		<div class="pa-2 bottom-container-payment">
-			<v-btn block color="primary" :disabled="btnDisabled" :to="{name:'topup.payment'}"> Top Up</v-btn>
+			<v-btn block color="primary" :disabled="btnDisabled" @click="makeTopup"> Top Up</v-btn>
 		</div>
 	</div>
 </template>
@@ -162,7 +162,9 @@ export default {
 	},
 	methods: {
 		makeTopup() {
-			console.log(parseInt(this.selectedNominal.replace(".", "")));
+			const value = parseInt(this.selectedNominal.replace(".", ""))
+			this.$store.commit("others/setNominalTopup", value)
+			this.$router.push({name:'topup.payment'})
 		},
 		nominalClicked(i, value) {
 			this.selectedNominal = this.numberWithCommas(value);
