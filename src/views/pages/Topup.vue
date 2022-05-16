@@ -57,7 +57,7 @@
 			</div>
 		</v-main>
 		<div class="pa-2 bottom-container-payment">
-			<v-btn block color="primary" :disabled="btnDisabled"> Top Up</v-btn>
+			<v-btn block color="primary" :disabled="btnDisabled" :to="{name:'topup.payment'}"> Top Up</v-btn>
 		</div>
 	</div>
 </template>

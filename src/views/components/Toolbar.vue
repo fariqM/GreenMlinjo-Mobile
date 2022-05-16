@@ -34,7 +34,7 @@ export default {
 	methods: {
 		navigation_back() {
 			if (this.isUseBack) {
-				this.$router.push({ name: this.routeTarget });
+				this.$router.replace({ name: this.routeTarget });
 			} else {
 				this.$router.back();
 			}

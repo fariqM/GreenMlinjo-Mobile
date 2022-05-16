@@ -11,10 +11,11 @@ export default {
                 icon: "mdi-swap-horizontal",
                 child: [
                     {
+                        id:1,
                         title: "Bank BCA",
                         icon: "/assets/images/bca.png",
                         subtitle:
-                            "Menerima transfer dari semua Bank termasuk Bank Syariah",
+                            "Hanya menerima dari Bank BCA.<br>Metode pembayaran lebih mudah.",
 
                         steps: [
                             {
@@ -44,10 +45,11 @@ export default {
                         ],
                     },
                     {
+                        id:2,
                         title: "Bank Mandiri",
                         icon: "/assets/images/mandiri.png",
                         subtitle:
-                            "Menerima transfer dari semua Bank termasuk Bank Syariah",
+                            "Menerima semua Bank termasuk Bank Syariah.<br>Metode pembayaran lebih mudah.",
 
                         steps: [
                             {
@@ -90,7 +92,13 @@ export default {
                 subtitle: "Bayar Kontan Setelah Barang Sampai",
                 icon: "mdi-cash-fast",
             },
+            // 4 = alfamaret
+            // 5 = indomaret
         ],
+        topupMethod:{
+            type:null,
+            bankId:null,
+        },
         selectedPayment:null,
     },
     mutations: {
@@ -102,7 +110,11 @@ export default {
         },
         setSelectedPayment(state, payload){
             state.selectedPayment = payload
-        }
+        },
+        setTopupMethod(state, payload){
+            state.topupMethod.type = payload.type
+            state.topupMethod.bankId = payload.bankId
+        },
     },
     actions: {
 
@@ -111,5 +123,6 @@ export default {
         getSelectedSedekah: state => state.selectedPaketSedekah,
         getPaymentMethod: state => state.paymentMethod,
         getSelectedPayment: state => state.selectedPayment,
+        getTopupMethod: state => state.topupMethod,
     }
 }
