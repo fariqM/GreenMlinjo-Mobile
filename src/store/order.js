@@ -22,6 +22,15 @@ export default {
                 })
             })
         },
+        confirmOrder(state, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(`orders/confirm/${payload.orderId}`).then(r => {
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
         getLastOrder(state, payload) {
             return new Promise((resolve, reject) => {
                 axios.get(`orders/get-last-order/${payload}`).then(r => {

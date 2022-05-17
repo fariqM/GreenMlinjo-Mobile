@@ -1017,15 +1017,15 @@ export default {
 					if (this.paymentMethod === 2) {
 						this.$store
 							.dispatch("auth/makePurchase", { amount: this.TotalPrice })
-							.then((response) => {
+							.then((r) => {
 								console.log("purchase successfully");
 								this.$store
-									.dispatch("transactions", {
+									.dispatch("transactions/createTransaction", {
 										uuid: response.data.uuid,
 										title: "Delivery Order",
-										description: "-",
+										description: "Pesan Sayur/Buah segar di Aplikasi GreenMlijo",
 										amount: response.data.total_price,
-										status: "paid",
+										status: 2,
 									})
 									.then((resp) => {
 										console.log(resp);

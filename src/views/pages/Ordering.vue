@@ -363,6 +363,15 @@ export default {
 			this.showDialogConfirm = false;
 			console.log("confirmed");
 			console.log("order", this.lastOrder);
+			this.$store
+				.dispatch("orders/confirmOrder", { orderId: this.lastOrder.id })
+				.then(() => {
+					console.log("order confirmed successfully");
+					this.$router.replace({ name: "pesanan" });
+				})
+				.catch((e) => {
+					console.log("failed to confirm order");
+				});
 		},
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");
@@ -403,6 +412,7 @@ export default {
 				.then((response) => {
 					this.lastOrder = response.data.data;
 					console.log("getLastOrder", response.data.data);
+					this.currentStep = this.lastOrder.status_code
 					this.skeleton_show = false;
 					this.deliveryProgress();
 				})
