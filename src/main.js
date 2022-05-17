@@ -52,12 +52,12 @@ async function prepare() {
     mlinjo_key = token
     axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/v1/`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`;
-    axios.defaults.timeout = 5000;
+    axios.defaults.timeout = 30000;
   }).catch(e => {
     SplashScreen.hide();
     axios.defaults.baseURL = `${__BASE_URL_SERVER}${__API_PREFIX}/v1/`;
     axios.defaults.headers.Authorization = `Bearer ${mlinjo_key}`;
-    axios.defaults.timeout = 5000;
+    axios.defaults.timeout = 30000;
   })
   // if (platform == 'android') {
 

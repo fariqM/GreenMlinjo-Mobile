@@ -11,11 +11,17 @@
 						<v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
 					</v-list-item-avatar>
 					<v-list-item-content>
-						<v-list-item-title>Ahmad Muhammad</v-list-item-title>
-						<v-list-item-subtitle>Pengguna Aktif</v-list-item-subtitle>
+						<v-list-item-title style="font-size: 1.1rem; font-weight: 500">{{
+							user.name
+						}}</v-list-item-title>
+						<v-list-item-subtitle style="color: aliceblue" v-if="balance!==null">
+							<span style="font-size: 1rem; font-weight: 600">Saldo:</span> Rp{{
+								numberWithCommas(balance)
+							}}</v-list-item-subtitle
+						>
 					</v-list-item-content>
 					<v-list-item-action>
-						<v-btn icon :to="{name:'account.setting'}">
+						<v-btn icon :to="{ name: 'account.setting' }">
 							<v-icon>mdi-cog-outline</v-icon>
 						</v-btn>
 					</v-list-item-action>
@@ -68,10 +74,14 @@
 						padding-top: 1rem;
 					"
 				>
-					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43" @click="$router.push({name:'topup'})">
-						<div class="d-flex flex-column" >
+					<div
+						class="d-flex"
+						style="font-size: 0.8rem; color: #87bd43"
+						@click="$router.push({ name: 'topup' })"
+					>
+						<div class="d-flex flex-column">
 							<v-icon color="primary">mdi-wallet-plus-outline</v-icon>
-							<span class="mt-2" style="text-align: center;">Isi Saldo</span>
+							<span class="mt-2" style="text-align: center">Isi Saldo</span>
 						</div>
 					</div>
 					<v-divider
@@ -81,14 +91,19 @@
 					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
 						<div class="d-flex flex-column">
 							<v-icon color="primary">mdi-swap-horizontal</v-icon>
-							<span class="mt-2" style="text-align: center;">Transfer</span>
+							<span class="mt-2" style="text-align: center">Transfer</span>
 						</div>
 					</div>
-					<v-divider vertical style="min-height: 0; max-height: calc(100% - 28px)" />
+					<v-divider
+						vertical
+						style="min-height: 0; max-height: calc(100% - 28px)"
+					/>
 					<div class="d-flex" style="font-size: 0.8rem; color: #87bd43">
 						<div class="d-flex flex-column">
 							<v-icon color="primary">mdi-cash-fast</v-icon>
-							<span class="mt-2" style="text-align: center;">Transfer Ke Bank</span>
+							<span class="mt-2" style="text-align: center"
+								>Transfer Ke Bank</span
+							>
 						</div>
 					</div>
 					<!-- <v-divider vertical /> -->
@@ -300,7 +315,12 @@ export default {
 	computed: {
 		...mapGetters({
 			isLogedIn: "auth/getUserStatus",
+			user: "auth/getUser",
+			balance: "auth/getBalance",
 		}),
+	},
+	mounted(){
+		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
 	},
 	methods: {
 		LogoutAction() {
@@ -315,16 +335,11 @@ export default {
 				.catch((e) => {
 					console.log(e);
 				});
-
-			// setTimeout(() => {
-			// 	this.logoutLoading = false;
-			// 	iziToast.show({
-			// 		theme: "dark",
-			// 		position: "center",
-			// 		title: false,
-			// 		message: "cjek",
-			// 	});
-			// }, 200);
+		},
+		numberWithCommas(x) {
+			var parts = x.toString().split(".");
+			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+			return parts.join(".");
 		},
 	},
 };

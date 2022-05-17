@@ -43,7 +43,7 @@
 						hide-details="auto"
 						:error-messages="errors.full_address"
 						dense
-						height="70px"
+						auto-grow
 						class="elevation-0"
 						append-icon="mdi-chevron-right"
 						v-model="full_address"

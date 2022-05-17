@@ -10,7 +10,7 @@ export default {
         },
         setLastOrder(state, payload) {
             state.lastOrder = payload
-        }
+        },
     },
     actions: {
         makeOrder(state, payload) {

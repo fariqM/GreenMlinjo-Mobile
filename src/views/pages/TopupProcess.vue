@@ -39,7 +39,9 @@
 						>Pembayaran Berhasil!</v-card-title
 					>
 					<v-card-actions>
-						<v-btn block color="primary" :to="{name:'home'}">Kembali</v-btn>
+						<v-btn block color="primary" :to="{ name: redirectRoute }"
+							>Kembali</v-btn
+						>
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
@@ -48,11 +50,14 @@
 					<v-card-title style="font-size: 1rem; justify-content: space-around"
 						>Pembayaran Gagal!</v-card-title
 					>
-					<v-card-subtitle style="font-size: 0.8rem; justify-content: space-around"
+					<v-card-subtitle
+						style="font-size: 0.8rem; text-align: center; padding-top: 5px"
 						>Mohon coba lain waktu.</v-card-subtitle
 					>
 					<v-card-actions>
-						<v-btn block color="primary" :to="{name:'home'}">Kembali</v-btn>
+						<v-btn block color="primary" :to="{ name: redirectRoute }"
+							>Kembali</v-btn
+						>
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
@@ -78,6 +83,7 @@ export default {
 		...mapGetters({
 			topupMethod: "others/getTopupMethod",
 			nominalTopup: "others/getNominalTopup",
+			redirectRoute: "auth/getRouteActivity",
 		}),
 	},
 	data() {
@@ -147,11 +153,11 @@ export default {
 			this.$store
 				.dispatch("auth/makeTopup", { balance: this.nominalTopup })
 				.then((response) => {
-					this.isTopupSuccess = true
+					this.isTopupSuccess = true;
 					this.overlay = false;
 				})
 				.catch((e) => {
-					this.isTopupFailed = true
+					this.isTopupFailed = true;
 					console.log(e);
 				});
 		},

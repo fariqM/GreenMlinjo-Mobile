@@ -139,6 +139,7 @@ export default {
 		};
 	},
 	mounted() {
+		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
 		this.changeFilter("belum");
 	},
 	watch: {

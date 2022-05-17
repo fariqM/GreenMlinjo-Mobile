@@ -20,7 +20,7 @@
 						margin-bottom: 2.5rem;
 					"
 				>
-					<v-card>
+					<v-card @click="navigation_back" v-ripple>
 						<div class="d-flex flex-row justify-space-between pa-2">
 							<div
 								style="max-height: 100px; max-width: 90%"
@@ -28,7 +28,7 @@
 							>
 								{{ address }}
 							</div>
-							<div @click="navigation_back">
+							<div >
 								<v-icon> mdi-chevron-right </v-icon>
 							</div>
 						</div>

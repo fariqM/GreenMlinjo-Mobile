@@ -214,7 +214,14 @@
 
 									<v-divider></v-divider>
 
-									<v-list-item link class="px-2">
+									<v-list-item
+										link
+										class="px-2"
+										:to="{
+											name: 'payment.method',
+											params: { amount: TotalPrice },
+										}"
+									>
 										<v-list-item-avatar class="pa-0 text-center mr-1">
 											<v-btn
 												icon
@@ -236,7 +243,13 @@
 										<div class="d-flex align-center">
 											<!-- <div class="product-title-text accent">COD</div> -->
 											<v-list-item-title class="product-title-text">
-												COD
+												{{
+													paymentMethod === null
+														? "Belum dipilih"
+														: paymentMethod === 2
+														? "MlijoPay"
+														: "COD"
+												}}
 											</v-list-item-title>
 											<v-btn
 												icon
@@ -733,14 +746,20 @@ export default {
 			this.afterMapping = true;
 			this.order_items = this.$store.getters.getcheckOut;
 		}
-		// console.log(this.order_items);
 
 		this.getChoosenAddress();
 		this.getVouchers();
 	},
+	beforeMount() {
+		console.log("set voucher");
+		this.selectedVoucher = this.$store.getters["vouchers/getSelectedVoucher"];
+		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
+	},
 	watch: {
-		// selectedVoucher: function (newVal) {
-		// },
+		selectedVoucher: function (newVal) {
+			this.$store.commit("vouchers/setSelectedVoucher", newVal);
+			// console.log("selected voucher", newVal);
+		},
 	},
 	computed: {
 		SubTotalPrice: function () {
@@ -778,11 +797,11 @@ export default {
 						);
 
 						if (this.discountTotal.product > element.max_value) {
-							console.log("max");
+							// console.log("max");
 							this.discountTotal.product = element.max_value;
 						}
-						console.log("disc", this.discountTotal.product);
-						console.log("max disc", element.max_value);
+						// console.log("disc", this.discountTotal.product);
+						// console.log("max disc", element.max_value);
 						// console.log("total disc prod", this.discountTotal.product);
 						total_price -= this.discountTotal.product;
 					} else {
@@ -826,6 +845,7 @@ export default {
 		...mapGetters({
 			choosenAddress: "auth/getChoosenAddress",
 			vouchers: "vouchers/getVouchers",
+			paymentMethod: "others/getSelectedPayment",
 		}),
 		btnDisabled: function () {
 			let disabled = false;
@@ -839,7 +859,7 @@ export default {
 		clickVoucher(voucher) {
 			this.voucherDescriptionModal = true;
 			this.clickedVoucher = voucher;
-			console.log(this.clickedVoucher);
+			// console.log(this.clickedVoucher);
 		},
 		scrollToTop() {
 			this.$refs["vs"].scrollTo(
@@ -992,6 +1012,34 @@ export default {
 			this.$store
 				.dispatch("orders/makeOrder", form)
 				.then((response) => {
+					// if payment method using MlijoPay
+					// we decrese its balance
+					if (this.paymentMethod === 2) {
+						this.$store
+							.dispatch("auth/makePurchase", { amount: this.TotalPrice })
+							.then((response) => {
+								console.log("purchase successfully");
+								this.$store
+									.dispatch("transactions", {
+										uuid: response.data.uuid,
+										title: "Delivery Order",
+										description: "-",
+										amount: response.data.total_price,
+										status: "paid",
+									})
+									.then((resp) => {
+										console.log(resp);
+										console.log("create transaction success");
+									})
+									.catch((e) => {
+										console.log("create transaction failed");
+									});
+							})
+							.catch((e) => {
+								console.log("purchase failed");
+							});
+					}
+
 					this.btnLoading = false;
 					this.$router.replace({ name: "delivery" });
 					this.$store.commit("orders/setLastOrder", response.data.order);

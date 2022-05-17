@@ -13,8 +13,13 @@
 					max-width="99.8vw"
 				>
 					<v-list>
-						<div v-for="(payment, i) in payments" :key="i">
+						<div v-for="(payment, i) in payments" :key="i" class="d-flex align-center">
 							<v-list-item
+								:style="{ width: payment.type === 2 ? '70%' : '100%' }"
+								:ripple="false"
+								:disabled="
+									payment.type === 3 ? false : balance > amount ? false : true
+								"
 								v-if="!payment.child"
 								@click="paymentClicked(payment.type)"
 							>
@@ -28,90 +33,31 @@
 										v-if="payment.type === 3"
 									></v-checkbox>
 								</v-list-item-action>
-								<v-list-item-icon class="mr-2 ">
+								<v-list-item-icon class="mr-2">
 									<v-icon>{{ payment.icon }}</v-icon>
 								</v-list-item-icon>
 
-								<v-list-item-title>{{ payment.title }}</v-list-item-title>
-							</v-list-item>
-
-							<!-- <v-list-group :value="true" :prepend-icon="payment.icon" v-else>
-								<template v-slot:activator>
+								<v-list-item-content>
 									<v-list-item-title>{{ payment.title }}</v-list-item-title>
-								</template>
-
-								<v-list-group
-									:value="true"
-									no-action
-									sub-group
-									v-for="(bank, n) in payment.child"
-									:key="n"
-								>
-									<template v-slot:activator>
-										<v-list-item-content>
-											<v-list-item-title class="d-flex align-center">
-												<img
-													:src="bank.icon"
-													alt="bank"
-													style="
-														height: 20px;
-														width: 30px;
-														margin-right: 0.5rem;
-													"
-												/>
-												{{ bank.title }}
-											</v-list-item-title>
-											<v-list-item-subtitle>{{
-												bank.subtitle
-											}}</v-list-item-subtitle>
-										</v-list-item-content>
-									</template>
-									<div class="px-2">
-										<v-list-group
-                                        
-											color="info"
-											v-for="(step, y) in bank.steps"
-											sub-group
-											:key="y"
-											:prepend-icon="step.icon"
-											@click="
-												step.icon == 'mdi-minus'
-													? (step.icon = 'mdi-plus')
-													: (step.icon = 'mdi-minus')
-											"
-										>
-											<template v-slot:activator>
-												<v-list-item-content>
-													<v-list-item-title class="d-flex align-center">
-														{{ step.method }}
-													</v-list-item-title>
-												</v-list-item-content>
-											</template>
-
-											<div style="padding-left: 5rem">
-												<ul style="list-style-type: circle">
-													<li
-														v-for="(s, m) in step.steps"
-														:key="m"
-														v-html="s"
-													></li>
-												</ul>
-											</div>
-										</v-list-group>
-									</div>
-								</v-list-group>
-							</v-list-group> -->
+									<v-list-item-subtitle
+										class="link-text"
+										v-if="payment.type === 2 && balance !== null"
+										>Rp{{ numberWithCommas(balance) }}</v-list-item-subtitle
+									>
+								</v-list-item-content>
+							</v-list-item>
+							<div v-if="payment.type === 2" class="pr-4">
+								<v-btn color="primary" outlined small :to="{name:'topup'}">
+									Isi Saldo
+								</v-btn>
+							</div>
 						</div>
 					</v-list>
 				</v-sheet>
 			</my-scroll>
 		</v-main>
 		<div class="pa-2 bottom-container-payment">
-			<v-btn
-				@click="routeBack"
-				block
-				color="primary"
-				:disabled="btnDisabled"
+			<v-btn @click="routeBack" block color="primary" :disabled="btnDisabled"
 				>Konfirmasi</v-btn
 			>
 		</div>
@@ -130,13 +76,14 @@ export default {
 		return {
 			loading: false,
 			url: __BASE_URL__,
+			amount: null,
 			admins: [
 				["Transfer Bank", "mdi-account-multiple-outline"],
 				["COD (Bayar di tempat)", "mdi-cog-outline"],
 				["MlijoPay", "mdi-cog-outline"],
 			],
 			paymentMethod: {
-                bank:false,
+				bank: false,
 				pay: false,
 				cod: false,
 			},
@@ -202,6 +149,7 @@ export default {
 		...mapGetters({
 			payments: "others/getPaymentMethod",
 			selectedPayment: "others/getSelectedPayment",
+			balance: "auth/getBalance",
 		}),
 		btnDisabled: function () {
 			let disabled = true;
@@ -213,17 +161,21 @@ export default {
 			return disabled;
 		},
 	},
-    mounted(){
-        if (this.selectedPayment === 1) {
-            this.paymentMethod.bank = true
-        }
-        if (this.selectedPayment === 2) {
-            this.paymentMethod.pay = true
-        }
-        if (this.selectedPayment === 3) {
-            this.paymentMethod.cod = true
-        }
-    },
+	mounted() {
+		if (this.selectedPayment === 1) {
+			this.paymentMethod.bank = true;
+		}
+		if (this.selectedPayment === 2) {
+			this.paymentMethod.pay = true;
+		}
+		if (this.selectedPayment === 3) {
+			this.paymentMethod.cod = true;
+		}
+
+		this.amount = this.$router.history.current.params.amount;
+
+		console.log(this.amount);
+	},
 	methods: {
 		paymentClicked(type) {
 			this.$store.commit("others/setSelectedPayment", type);
@@ -235,9 +187,14 @@ export default {
 				this.paymentMethod.cod = true;
 			}
 		},
-        routeBack(){
-            this.$router.back()
-        }
+		routeBack() {
+			this.$router.back();
+		},
+		numberWithCommas(x) {
+			var parts = x.toString().split(".");
+			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			return parts.join(".");
+		},
 	},
 };
 </script>

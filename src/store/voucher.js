@@ -2,10 +2,14 @@ export default {
     namespaced: true,
     state: {
         vouchers:[],
+        selectedVoucher:[],
     },
     mutations: {
         setVoucher(state, payload){
             state.vouchers = payload
+        },
+        setSelectedVoucher(state, payload){
+            state.selectedVoucher = payload
         }
     },
     actions: {
@@ -22,5 +26,6 @@ export default {
     },
     getters: {
         getVouchers: state => state.vouchers,
+        getSelectedVoucher: state => state.selectedVoucher,
     }
 }

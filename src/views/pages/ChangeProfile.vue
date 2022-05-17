@@ -26,7 +26,7 @@
 								<v-badge avatar overlap icon="mdi-pencil">
 									<v-avatar color="grey" size="50">
 										<v-img
-											src="https://cdn.vuetifyjs.com/images/john.png"
+											src="https://cdn.vuetifyjs.com/images/lists/1.jpg"
 										></v-img>
 									</v-avatar>
 								</v-badge>

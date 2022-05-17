@@ -29,7 +29,8 @@ export default {
         isLogedIn: false,
         address: [],
         choosenAddress: null,
-        balance:null,
+        balance: null,
+        routeActivity: null,
     },
     mutations: {
         setUser(state, payload) {
@@ -42,8 +43,11 @@ export default {
         setChoosenAddress(state, payload) {
             state.choosenAddress = payload
         },
-        setBalance(state, payload){
+        setBalance(state, payload) {
             state.balance = payload
+        },
+        setRouteActivity(state, payload){
+            state.routeActivity = payload
         }
     },
     actions: {
@@ -97,7 +101,7 @@ export default {
                 })
             });
         },
-        getBalance(state){
+        getBalance(state) {
             return new Promise((resolve, reject) => {
                 axios.get("blc/get-balance").then(r => {
                     console.log("get balance");
@@ -108,9 +112,19 @@ export default {
                 })
             })
         },
-        makeTopup(state, payload){
+        makeTopup(state, payload) {
             return new Promise((resolve, reject) => {
                 axios.post("blc/topup", payload).then(r => {
+                    state.commit("setBalance", r.data.balance)
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+        makePurchase(state, payload) {
+            return new Promise((resolve, reject) => {
+                axios.post("blc/purchase", payload).then(r => {
                     resolve(r)
                 }).catch(e => {
                     reject(e)
@@ -166,6 +180,7 @@ export default {
         getUserStatus: state => state.isLogedIn,
         getAddress: state => state.address,
         getChoosenAddress: state => state.choosenAddress,
-        getBalance: state => state.balance
+        getBalance: state => state.balance,
+        getRouteActivity: state => state.routeActivity
     }
 }

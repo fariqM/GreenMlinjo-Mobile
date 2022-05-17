@@ -257,11 +257,10 @@
 				>
 					<v-icon small @click="showDialogConfirm = false">mdi-close</v-icon>
 				</div>
-				<v-card-title class="text-h6">
-					Konfirmasi Pesanan ?
-				</v-card-title>
+				<v-card-title class="text-h6"> Konfirmasi Pesanan ? </v-card-title>
 				<v-card-text
-					>Pembayaran akan diserahkan kepada penjual melalui driver/platform.</v-card-text
+					>Pembayaran akan diserahkan kepada penjual melalui
+					driver/platform.</v-card-text
 				>
 				<v-card-actions>
 					<v-spacer></v-spacer>
@@ -301,8 +300,8 @@ export default {
 			skeleton_show: true,
 			loading: false,
 			lastOrder: null,
-			btnLoadin:false,
-			showDialogConfirm:false,
+			btnLoadin: false,
+			showDialogConfirm: false,
 			mySteps: ["Mencari driver", "", "", ""],
 			currentStep: 0,
 			ops: {
@@ -360,9 +359,9 @@ export default {
 		this.getOrder();
 	},
 	methods: {
-		confirmOrder(){
-			this.showDialogConfirm = false
-			console.log('confirmed');
+		confirmOrder() {
+			this.showDialogConfirm = false;
+			console.log("confirmed");
 			console.log("order", this.lastOrder);
 		},
 		numberWithCommas(x) {
@@ -393,12 +392,14 @@ export default {
 				this.mySteps[3] = progress[3];
 			}, 6000);
 		},
-		getOrder() {
+		getOrder(params = null) {
+			if (params == null) {
+				var order_id = this.$store.getters["orders/getOrders"];
+			} else {
+				var order_id = params;
+			}
 			this.$store
-				.dispatch(
-					"orders/getLastOrder",
-					this.$store.getters["orders/getOrders"]
-				)
+				.dispatch("orders/getLastOrder", order_id)
 				.then((response) => {
 					this.lastOrder = response.data.data;
 					console.log("getLastOrder", response.data.data);

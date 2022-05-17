@@ -7,6 +7,7 @@ import Cart from './cart/store'
 import Order from './order'
 import Voucher from "./voucher"
 import Other from "./other"
+import Transaction from "./transaction"
 
 // import { Plugins } from '@capacitor/core';
 // const { Storage } = Plugins;
@@ -58,6 +59,7 @@ export default new Vuex.Store({
     carts: Cart,
     orders: Order,
     vouchers: Voucher,
-    others: Other
+    others: Other,
+    transactions:Transaction,
   }
 })

@@ -316,7 +316,7 @@ export default {
 		};
 	},
 	mounted() {
-		// console.log(this.CurrentUser);
+		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
 		this.$store.dispatch("auth/getBalance");
 		this.$store
 			.dispatch("products/setProductTerlaris")

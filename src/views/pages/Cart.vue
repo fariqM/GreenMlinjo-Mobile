@@ -116,7 +116,7 @@
 												style="max-height: 18px"
 												class="ml-2 product-title-text noselect"
 											>
-												<span>{{ cart.title }} ({{ cart.unit }})</span>
+												<span>{{ cart.title }}</span>
 											</div>
 
 											<div
@@ -413,6 +413,7 @@ export default {
 		this.onResize();
 		this.getCarts();
 		this.getChoosenAddress();
+		this.$store.commit("vouchers/setSelectedVoucher", []);
 	},
 	methods: {
 		prepareOrder() {
