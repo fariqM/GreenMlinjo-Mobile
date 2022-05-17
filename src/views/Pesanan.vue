@@ -15,7 +15,7 @@
 			style="background-color: #f5f5f5"
 		>
 			<v-row
-				v-if="filtered_orders.length===0"
+				v-if="orders.length === 0"
 				style="min-height: 100vh; background-color: #f5f5f5"
 				class="pt-4"
 				no-gutters
@@ -37,21 +37,25 @@
 
 			<div class="ma-2">
 				<v-card
-					v-for="(order, i) in filtered_orders"
+					v-for="(order, i) in orders"
 					:key="i"
 					class="px-1 py-1 mb-2 noselect"
 					v-ripple
 				>
 					<div>
 						<div class="d-flex justify-space-between">
-							<div class="normal-text">{{ order.id }}</div>
-							<div class="normal-text">{{ order.created_at }}</div>
+							<div class="normal-text">
+								Pembayaran: {{ order.payment_type }}
+							</div>
+							<div class="normal-text">{{ convertDate(order.created_at) }}</div>
 						</div>
 					</div>
 
 					<div class="d-flex">
 						<v-avatar tile size="75">
-							<v-img :src="url + order.img_url"></v-img>
+							<v-img
+								:src="url + order.order_products[0].product.images[0].url"
+							></v-img>
 						</v-avatar>
 
 						<div
@@ -60,26 +64,29 @@
 							style="max-width: calc(30.5rem - 100px)"
 						>
 							<div class="product-title-text ellipsis-text">
-								{{ order.title }}
+								<span v-for="(product, p) in order.order_products" :key="p">
+									{{ product.product.title }}
+									{{ order.order_products.length === 1 ? "" : ", " }}
+								</span>
 							</div>
 
 							<div class="subtitle-text">
-								{{ order.total_order }} macam pesanan - {{ order.payment }}
+								{{ order.order_products.length }} macam pesanan
 							</div>
 							<div class="product-price-text mt-auto">
-								Rp {{ numberWithCommas(order.total_min_price) }} - Rp
-								{{ numberWithCommas(order.total_max_price) }}
+								Rp {{ numberWithCommas(order.total_price) }}
 							</div>
 							<v-divider class=""></v-divider>
 						</div>
 					</div>
 					<div class="d-flex justify-space-between align-center mt-1 pr-1">
-						
-						<div class="status-text" >
-							{{ order.order_status }}
+						<div class="status-text">
+							{{
+								order.status_code == 5 ? "Selesai" : `Perkiraan sampai: ${ Math.floor(Math.random() * 30)} Menit`
+							}}
 						</div>
 						<div class="status-text">
-							{{ order.driver_status }}
+							{{ order.status }}
 						</div>
 					</div>
 					<div>
@@ -101,6 +108,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
 	data() {
 		return {
@@ -109,38 +117,25 @@ export default {
 			isEmpty: false,
 			url: __BASE_URL__,
 			windowWidth: window.innerWidth,
-			orders: [
-				{
-					id: "HS-273847-ASD32",
-					created_at: "12:04",
-					title: "Paket empon 1, Beras Bramu, Tempe Menjes, Tahu Susu",
-					total_order: 4,
-					payment: "Bayar COD",
-					total_min_price: 12000,
-					total_max_price: 14000,
-					order_status: "Dikemas",
-					img_url: "storage/images/products/empon_3.jpg",
-					driver_status: "Driver sedang antre...",
-				},
-				{
-					id: "HS-273847-88DSG",
-					created_at: "11:34",
-					title: "Tahu Susu",
-					total_order: 1,
-					payment: "Bayar COD",
-					total_min_price: 12000,
-					total_max_price: 14000,
-					order_status: "Diantar",
-					img_url: "storage/images/products/tahu_susu.webp",
-					driver_status: "Driver sedang menuju alamat anda.",
-				},
-			],
+			// orders: [],
 			filtered_orders: [],
 		};
 	},
+	computed: {
+		...mapGetters({
+			orders: "orders/getAllOrders"
+		})
+	},
 	mounted() {
-		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
-		this.changeFilter("belum");
+		this.$store.commit(
+			"auth/setRouteActivity",
+			this.$router.history.current.name
+		);
+		this.getOrders();
+
+		setTimeout(() => {
+			console.log(this.orders);
+		}, 1000);
 	},
 	watch: {
 		filtered_orders: function (newVal, oldVal) {
@@ -169,12 +164,71 @@ export default {
 				});
 			}
 		},
+		getOrders() {
+			this.$store
+				.dispatch("orders/fetchOrders")
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		},
+		convertDate(date) {
+			let newDate = new Date(date);
+			let tanggal = newDate.getDate();
+			let bulan = newDate.getMonth();
+			let tahun = newDate.getFullYear();
+			let jam = newDate.getUTCHours();
+			let menit = newDate.getUTCMinutes();
+			switch (bulan) {
+				case 0:
+					bulan = "Januari";
+					break;
+				case 1:
+					bulan = "Februari";
+					break;
+				case 2:
+					bulan = "Maret";
+					break;
+				case 3:
+					bulan = "April";
+					break;
+				case 4:
+					bulan = "Mei";
+					break;
+				case 5:
+					bulan = "Juni";
+					break;
+				case 6:
+					bulan = "Juli";
+					break;
+				case 7:
+					bulan = "Agustus";
+					break;
+				case 8:
+					bulan = "September";
+					break;
+				case 9:
+					bulan = "Oktober";
+					break;
+				case 10:
+					bulan = "November";
+					break;
+				case 11:
+					bulan = "Desember";
+					break;
+			}
+
+			return tanggal + "-" + bulan + "-" + tahun + " " + jam + ":" + menit;
+			// document.write(new Intl.DateTimeFormat("en-US").format(date_new));
+		},
 	},
 };
 </script>
 
 <style>
-.status-text{
+.status-text {
 	font-size: 0.8rem;
 	font-weight: 600;
 	color: rgba(0, 0, 0, 0.87);

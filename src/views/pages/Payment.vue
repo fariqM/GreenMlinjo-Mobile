@@ -13,7 +13,11 @@
 					max-width="99.8vw"
 				>
 					<v-list>
-						<div v-for="(payment, i) in payments" :key="i" class="d-flex align-center">
+						<div
+							v-for="(payment, i) in payments"
+							:key="i"
+							class="d-flex align-center"
+						>
 							<v-list-item
 								:style="{ width: payment.type === 2 ? '70%' : '100%' }"
 								:ripple="false"
@@ -47,7 +51,7 @@
 								</v-list-item-content>
 							</v-list-item>
 							<div v-if="payment.type === 2" class="pr-4">
-								<v-btn color="primary" outlined small :to="{name:'topup'}">
+								<v-btn color="primary" outlined small :to="{ name: 'topup' }">
 									Isi Saldo
 								</v-btn>
 							</div>
@@ -162,6 +166,7 @@ export default {
 		},
 	},
 	mounted() {
+		this.amount = this.$router.history.current.params.amount;
 		if (this.selectedPayment === 1) {
 			this.paymentMethod.bank = true;
 		}
@@ -171,10 +176,11 @@ export default {
 		if (this.selectedPayment === 3) {
 			this.paymentMethod.cod = true;
 		}
-
-		this.amount = this.$router.history.current.params.amount;
-
-		console.log(this.amount);
+		if (this.amount > this.balance) {
+			this.paymentMethod.pay = false;
+			this.paymentMethod.cod = true;
+			this.$store.commit("others/setSelectedPayment", 3);
+		}
 	},
 	methods: {
 		paymentClicked(type) {

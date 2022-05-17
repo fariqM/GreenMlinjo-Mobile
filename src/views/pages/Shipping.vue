@@ -247,7 +247,9 @@
 													paymentMethod === null
 														? "Belum dipilih"
 														: paymentMethod === 2
-														? "MlijoPay"
+														? balance > TotalPrice
+															? "MlijoPay"
+															: "Saldo Tidak Cukup"
 														: "COD"
 												}}
 											</v-list-item-title>
@@ -651,6 +653,17 @@
 				</div>
 			</v-sheet>
 		</v-dialog>
+
+		<v-snackbar v-model="snackbar" :multi-line="true">
+			Saldo MlijoPay tidak cukup.
+			<br />
+			Lakukan Topup atau gunakan metode pembayaran lain.
+			<template v-slot:action="{ attrs }">
+				<v-btn color="error" text v-bind="attrs" @click="snackbar = false">
+					Tutup
+				</v-btn>
+			</template>
+		</v-snackbar>
 	</div>
 </template>
 
@@ -672,6 +685,7 @@ export default {
 			windowsHeight: window.innerHeight,
 			loading: false,
 			btnLoading: false,
+			snackbar: false,
 			url: __BASE_URL__,
 			order_items: [],
 			notes: [],
@@ -753,7 +767,10 @@ export default {
 	beforeMount() {
 		console.log("set voucher");
 		this.selectedVoucher = this.$store.getters["vouchers/getSelectedVoucher"];
-		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
+		this.$store.commit(
+			"auth/setRouteActivity",
+			this.$router.history.current.name
+		);
 	},
 	watch: {
 		selectedVoucher: function (newVal) {
@@ -846,6 +863,7 @@ export default {
 			choosenAddress: "auth/getChoosenAddress",
 			vouchers: "vouchers/getVouchers",
 			paymentMethod: "others/getSelectedPayment",
+			balance: "auth/getBalance",
 		}),
 		btnDisabled: function () {
 			let disabled = false;
@@ -969,6 +987,15 @@ export default {
 			this.$router.push({ name: "address" });
 		},
 		makeOrder() {
+			if (this.TotalPrice > this.balance && this.paymentMethod == 2) {
+				this.snackbar = true;
+				return;
+			}
+			if (this.paymentMethod == 2) {
+				var payment_type = "MlijoPay"
+			} else {
+				var payment_type = "COD"
+			}
 			this.btnLoading = true;
 			let product_voucher_id = null;
 			let shipping_voucher_id = null;
@@ -1003,7 +1030,7 @@ export default {
 				shipping_discount: this.discountTotal.shipping,
 
 				total_price: this.TotalPrice,
-				payment_type: "COD",
+				payment_type: payment_type,
 				paid: "pending",
 				order_products: this.order_items,
 			};
@@ -1023,7 +1050,8 @@ export default {
 									.dispatch("transactions/createTransaction", {
 										uuid: response.data.uuid,
 										title: "Delivery Order",
-										description: "Pesan Sayur/Buah segar di Aplikasi GreenMlijo",
+										description:
+											"Pesan Sayur/Buah segar di Aplikasi GreenMlijo",
 										amount: response.data.total_price,
 										status: 2,
 									})

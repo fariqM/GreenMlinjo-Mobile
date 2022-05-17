@@ -5,6 +5,9 @@ export default {
         lastOrder: null,
     },
     mutations: {
+        setOrders(state, payload) {
+            state.orders = payload
+        },
         addOrder(state, payload) {
             state.orders.push(payload)
         },
@@ -13,6 +16,16 @@ export default {
         },
     },
     actions: {
+        fetchOrders(state, payload) {
+            return new Promise((resolve, reject) => {
+                axios.get("orders/index").then(r => {
+                    state.commit("setOrders", r.data.data)
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
         makeOrder(state, payload) {
             return new Promise((resolve, reject) => {
                 axios.post("orders/make-order", payload).then(response => {
@@ -43,5 +56,6 @@ export default {
     },
     getters: {
         getOrders: state => state.lastOrder,
+        getAllOrders: state => state.orders
     }
 }

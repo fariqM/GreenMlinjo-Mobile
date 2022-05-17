@@ -363,11 +363,30 @@ export default {
 			this.showDialogConfirm = false;
 			console.log("confirmed");
 			console.log("order", this.lastOrder);
+
+			if (this.lastOrder.payment_type == "COD") {
+				this.$store
+					.dispatch("transactions/createTransaction", {
+						uuid: null,
+						title: "Delivery Order",
+						description: "Pesan Sayur/Buah segar di Aplikasi GreenMlijo",
+						amount: this.lastOrder.total_price,
+						status: 2,
+					})
+					.then((resp) => {
+						console.log(resp);
+						console.log("create transaction success");
+					})
+					.catch((e) => {
+						console.log("create transaction failed");
+					});
+			}
+
 			this.$store
 				.dispatch("orders/confirmOrder", { orderId: this.lastOrder.id })
 				.then(() => {
 					console.log("order confirmed successfully");
-					this.$router.replace({ name: "pesanan" });
+					this.$router.replace({ name: "blog" });
 				})
 				.catch((e) => {
 					console.log("failed to confirm order");
@@ -412,7 +431,7 @@ export default {
 				.then((response) => {
 					this.lastOrder = response.data.data;
 					console.log("getLastOrder", response.data.data);
-					this.currentStep = this.lastOrder.status_code
+					this.currentStep = this.lastOrder.status_code;
 					this.skeleton_show = false;
 					this.deliveryProgress();
 				})
