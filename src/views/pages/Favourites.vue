@@ -61,11 +61,10 @@
 								<div class="d-flex">
 									<v-chip
 										x-small
-										v-for="(promotion, i) in 4"
-										:key="i"
+										outlined
 										class="mr-1"
 										color="primary"
-										>tes</v-chip
+										>GreenMlijo Fresh</v-chip
 									>
 									<v-spacer></v-spacer>
 									<!-- <v-chip small>tes</v-chip> -->

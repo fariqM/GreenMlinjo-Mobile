@@ -112,7 +112,7 @@
 					style="padding: 0px 0px"
 					class="d-flex justify-center py-1"
 				>
-					<v-btn text x-small outlined color="primary" class="pa-4">
+					<v-btn text x-small outlined color="primary" class="pa-4" @click="addToCart(product_id)">
 						<v-icon x-small color="primary" class="mr-2">mdi-plus</v-icon>
 						Keranjang
 					</v-btn>
@@ -163,6 +163,89 @@ export default {
 		},
 		addFavourite(product_id) {
 			this.$store.dispatch("favourites/addFavourites", product_id);
+		},
+		addToCart(id) {
+			let inputForm = null;
+			iziToast.question({
+				color:"#acbd90",
+				progressBarColor: "#87BD43",
+				title: "Masukan ke keranjang",
+				animateInside: true,
+				class: "addInputForm",
+				timeout: false,
+				close: true,
+				overlay: true,
+				displayMode: "once",
+				id: "question",
+				zindex: 999,
+				position: "center",
+				inputs: [
+					[
+						'<input type="number" id="inputToast">',
+						"keyup",
+						function (instance, toast, input, e) {
+							inputForm = input.value;
+						},
+						false,
+					],
+					["<div>*Kg</div>"],
+				],
+				buttons: [
+					[
+						"<button><b>Tambahkan</b></button>",
+						 (instance, toast) => {
+							console.log(inputForm);
+							if (inputForm === null) {
+								let input = document.getElementById("inputToast");
+								input.classList.add("input-error-toast");
+								input.placeholder = "Wah kosong...";
+							} else {
+								let input = document.getElementById("inputToast");
+								input.classList.remove("input-error-toast");
+								input.classList.add("input-success-toast");
+								axios
+									.post("carts/add-carts", {
+										product_id: id,
+										qty: parseFloat(inputForm),
+									})
+									.then((response) => {
+										console.log(response);
+										this.$store.commit("carts/addCarts", {cartId: this.product_id})
+										console.log(this.product_id);
+										instance.hide({ transitionOut: "fadeOut" }, toast);
+										// iziToast.success({
+										// 	title: "Oke.",
+										// 	message: "Berhasil ditambahkan ke keranjang.",
+										// 	position: "topCenter",
+										// 	timeout: 4500,
+										// 	// ballon:true,
+										// 	transitionInMobile: "fadeInLeft",
+										// 	transitionOutMobile: "fadeOutLeft",
+										// 	displayMode: 2,
+										// });
+									})
+									.catch((e) => {
+										iziToast.error({
+											title: "Error :( ",
+											message:
+												"Ga bisa nambahin barang ini ke keranjang, coba lagi nanti.",
+											position: "topCenter",
+											timeout: 4500,
+											// ballon:true,
+											transitionInMobile: "fadeInLeft",
+											transitionOutMobile: "fadeOutLeft",
+											displayMode: 2,
+										});
+									});
+							}
+						},
+						true,
+					],
+				],
+				onClosing: function (instance, toast, closedBy) {
+					// console.log(parseFloat(closedBy));
+				},
+			});
 		},
 		clickFav(product_id) {
 			this.$store

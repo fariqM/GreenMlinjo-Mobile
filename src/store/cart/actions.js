@@ -15,29 +15,6 @@ const null_token = {
 }
 
 export default {
-    addCarts(state, payload) {
-        return new Promise((resolve, reject) => {
-            getItem('mlinjo_token').then(token => {
-                if (token === null) {
-                    reject(null_token)
-                } else {
-                    axios.post("carts/add-carts", { product_id: payload }).then(response => {
-                        if (response.status === 201) {
-                            // add cart
-                            state.commit("addCarts", response.data.data)
-                            resolve(response)
-                        } else {
-                            // remove cart
-                            state.commit("removeCarts", response.data.data)
-                            resolve(response)
-                        }
-                    }).catch(e => {
-                        reject(e)
-                    })
-                }
-            })
-        })
-    },
     removeCarts(state, payload) {
         return new Promise((resolve, reject) => {
             axios.delete("carts/remove-carts", { data: { selected: payload } }).then(response => {

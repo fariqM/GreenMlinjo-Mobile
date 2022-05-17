@@ -4,9 +4,20 @@ export default {
         state.CountCarts = state.Carts.length
     },
     addCarts(state, payload) {
-        state.Carts.push(payload)
-        state.CountCarts = state.Carts.length
+        let exist = false;
+        let cart = null;
+        state.Carts.forEach(element => {
+            if (payload.cartId == element.id) {
+                exist = true
+                cart = element
+            }
+        });
+        console.log("existcards", exist);
+        console.log("cart", cart);
 
+        if (!exist) {
+            state.CountCarts += 1
+        }
     },
     removeCarts(state, payload) {
         let newArray = state.Carts;
