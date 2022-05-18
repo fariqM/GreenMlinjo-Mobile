@@ -124,7 +124,7 @@
 					class="d-flex justify-space-between align-center py-2"
 					@click="
 						isLogedIn
-							? $router.push({ name: menu.route })
+							? $router.push(menu.route)
 							: $router.push({ name: 'login' })
 					"
 				>
@@ -276,7 +276,7 @@ export default {
 				{
 					title: "Sedekah Yuk...",
 					subtitle: "Bantu ringankan beban saudara kita",
-					route: "blog",
+					route: {name:'blog', params:{fromProfile: true}},
 				},
 				// {
 				// 	title: "Sedekah Sayur",
