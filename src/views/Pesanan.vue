@@ -1,13 +1,14 @@
 <template>
 	<div v-resize="onResize">
-		<v-tabs grow>
+		<!-- <v-tabs grow>
 			<v-tab style="font-size: 0.8rem" @click="changeFilter('sekarang')"
 				>Sekarang</v-tab
 			>
 			<v-tab style="font-size: 0.8rem" @click="changeFilter('selesai')"
 				>Selesai</v-tab
 			>
-		</v-tabs>
+		</v-tabs> -->
+		
 
 		<v-sheet
 			class="overflow-y-auto"
@@ -40,7 +41,12 @@
 					v-for="(order, i) in orders"
 					:key="i"
 					class="px-1 py-1 mb-2 noselect"
-					v-ripple
+					:to="{
+						name: 'delivery',
+						params: {
+							order_id: order.id,
+						},
+					}"
 				>
 					<div>
 						<div class="d-flex justify-space-between">
@@ -80,9 +86,11 @@
 						</div>
 					</div>
 					<div class="d-flex justify-space-between align-center mt-1 pr-1">
-						<div class="status-text">
+						<div class="status-text" >
 							{{
-								order.status_code == 5 ? "Selesai" : `Perkiraan sampai: ${ Math.floor(Math.random() * 30)} Menit`
+								order.status_code == 4
+									? "Selesai"
+									: `Perkiraan sampai: ${Math.floor(Math.random() * 30)} Menit`
 							}}
 						</div>
 						<div class="status-text">
@@ -123,8 +131,8 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			orders: "orders/getAllOrders"
-		})
+			orders: "orders/getAllOrders",
+		}),
 	},
 	mounted() {
 		this.$store.commit(
@@ -143,6 +151,9 @@ export default {
 		},
 	},
 	methods: {
+		seeDetails(oderId) {
+			console.log(oderId);
+		},
 		onResize() {
 			this.windowWidth = window.innerWidth;
 		},

@@ -53,7 +53,7 @@ export default {
 				},
 				{
 					text: "Alamat Saya",
-					route: "profile.setting",
+					route: "address",
 				},
 			],
 			windowWidth: window.innerWidth,

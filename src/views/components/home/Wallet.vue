@@ -42,7 +42,7 @@
 						Voucher Saya
 					</div> -->
 				</div>
-				<div class="text-center normal-text">4 Voucher baru</div>
+				<div class="text-center normal-text">2 Voucher baru</div>
 			</div>
 		</v-card>
 	</div>

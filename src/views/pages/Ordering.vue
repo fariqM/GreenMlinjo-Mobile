@@ -1,7 +1,12 @@
 <template>
 	<div style="height: 100%">
 		<v-main>
-			<mlj-toolbar :loading="loading" :page="'Pengiriman'"></mlj-toolbar>
+			<mlj-toolbar
+				:loading="loading"
+				:page="'Pengiriman'"
+				:isUseBack="true"
+				:routeTarget="'pesanan'"
+			></mlj-toolbar>
 			<my-scroll
 				ref="vs"
 				:ops="ops"
@@ -43,7 +48,7 @@
 									:radius="3"
 								/>
 								<skeleton
-									width="55px"
+									width="100px"
 									height="10px"
 									animation="wave"
 									:radius="3"
@@ -56,7 +61,7 @@
 									:radius="3"
 								/>
 								<skeleton
-									width="55px"
+									width="100px"
 									height="10px"
 									animation="wave"
 									:radius="3"
@@ -69,7 +74,7 @@
 									:radius="3"
 								/>
 								<skeleton
-									width="55px"
+									width="100px"
 									height="10px"
 									animation="wave"
 									:radius="3"
@@ -301,6 +306,7 @@ export default {
 			loading: false,
 			lastOrder: null,
 			btnLoadin: false,
+			detailsPage: false,
 			showDialogConfirm: false,
 			mySteps: ["Mencari driver", "", "", ""],
 			currentStep: 0,
@@ -356,7 +362,13 @@ export default {
 	},
 
 	mounted() {
-		this.getOrder();
+		// console.log(this.$router);
+		if (this.$router.history.current.params.order_id) {
+			this.detailsPage = true;
+			this.getOrder(this.$router.history.current.params.order_id);
+		} else {
+			this.getOrder();
+		}
 	},
 	methods: {
 		confirmOrder() {
@@ -405,6 +417,10 @@ export default {
 				"Pesanan telah sampai",
 			];
 
+			if (this.detailsPage) {
+				return;
+			}
+
 			setTimeout(() => {
 				this.currentStep = 1;
 				this.mySteps[1] = progress[1];
@@ -432,6 +448,22 @@ export default {
 					this.lastOrder = response.data.data;
 					console.log("getLastOrder", response.data.data);
 					this.currentStep = this.lastOrder.status_code;
+					if (this.detailsPage) {
+						const progress = [
+							"Mencari driver",
+							"Driver sedang antre",
+							"Driver menuju alamat anda",
+							"Pesanan telah sampai",
+						];
+						if (this.currentStep == 0) {
+							progress.splice(this.currentStep + 1);
+							this.detailsPage = false;
+						} else {
+							progress.splice(this.currentStep);
+							this.mySteps = progress
+						}
+						// console.log(progress);
+					}
 					this.skeleton_show = false;
 					this.deliveryProgress();
 				})
