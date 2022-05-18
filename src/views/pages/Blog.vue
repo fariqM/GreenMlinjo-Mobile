@@ -81,6 +81,10 @@
 											margin: '0px 10px',
 											'margin-left': n === 1 ? '0px' : '',
 										}"
+										:to="{
+											name: 'blog.details',
+											params: { post_id: 1, type: 0 },
+										}"
 									>
 										<v-img
 											height="100"
@@ -246,14 +250,22 @@
 						<div class="pa-2">
 							<my-container :ops="ops">
 								<div class="pb-2">
-									<v-card class="pa-2 mb-2" v-for="n in 3" :key="n">
+									<v-card
+										class="pa-2 mb-2"
+										v-for="(item, i) in infaq"
+										:key="i"
+										:to="{
+											name: 'blog.details',
+											params: { post_id: 1, type: 1, post: item},
+										}"
+									>
 										<div class="d-flex">
 											<div>
 												<v-img
 													height="100"
-													width="150"
+													width="130"
 													contain
-													:src="masjid[0]"
+													:src="item.img"
 													style="background-color: #f3f3f3"
 												/>
 											</div>
@@ -262,22 +274,28 @@
 													class="mb-auto title-text b-card-title"
 													style="max-width: 100%"
 												>
-													Pembangunan Masjid Wonocolo
+													{{item.title}}
 													<v-icon x-small color="success"
 														>mdi-checkbox-marked-circle-outline</v-icon
 													>
 												</div>
-												<div>
+												<div v-if="item.type === 2 && collectedSedekah !== null">
 													<v-divider />
 													<div class="subtitle-text">
-														<b style="color: #000">Rp 15.000.000</b> Dibutuhkan
+														<b style="color: #000">Rp {{numberWithCommas(15000000)}}</b> Dibutuhkan
 													</div>
 													<v-divider />
 													<!-- <v-divider/> -->
 													<div class="subtitle-text">
-														<b style="color: #000">Rp 6.560.000</b> Terkumpul
+														<b style="color: #000">Rp {{numberWithCommas(collectedSedekah)}}</b> Terkumpul
 													</div>
 													<v-divider />
+												</div>
+												<div v-else>
+													<v-divider />
+													<div class="subtitle-text">
+														{{item.subtitle}}
+													</div>
 												</div>
 											</div>
 										</div>
@@ -310,7 +328,11 @@
 					<v-toolbar-title>Paket Sedekah</v-toolbar-title>
 				</v-toolbar>
 
-				<v-sheet v-if="productClicked !== null" class="overflow-y-auto " height="calc(100vh - 48px)">
+				<v-sheet
+					v-if="productClicked !== null"
+					class="overflow-y-auto"
+					height="calc(100vh - 48px)"
+				>
 					<v-img
 						contain
 						style="margin-top: 48px"
@@ -463,6 +485,7 @@ export default {
 	computed: {
 		...mapGetters({
 			sedekahProducts: "products/getSedekahProducts",
+			collectedSedekah: "others/getCollectedInfaq"
 		}),
 		buySedekahDisabled: function () {
 			if (this.jumlahPaket > 0) {
@@ -495,6 +518,26 @@ export default {
 				"/assets/images/berbagi_takjil.jpg",
 			],
 			masjid: ["/assets/images/masjid.jpeg", "/assets/images/masjid.jpeg"],
+			infaq: [
+				{
+					title: "Renovasi total Masjid Sholeh Kaliasin Surabaya",
+					date:"18 Mei 2022",
+					img:"/assets/images/masjid2.jpg",
+					type: 2,
+					subtitle: "Kaliasin Gg. VIII No.9, Kedungdoro, Kec. Tegalsari, Kota SBY, Jawa Timur 60261",
+					description:
+						"<b>Assalammualaikum warohmatulahi wabarokatuh</b><br><br>Masjid Sholeh adalah Masjid tua yg dibangun pada permulaan Ramadhan 1339H [1921M] dan selesai awal Ramadhan 1340H [1922M]. Masjid Sholeh yg terletak di jantung kota ini merupakan salah satu Masjid Jami tertua di kota Surabaya. Bersebelahan dengan jalan masuk Tunjungan Plaza, Surabaya dengan alamat Jl. Kaliasin gg VIII/9.<br><br>Untuk memenuhi kebutuhan jamaah dan karena faktor usia bangunan yg hampir satu abad...kini Masjid Sholeh dibangun baru.<br><br>Kondisi bangunan Masjid yg sudah tua, dimana renovasi terakhir dilakukan pada tahun 1960 (58 tahun lalu), mengakibatkan kondisi bangunan yg sudah tidak nyaman untuk tempat peribadatan. Kalau hujan bocor, walau sudah bolak balik diperbaiki. Kebutuhan akan Masjid Jami dan keinginan kuat masyarakat sekitar untuk membangun masjid menjadi lebih baik lagi, maka panitia pembangunan Masjid Sholeh, mengetuk hati kepada Saudara Saudaraku Muslim dan Masyarakat untuk menyisihkan sebagian dari harta untuk terwujudnya pembangunan Rumah Allah SWT ini.<br><br>Agar kegiatan-kegiatan yg menyangkut Ibadah terus berjalan / tidak terganggu maka, pembangunan Masjid 2 lantai ini akan dilaksanakan dalam 2 tahap, yaitu: pembangunan bagian belakang dan pembangunan bagian depan Masjid. <br><br>- Pembangunan tahap 1 yaitu pembangunan bagian belakang Masjid, dimana akan dilakukan renovasi total dengan mendirikan bangunan baru. Setelah selesai,<br><br>- baru dilanjutkan untuk pembangunan tahap ke-2 Masjid, bagian depan.",
+				},
+				{
+					title: "Infaq di Masjid Sabilil Hikmah",
+					img:"/assets/images/masjid3.jpg",
+					date:"9 Mei 2022",
+					type: 1,
+					subtitle: "Jl. Griya Kebraon Utara II AH No.23, Kebraon, Kec. Karangpilang.",
+					description:
+						"Masjid AL-BAROKAH yang dibangun pada tahun 2017. Masjid AL-BAROKAH merupakan kategori Masjid Umum. Masjid AL-BAROKAH beralamat di Kebraon 2 Gang Manggis RT. 01 RW.03 Kel. Kebraon.<br><br>Masjid AL-BAROKAH memiliki luas tanah 250 m2 , luas bangunan 268 m2 dengan status tanah Wakaf. Masjid AL-BAROKAH memiliki jumlah jamaah 50 - 100 orang , jumlah muazin 6 orang , jumlah remaja 10 orang dan Jumlah Khotib 6 orang .",
+				},
+			],
 			ops: {
 				vuescroll: {
 					mode: "native",
@@ -560,17 +603,20 @@ export default {
 			});
 	},
 	mounted() {
+		this.getCollectedInfaq()
 		this.getSedekahProduct();
 	},
 	methods: {
+		getCollectedInfaq(){
+			this.$store.dispatch("others/fetchCollectedInfaq")
+		},
 		buySedekahPaket() {
-			this.buySedekahLoading = true
+			this.buySedekahLoading = true;
 			this.$store.commit("others/addQty", this.jumlahPaket);
 			setTimeout(() => {
-				this.buySedekahLoading = false
-				this.$router.push({name:"sedekah"})
+				this.buySedekahLoading = false;
+				this.$router.push({ name: "sedekah" });
 			}, 500);
-
 		},
 		numberWithCommas(x) {
 			var parts = x.toString().split(".");

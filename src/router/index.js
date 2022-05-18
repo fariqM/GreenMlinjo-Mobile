@@ -116,7 +116,7 @@ const routes = [
     component: Blog
   },
   {
-    path: '/others/blog/{:post_id}',
+    path: '/others/blog/:post_id',
     name: 'blog.details',
     component: BlogDetail
   },

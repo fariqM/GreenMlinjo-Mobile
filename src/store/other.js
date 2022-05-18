@@ -6,12 +6,12 @@ export default {
         paymentMethod: [
             {
                 title: "Transfer Bank",
-                type:1,
+                type: 1,
                 subtitle: null,
                 icon: "mdi-swap-horizontal",
                 child: [
                     {
-                        id:1,
+                        id: 1,
                         title: "Bank BCA",
                         icon: "/assets/images/bca.png",
                         subtitle:
@@ -20,7 +20,7 @@ export default {
                         steps: [
                             {
                                 method: "ATM",
-                                icon:"mdi-plus",
+                                icon: "mdi-plus",
                                 steps: [
                                     "Masukkan kartu ATM",
                                     "Pilih Menu <b>Bayar/Beli</b>",
@@ -32,7 +32,7 @@ export default {
                             },
                             {
                                 method: "mBanking",
-                                icon:"mdi-plus",
+                                icon: "mdi-plus",
                                 steps: [
                                     "Login ke mBanking",
                                     "Pilih Menu <b>Bayar</b>",
@@ -45,7 +45,7 @@ export default {
                         ],
                     },
                     {
-                        id:2,
+                        id: 2,
                         title: "Bank Mandiri",
                         icon: "/assets/images/mandiri.png",
                         subtitle:
@@ -54,7 +54,7 @@ export default {
                         steps: [
                             {
                                 method: "ATM",
-                                icon:"mdi-plus",
+                                icon: "mdi-plus",
                                 steps: [
                                     "Masukkan kartu ATM",
                                     "Pilih Menu <b>Bayar/Beli</b>",
@@ -66,7 +66,7 @@ export default {
                             },
                             {
                                 method: "mBanking",
-                                icon:"mdi-plus",
+                                icon: "mdi-plus",
                                 steps: [
                                     "Login ke mBanking",
                                     "Pilih Menu <b>Bayar</b>",
@@ -82,25 +82,26 @@ export default {
             },
             {
                 title: "Mlijo Pay",
-                type:2,
+                type: 2,
                 subtitle: "Rp43.000 - Bebas Biaya Penanganan",
                 icon: "mdi-credit-card-outline",
             },
             {
                 title: "COD (Bayar di Tempat)",
-                type:3,
+                type: 3,
                 subtitle: "Bayar Kontan Setelah Barang Sampai",
                 icon: "mdi-cash-fast",
             },
             // 4 = alfamaret
             // 5 = indomaret
         ],
-        topupMethod:{
-            type:null,
-            bankId:null,
+        topupMethod: {
+            type: null,
+            bankId: null,
         },
-        selectedPayment:null,
-        nominalTopup:null,
+        selectedPayment: null,
+        nominalTopup: null,
+        colectedInfaq: null,
     },
     mutations: {
         setSelectedSedekah(state, payload) {
@@ -109,19 +110,40 @@ export default {
         addQty(state, payload) {
             state.selectedPaketSedekah.qty = parseInt(payload)
         },
-        setSelectedPayment(state, payload){
+        setSelectedPayment(state, payload) {
             state.selectedPayment = payload
         },
-        setTopupMethod(state, payload){
+        setTopupMethod(state, payload) {
             state.topupMethod.type = payload.type
             state.topupMethod.bankId = payload.bankId
         },
-        setNominalTopup(state, payload){
+        setNominalTopup(state, payload) {
             state.nominalTopup = payload
+        },
+        setCollectedInfaq(state, payload) {
+            state.colectedInfaq = payload
         }
     },
     actions: {
-
+        fetchCollectedInfaq(state) {
+            return new Promise((resolve, reject) => {
+                axios.get("get-infaq").then(r => {
+                    state.commit("setCollectedInfaq", r.data.data.collected)
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+        addInfaq(state, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put("add-infaq", payload).then(r => {
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        }
     },
     getters: {
         getSelectedSedekah: state => state.selectedPaketSedekah,
@@ -129,7 +151,6 @@ export default {
         getSelectedPayment: state => state.selectedPayment,
         getTopupMethod: state => state.topupMethod,
         getNominalTopup: state => state.nominalTopup,
-
-        
+        getCollectedInfaq: state => state.colectedInfaq,
     }
 }

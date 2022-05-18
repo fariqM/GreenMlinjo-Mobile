@@ -25,6 +25,7 @@
     "mapbox-gl": "^2.8.2",
     "rxjs": "^7.5.4",
     "vue": "^2.6.11",
+    "vue-expandable-text-line": "^2.0.9",
     "vue-router": "^3.2.0",
     "vue-step-progress": "^0.3.7",
     "vue-swipeable-bottom-sheet": "0.0.5",
