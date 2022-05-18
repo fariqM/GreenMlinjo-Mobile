@@ -126,7 +126,12 @@
 									<v-list-item
 										link
 										class="px-2"
-										:to="{ name: 'payment.method' }"
+										:to="{
+											name: 'payment.method',
+											params: {
+												amount: sedekahProduct.price * sedekahProduct.qty,
+											},
+										}"
 									>
 										<v-list-item-avatar class="pa-0 text-center mr-1">
 											<v-btn
@@ -153,7 +158,10 @@
 													selectedPayment === null
 														? "Belum dipilih"
 														: selectedPayment === 2
-														? "MlijoPay"
+														? balance >
+														  sedekahProduct.price * sedekahProduct.qty
+															? "MlijoPay"
+															: "Saldo Tidak Cukup"
 														: "COD"
 												}}
 											</v-list-item-title>
@@ -247,6 +255,20 @@
 				>
 			</div>
 		</div>
+		<v-snackbar v-model="snackbar">
+			Transaksi berhasil
+			<template v-slot:action="{ attrs }">
+				<v-btn
+					small
+					color="success"
+					outlined
+					v-bind="attrs"
+					:to="{ name: 'blog' }"
+				>
+					Kembali
+				</v-btn>
+			</template></v-snackbar
+		>
 	</div>
 </template>
 
@@ -268,6 +290,7 @@ export default {
 			windowsHeight: window.innerHeight,
 			loading: false,
 			btnLoading: false,
+			snackbar: false,
 			url: __BASE_URL__,
 			order_items: [],
 			notes: "",
@@ -342,20 +365,65 @@ export default {
 		...mapGetters({
 			sedekahProduct: "others/getSelectedSedekah",
 			selectedPayment: "others/getSelectedPayment",
+			balance: "auth/getBalance",
 		}),
-		btnDisabled: function () {
-			if (this.selectedPayment === null) {
-				return true;
-			} else {
-				return false;
-			}
+		btnDisabled: {
+			set: function (val) {
+				return val;
+			},
+			get: function () {
+				if (this.selectedPayment === null) {
+					return true;
+				} else {
+					if (
+						this.sedekahProduct.price * this.sedekahProduct.qty >
+						this.balance
+					) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			},
 		},
 	},
 	methods: {
 		makeOrder() {
+			this.btnLoading = true;
 			let form = Object.assign({}, this.sedekahProduct);
 			form.notes = this.notes;
 			console.log("form", form);
+
+			if (this.selectedPayment === 2) {
+				this.$store.dispatch("auth/makePurchase", {
+					amount: parseInt(form.price * form.qty),
+				});
+			}
+
+			this.$store
+				.dispatch("transactions/createTransaction", {
+					uuid: null,
+					title: "Pembelian paket sedekah",
+					description:
+						form.title +
+						" " +
+						"<br>" +
+						"Isi paket: <br><br>" +
+						form.description,
+					amount: parseInt(form.price * form.qty),
+					status: 2,
+				})
+				.then(() => {
+					this.snackbar = true;
+					this.btnLoading = false;
+					this.btnDisabled = true;
+					setTimeout(() => {
+						this.$router.replace({
+							name: "blog",
+							params: { fromProfile: true },
+						});
+					}, 4000);
+				});
 		},
 		onResize() {
 			this.windowWidth = window.innerWidth;

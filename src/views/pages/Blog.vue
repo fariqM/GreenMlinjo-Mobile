@@ -391,7 +391,7 @@
 					>
 						<v-icon small @click="addQtySedekah = false">mdi-close</v-icon>
 					</div>
-					<v-card-title class="text-h6">
+					<v-card-title class="text-h6" style="word-break: break-word;">
 						Ingin sedekah berapa paket?
 					</v-card-title>
 					<v-card-text class="py-0 mb-4 d-flex justify-center">
