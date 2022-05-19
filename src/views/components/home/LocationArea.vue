@@ -6,7 +6,7 @@
 	>
 		<v-icon small class="mr-2 pa-0">mdi-map-marker-outline</v-icon>
 		<div class="normal-text" style="font-weight: 500">
-			Lihat area jangkauan pengiriman
+			{{market_name}}
 		</div>
 		<v-spacer></v-spacer>
 		<v-btn icon x-small><v-icon>mdi-chevron-down</v-icon></v-btn>
@@ -24,6 +24,7 @@
 export default {
 	props: {
 		skeleton: Boolean,
+		market_name: String,
 	},
 };
 </script>

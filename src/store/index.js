@@ -33,6 +33,7 @@ export default new Vuex.Store({
       road: "",
       details: "",
     },
+    markets: null,
   },
   mutations: {
     setMapAddress(state, payload) {
@@ -45,12 +46,27 @@ export default new Vuex.Store({
     setAddressForm(state, payload) {
       state.addressForm = payload
     },
+    setMarkets(state, payload) {
+      state.markets = payload
+    }
   },
-  actions: {},
+  actions: {
+    fetchMarkets(state) {
+      return new Promise((resolve, reject) => {
+        axios_open.get("markets-index").then(r => {
+          state.commit("setMarkets", r.data.data)
+          resolve(r)
+        }).catch(e => {
+          reject(e)
+        })
+      })
+    }
+  },
   getters: {
     getcheckOut: state => state.checkOut,
     getTextMapAddress: state => state.textMapAddress,
     getAddressForm: state => state.addressForm,
+    getMarkets: state => state.markets
   },
   modules: {
     products: Product,
@@ -60,6 +76,6 @@ export default new Vuex.Store({
     orders: Order,
     vouchers: Voucher,
     others: Other,
-    transactions:Transaction,
+    transactions: Transaction,
   }
 })

@@ -1,7 +1,7 @@
 <template>
 	<!-- <home-skeleton v-if="skeleton_show"></home-skeleton> -->
 	<div>
-		<appbar :loading="loadingBar"></appbar>
+		<appbar :loading="loading_bar"></appbar>
 
 		<div>
 			<v-sheet
@@ -19,13 +19,13 @@
 				<!-- End Corousels Section -->
 
 				<!-- Area Section -->
-				<div @click="$router.push({ name: 'testing' })">
-					<location-area :skeleton="skeleton_show"></location-area>
+				<div @click="market_dialog = true">
+					<location-area :skeleton="skeleton.area" :market_name="market_name"></location-area>
 				</div>
 				<!-- End Area Section -->
 
 				<!-- Wallet Section -->
-				<wallet :skeleton="skeleton_show"></wallet>
+				<wallet :skeleton="skeleton.wallet"></wallet>
 				<!-- End Wallet Section -->
 
 				<!-- Recomendation Section -->
@@ -164,6 +164,27 @@
 			</v-sheet>
 			<v-overlay :value="skeleton_show" opacity="0.2"> </v-overlay>
 		</div>
+
+		<v-dialog v-model="market_dialog" max-width="250">
+			<v-card>
+				<v-card-title class="py-0 pt-2"> Pilih Lokasi Pasar </v-card-title>
+				<v-card-title class="py-0">
+					<v-radio-group v-model="market_id" class="py-0">
+						<v-radio
+							v-for="(market, n) in markets"
+							:key="n"
+							:label="market.name"
+							:value="market.id"
+						></v-radio>
+					</v-radio-group>
+				</v-card-title>
+				<v-card-actions class="pt-0">
+					<v-btn color="primary" block @click="changeMarketProduct"
+						>terapkan</v-btn
+					>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -189,29 +210,24 @@ export default {
 		ProductsCard,
 		notFound,
 	},
-	watch: {
-		// ProductTerlaris: function (newValue, oldValue) {
-		// 	console.log(newValue);
-		// },
-		// CurrentUser: function (newValue, oldValue) {
-		// 	console.log(newValue);
-		// },
-	},
 	computed: {
 		...mapGetters({
 			ProductTerlaris: "products/getSectionProductTerlaris",
-			AllFavouriteProducts: "favourites/getAllFavourites",
 			CurrentUser: "auth/getUser",
+			markets: "getMarkets",
 		}),
 	},
 	data() {
 		return {
-			loadingBar: true,
+			market_dialog: false,
+			loading_bar: true,
 			skeleton: {
-				product_terlaris: true,
+				product_terlaris: false,
+				area: false,
+				wallet: false,
 			},
 			lazy_ramadan: false,
-			skeleton_show: true,
+			skeleton_show: false,
 			show: false,
 			error_ilust: false,
 			recom_items: [
@@ -261,6 +277,8 @@ export default {
 					title: "Produk Susu",
 				},
 			],
+			market_id: 1,
+			market_name: "Pasar Blauran",
 			corrousel: 2,
 			total_cart: 5,
 			total_fav: 10,
@@ -315,39 +333,89 @@ export default {
 			},
 		};
 	},
+	watch: {
+		// market_id: function (newVal) {
+		// 	this.market_name = this.markets[newVal-1].name
+		// 	console.log(this.market_name);
+		// },
+	},
 	mounted() {
-		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
-		this.$store.dispatch("auth/getBalance");
+		if (this.ProductTerlaris.length === 0) {
+			this.skeleton.area = true;
+			this.skeleton.wallet = true;
+			this.fetchProductTerlaris();
+
+			// this.skeleton_show = true;
+		}
+		this.$store.commit(
+			"auth/setRouteActivity",
+			this.$router.history.current.name
+		);
 		this.$store
-			.dispatch("products/setProductTerlaris")
-			.then((result) => {
-				// console.log(result);
-				this.loadingBar = false;
-				this.skeleton_show = false;
-				this.error_ilust = false;
-				this.skeleton.product_terlaris = false;
+			.dispatch("fetchMarkets")
+			.then(() => {
+				this.skeleton.area = false;
 			})
 			.catch((e) => {
-				this.error_ilust = true;
-				this.loadingBar = false;
-				this.skeleton_show = false;
-				this.skeleton.product_terlaris = false;
-				// console.log(e);
+				this.showErrorToast("Gagal mendapatkan data pasar.");
 			});
-
-		setTimeout(() => {
-			console.log(this.ProductTerlaris);
-		}, 1000);
-		// this.$store.dispatch("getFirstTime").then((hasil) => {
-		// 	console.log("first time => " + hasil);
-		// });
-		// console.log(this.$store);
+		this.$store
+			.dispatch("auth/getBalance")
+			.then(() => {
+				this.skeleton.wallet = false;
+			})
+			.catch((e) => {
+				this.skeleton.wallet = false;
+				if (e.response) {
+					if (e.response.status !== 401) {
+						this.showErrorToast("Gagal mendapatkan data saldo.");
+					}
+				} else {
+					this.showErrorToast("Gagal mendapatkan data saldo.");
+				}
+			});
 	},
 	methods: {
+		changeMarketProduct() {
+			this.market_name = this.markets[this.market_id-1].name
+			this.market_dialog = false;
+			this.skeleton.product_terlaris = true;
+			this.fetchProductTerlaris();
+		},
+		fetchProductTerlaris() {
+			this.$store
+				.dispatch("products/setProductTerlaris", this.market_id)
+				.then(() => {
+					// console.log(result);
+					this.loading_bar = false;
+					this.skeleton_show = false;
+					this.error_ilust = false;
+					this.skeleton.product_terlaris = false;
+				})
+				.catch((e) => {
+					this.error_ilust = true;
+					this.loading_bar = false;
+					this.skeleton_show = false;
+					this.skeleton.product_terlaris = false;
+					// console.log(e);
+				});
+		},
 		redirectLogin() {
 			setTimeout(() => {
 				this.$router.push({ name: "login" });
 			}, 1000);
+		},
+		showErrorToast(message) {
+			iziToast.error({
+				title: "Oops ! Kayaknya ada masalah :( ",
+				message: `Pesan: ${message}`,
+				position: "topCenter",
+				timeout: 10000,
+				// ballon:true,
+				transitionInMobile: "fadeInLeft",
+				transitionOutMobile: "fadeOutLeft",
+				displayMode: 2,
+			});
 		},
 	},
 };

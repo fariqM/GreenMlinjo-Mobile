@@ -13,7 +13,7 @@ export default {
             getItem('mlinjo_token').then(token => {
                 // console.log("my token => " + token);
                 if (token === null) {
-                    axios_open.get("products/promo-section").then(response => {
+                    axios_open.get(`products/product-terlaris/${payload}`).then(response => {
                         state.commit("setSectionProdukTerlaris", response.data.data)
                         // console.log(response);
                         resolve(response)
@@ -21,7 +21,7 @@ export default {
                         reject(e)
                     })
                 } else {
-                    axios.get("products/promo-section").then(response => {
+                    axios.get(`products/product-terlaris/${payload}`).then(response => {
                         state.commit("setSectionProdukTerlaris", response.data.data)
                         // console.log(response);
                         resolve(response)
@@ -29,7 +29,7 @@ export default {
                         // console.log(e.response);
                         if (e.response) {
                             if (e.response.status === 401) {
-                                axios_open.get("products/promo-section").then(response => {
+                                axios_open.get(`products/product-terlaris/${payload}`).then(response => {
                                     state.commit("setSectionProdukTerlaris", response.data.data)
                                     // console.log(response);
                                     resolve(response)

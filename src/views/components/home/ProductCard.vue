@@ -97,7 +97,8 @@
 								color: #09893c;
 							"
 						>
-							Rp {{ numberWithCommas(price)}}<span
+							Rp {{ numberWithCommas(price)
+							}}<span
 								class="pl-1 normal-text"
 								style="font-weight: 500; font-size: 0.775rem"
 								>/{{ unit }}</span
@@ -112,7 +113,14 @@
 					style="padding: 0px 0px"
 					class="d-flex justify-center py-1"
 				>
-					<v-btn text x-small outlined color="primary" class="pa-4" @click="addToCart(product_id)">
+					<v-btn
+						text
+						x-small
+						outlined
+						color="primary"
+						class="pa-4"
+						@click="addToCart(product_id, unit)"
+					>
 						<v-icon x-small color="primary" class="mr-2">mdi-plus</v-icon>
 						Keranjang
 					</v-btn>
@@ -164,10 +172,14 @@ export default {
 		addFavourite(product_id) {
 			this.$store.dispatch("favourites/addFavourites", product_id);
 		},
-		addToCart(id) {
+		addToCart(id, unit) {
+			if (!this.isLogedIn) {
+				this.$router.push({ name: "login" });
+				return;
+			}
 			let inputForm = null;
 			iziToast.question({
-				color:"#acbd90",
+				color: "#acbd90",
 				progressBarColor: "#87BD43",
 				title: "Masukan ke keranjang",
 				animateInside: true,
@@ -188,12 +200,12 @@ export default {
 						},
 						false,
 					],
-					["<div>*Kg</div>"],
+					[`<div>@${unit}</div>`],
 				],
 				buttons: [
 					[
 						"<button><b>Tambahkan</b></button>",
-						 (instance, toast) => {
+						(instance, toast) => {
 							console.log(inputForm);
 							if (inputForm === null) {
 								let input = document.getElementById("inputToast");
@@ -210,7 +222,9 @@ export default {
 									})
 									.then((response) => {
 										console.log(response);
-										this.$store.commit("carts/addCarts", {cartId: this.product_id})
+										this.$store.commit("carts/addCarts", {
+											cartId: this.product_id,
+										});
 										console.log(this.product_id);
 										instance.hide({ transitionOut: "fadeOut" }, toast);
 										// iziToast.success({
@@ -243,7 +257,7 @@ export default {
 					],
 				],
 				onClosing: function (instance, toast, closedBy) {
-					// console.log(parseFloat(closedBy));
+					console.log(instance);
 				},
 			});
 		},

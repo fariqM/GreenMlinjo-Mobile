@@ -93,7 +93,7 @@
 										<div class="d-flex">
 											<v-avatar size="75" tile>
 												<img
-													:src="url + 'storage/images/products/wortel.jpg'"
+													:src="url + item.url"
 													alt="alt"
 												/>
 											</v-avatar>
@@ -874,6 +874,9 @@ export default {
 		},
 	},
 	methods: {
+		productCLiced(item){
+			console.log(item);
+		},
 		clickVoucher(voucher) {
 			this.voucherDescriptionModal = true;
 			this.clickedVoucher = voucher;
