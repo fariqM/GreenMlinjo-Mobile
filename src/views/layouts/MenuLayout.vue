@@ -15,6 +15,7 @@
 <script>
 // import VueBottomNavigation from "bottom-navigation-vue";
 import BottomNav from "../components/BottomNavigation.vue";
+import { mapGetters } from "vuex";
 
 export default {
 	components: {
@@ -43,7 +44,7 @@ export default {
 					icon: "mdi-bell-outline",
 					title: "Notifikasi",
 					path: { name: "notification" },
-					badge: 2,
+					badge: null,
 				},
 				{
 					id: 4,
@@ -58,6 +59,11 @@ export default {
 		// selected: function (newVal, oldVal) {
 		// 	// console.log(newVal);
 		// },
+	},
+	mounted(){
+		if (this.isLogedIn) {
+			this.options[2].badge = 2
+		}
 	},
 	computed: {
 		selected: {
@@ -81,6 +87,9 @@ export default {
 			},
 			set: function () {},
 		},
+		...mapGetters({
+			isLogedIn: "auth/getUserStatus"
+		}),
 	},
 };
 </script>

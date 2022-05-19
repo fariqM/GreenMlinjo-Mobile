@@ -113,8 +113,8 @@
 									<v-row no-gutters class="pa-0">
 										<v-col>
 											<div
-												style="max-height: 18px"
-												class="ml-2 product-title-text noselect"
+												style="max-height: fit-content"
+												class="ml-2 product-title-text noselect "
 											>
 												<span>{{ cart.title }}</span>
 											</div>

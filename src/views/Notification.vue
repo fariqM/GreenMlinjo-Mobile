@@ -10,9 +10,9 @@
 		</v-tabs>
 
 
-		<v-sheet class="overflow-y-auto" :max-height="windowsHeight - 108 + 'px'">
+		<v-sheet class="overflow-y-auto" :height="windowsHeight - 108 + 'px'">
 
-			<v-list two-line class="py-0" style="background-color: #F5F5F5;">
+			<v-list two-line class="py-0" style="background-color: #F5F5F5;" v-if="isLogedIn">
 				<v-list-item-group class="">
 					<div v-for="(item, i) in items" :key="i">
 						<v-list-item
@@ -79,11 +79,18 @@
 					</div> -->
 				</v-list-item-group>
 			</v-list>
+			<div v-else class="d-flex justify-center align-center pa-4" >
+				<h2>
+					Anda belum login
+				</h2>
+			</div>
 		</v-sheet>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
 	data() {
 		return {
@@ -129,6 +136,9 @@ export default {
 			],
 		};
 	},
+	...mapGetters({
+			isLogedIn: "auth/getUserStatus"
+		}),
 	mounted(){
 		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
 	}

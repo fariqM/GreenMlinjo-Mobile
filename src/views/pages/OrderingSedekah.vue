@@ -414,6 +414,7 @@ export default {
 					status: 2,
 				})
 				.then(() => {
+					this.$store.dispatch("auth/getBalance");
 					this.snackbar = true;
 					this.btnLoading = false;
 					this.btnDisabled = true;

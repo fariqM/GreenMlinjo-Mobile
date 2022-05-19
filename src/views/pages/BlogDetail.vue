@@ -322,11 +322,13 @@ export default {
 			this.$store
 				.dispatch("auth/makePurchase", { amount: this.nominal })
 				.then(() => {
-					this.$store
-						.dispatch("others/addInfaq", { amount: parseInt(this.nominal) })
-						.then(() => {
-							this.$store.dispatch("others/fetchCollectedInfaq");
-						});
+					if (this.postType !== 0) {
+						this.$store
+							.dispatch("others/addInfaq", { amount: parseInt(this.nominal) })
+							.then(() => {
+								this.$store.dispatch("others/fetchCollectedInfaq");
+							});
+					}
 
 					this.$store
 						.dispatch("transactions/createTransaction", {

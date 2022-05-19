@@ -38,7 +38,7 @@
 				>
 					<v-badge
 						:content="CountFavourites"
-						:value="CountFavourites"
+						:value="isLogedIn ? CountFavourites: null"
 						color="error"
 						overlap
 					>
@@ -67,7 +67,7 @@
 					<v-badge
 						class="mr-1"
 						:content="CountCarts"
-						:value="CountCarts"
+						:value="isLogedIn ? CountCarts: null "
 						color="error"
 						overlap
 					>

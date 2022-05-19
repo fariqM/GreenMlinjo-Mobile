@@ -346,6 +346,9 @@ export default {
 			this.fetchProductTerlaris();
 
 			// this.skeleton_show = true;
+		} else {
+			this.skeleton.product_terlaris = true;
+			this.fetchProductTerlaris();
 		}
 		this.$store.commit(
 			"auth/setRouteActivity",
