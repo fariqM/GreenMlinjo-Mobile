@@ -38,9 +38,7 @@ import TopUp from "../views/pages/Topup.vue"
 import TopupPayment from "../views/pages/TopupPayment.vue"
 import TopupProcess from "../views/pages/TopupProcess.vue"
 
-
-
-
+import store from "../store/index.js"
 
 Vue.use(VueRouter)
 
@@ -208,13 +206,26 @@ async function getToken() {
 // set the default header of axios a bearer token 
 router.beforeEach((to, from, next) => {
   getToken().then(token => {
-    console.log("ganti route token => " + token);
+    // console.log("ganti route token => " + token);
+    // console.log(store.getters["auth/getUserStatus"]);
 
-    if (token === null) {
-      next();
-    } else {
+    if (token !== null) {
       axios.defaults.headers.Authorization = `Bearer ${token}`;
-      next();
+      if (to.name === "login" || to.name === "register"  || to.name === "landing") {
+        next({ name: "home" })
+      } else {
+        next()
+      }
+    } else {
+      if (to.name === "login" || to.name === "register" || to.name === "landing") {
+        if (store.getters["auth/getUserStatus"]) {
+          next({ name: "home" })
+        } else {
+          next();
+        }
+      } else {
+        next();
+      }
     }
   })
 })

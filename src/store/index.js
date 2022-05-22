@@ -21,7 +21,7 @@ import Transaction from "./transaction"
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     mapAddress: null,
     textMapAddress: "",
@@ -79,3 +79,5 @@ export default new Vuex.Store({
     transactions: Transaction,
   }
 })
+
+export default store

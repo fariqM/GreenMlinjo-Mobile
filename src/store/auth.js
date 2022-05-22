@@ -22,6 +22,10 @@ async function getToken() {
     return value;
 };
 
+const removeToken = async () => {
+    await Storage.remove({ key: 'mlinjo_token' });
+};
+
 export default {
     namespaced: true,
     state: {
@@ -46,11 +50,20 @@ export default {
         setBalance(state, payload) {
             state.balance = payload
         },
-        setRouteActivity(state, payload){
+        setRouteActivity(state, payload) {
             state.routeActivity = payload
         }
     },
     actions: {
+        registerAction(state, payload) {
+            return new Promise((resolve, reject) => {
+                axios_open.post('register', payload).then(r => {
+                    resolve(r)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
         loginAction(state, payload) {
             return new Promise((resolve, reject) => {
                 axios_open.post('login', payload).then(response => {
@@ -73,7 +86,9 @@ export default {
                         user: {},
                         isLogedIn: false,
                     })
-                    resolve(r)
+                    removeToken().then(() => {
+                        resolve(r)
+                    })
                 }).catch(e => {
                     reject(e)
                 })
@@ -104,7 +119,6 @@ export default {
         getBalance(state) {
             return new Promise((resolve, reject) => {
                 axios.get("blc/get-balance").then(r => {
-                    console.log("get balance");
                     state.commit("setBalance", r.data.balance.balance)
                     resolve(r)
                 }).catch(e => {

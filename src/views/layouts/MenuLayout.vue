@@ -1,6 +1,6 @@
 <template>
-	<div style="height: 100%; background-color:#f5f5f5" >
-		<v-main >
+	<div style="height: 100%; background-color: #f5f5f5">
+		<v-main>
 			<router-view />
 		</v-main>
 
@@ -60,15 +60,31 @@ export default {
 		// 	// console.log(newVal);
 		// },
 	},
-	mounted(){
+	mounted() {
 		if (this.isLogedIn) {
-			this.options[2].badge = 2
+			this.options[2].badge = 2;
 		}
 	},
+	// beforeRouteLeave(to, from, next) {
+	// 	if (to.name === "login" || to.name === "register") {
+	// 		if (!this.isLogedIn) {
+	// 			next();
+	// 		}
+	// 	} else {
+	// 		next();
+	// 	}
+	// 	// // if
+	// 	// if (this.isLogedIn && to.name !== "login") {
+	// 	// 	next();
+	// 	// } else if (!this.isLogedIn && to.name === "login"){
+	// 	// 	next();
+	// 	// } else {
+	// 	// 	next()
+	// 	// }
+	// },
 	computed: {
 		selected: {
 			get: function () {
-
 				let currentRouteName = this.$router.history.current.name;
 				switch (currentRouteName) {
 					case "home":
@@ -88,7 +104,7 @@ export default {
 			set: function () {},
 		},
 		...mapGetters({
-			isLogedIn: "auth/getUserStatus"
+			isLogedIn: "auth/getUserStatus",
 		}),
 	},
 };

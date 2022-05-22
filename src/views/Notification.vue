@@ -2,17 +2,20 @@
 	<div>
 		<!-- <mlj-toolbar :loading="loading" :page="'Notifikasi'"></mlj-toolbar> -->
 
-		<v-tabs right align-with-title >
+		<v-tabs right align-with-title>
 			<v-tab style="font-size: 0.8rem">Promo</v-tab>
 			<v-tab style="font-size: 0.8rem">Belum Dibaca</v-tab>
 			<v-tab style="font-size: 0.8rem">Voucher</v-tab>
 			<v-tab style="font-size: 0.8rem">Admin</v-tab>
 		</v-tabs>
 
-
 		<v-sheet class="overflow-y-auto" :height="windowsHeight - 108 + 'px'">
-
-			<v-list two-line class="py-0" style="background-color: #F5F5F5;" v-if="isLogedIn">
+			<v-list
+				two-line
+				class="py-0"
+				style="background-color: #f5f5f5"
+				v-if="isLogedIn"
+			>
 				<v-list-item-group class="">
 					<div v-for="(item, i) in items" :key="i">
 						<v-list-item
@@ -46,7 +49,6 @@
 						<v-divider v-if="i < items.length - 1"></v-divider>
 					</div>
 
-
 					<!-- <div v-for="(item, i) in 14" :key="i">
 						<v-list-item
 							:style="
@@ -79,10 +81,8 @@
 					</div> -->
 				</v-list-item-group>
 			</v-list>
-			<div v-else class="d-flex justify-center align-center pa-4" >
-				<h2>
-					Anda belum login
-				</h2>
+			<div v-else class="d-flex justify-center align-center pa-4">
+				<h2>Anda belum login</h2>
 			</div>
 		</v-sheet>
 	</div>
@@ -136,11 +136,16 @@ export default {
 			],
 		};
 	},
-	...mapGetters({
-			isLogedIn: "auth/getUserStatus"
+	computed: {
+		...mapGetters({
+			isLogedIn: "auth/getUserStatus",
 		}),
-	mounted(){
-		this.$store.commit("auth/setRouteActivity", this.$router.history.current.name)
-	}
+	},
+	mounted() {
+		this.$store.commit(
+			"auth/setRouteActivity",
+			this.$router.history.current.name
+		);
+	},
 };
 </script>

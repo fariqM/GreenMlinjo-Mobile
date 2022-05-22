@@ -21,12 +21,14 @@ Vue.use(VueTouch, {name: 'v-touch'})
 // const { SplashScreen } = Plugins
 window.platform = Capacitor.getPlatform();
 const __BASE_URL_SERVER = 'http://192.168.1.7:8888/';
+// const __BASE_URL_SERVER = 'http://d8e6-2001-448a-50e0-41a0-9454-b9ad-b243-b6c.ngrok.io/';
+
 const __API_PREFIX = 'api'
 
 // non-auth url
 window.axios_open = AXIOS.create({
   baseURL: `${__BASE_URL_SERVER}${__API_PREFIX}`,
-  timeout: 3000,
+  timeout: 30000,
 });
 window.__BASE_URL__ = __BASE_URL_SERVER
 
