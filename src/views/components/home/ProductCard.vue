@@ -152,9 +152,15 @@ export default {
 		title: String,
 		unit: String,
 		sub_unit: String,
-		min_qty_per_unit: Number,
-		max_qty_per_unit: Number,
-		price: Number,
+		min_qty_per_unit: {
+			type: [Number, String],
+		},
+		max_qty_per_unit: {
+			type: [Number, String],
+		},
+		price: {
+			type: [Number, String],
+		},
 		product_id: Number,
 		skeleton: Boolean,
 		favourite: Array,
@@ -165,7 +171,8 @@ export default {
 	},
 	methods: {
 		numberWithCommas(x) {
-			var parts = x.toString().split(".");
+			var number = parseInt(x);
+			var parts = number.toString().split(".");
 			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			return parts.join(".");
 		},
