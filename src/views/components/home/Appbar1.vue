@@ -1,12 +1,6 @@
 <template>
 	<div>
-		<v-app-bar
-			elevate-on-scroll
-			absolute
-			class="pt-0 pb-6"
-			dark
-			scroll-target="#scrolling-techniques-3"
-		>
+		<v-app-bar elevate-on-scroll absolute class="pt-0 pb-6" dark>
 			<template v-slot:img="{ props }">
 				<v-img
 					v-bind="props"
@@ -17,8 +11,11 @@
 				:label="skeleton ? 'Tunggu Sebentar...' : 'Cari sayur kol'"
 				hide-details
 				dark
-				prepend-icon="mdi-magnify"
+				:prepend-icon="isUseBack ? 'mdi-arrow-left' : 'mdi-magnify'"
+				@click:prepend="prependClicked"
 				single-line
+				v-model="input"
+				ref="searchInput"
 			></v-text-field>
 			<div>
 				<skeleton
@@ -38,7 +35,7 @@
 				>
 					<v-badge
 						:content="CountFavourites"
-						:value="isLogedIn ? CountFavourites: null"
+						:value="isLogedIn ? CountFavourites : null"
 						color="error"
 						overlap
 					>
@@ -67,7 +64,7 @@
 					<v-badge
 						class="mr-1"
 						:content="CountCarts"
-						:value="isLogedIn ? CountCarts: null "
+						:value="isLogedIn ? CountCarts : null"
 						color="error"
 						overlap
 					>
@@ -93,6 +90,10 @@ import { mapGetters } from "vuex";
 export default {
 	props: {
 		loading: Boolean,
+		isUseBack: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	computed: {
 		...mapGetters({
@@ -116,15 +117,25 @@ export default {
 			});
 	},
 	watch: {
-		// getAllFavourites: function (newValue, oldValue) {
-		// 	console.log(newValue);
-		// },
+		input: function (newVal) {
+			this.$emit("onSearchInput", newVal)
+		},
+	},
+	methods: {
+		prependClicked() {
+			if (this.isUseBack) {
+				this.$router.back();
+			} else {
+				this.$refs.searchInput.focus();
+			}
+		},
 	},
 	data() {
 		return {
 			skeleton: true,
 			total_fav: 7,
 			corrousel: 2,
+			input: "",
 		};
 	},
 };

@@ -73,7 +73,7 @@
 							{{ title }}
 						</v-card-title>
 						<v-card-subtitle
-							v-if="max_qty_per_unit !== null"
+							v-if="max_qty_per_unit !== 0"
 							style="padding: 5px 5px; color: #8b8b8b; font-size: 0.7rem"
 						>
 							{{ min_qty_per_unit }}-{{ max_qty_per_unit }} {{ sub_unit }}/{{
@@ -84,7 +84,7 @@
 							v-else
 							style="padding: 5px 5px; color: #8b8b8b; font-size: 0.7rem"
 						>
-							{{ min_qty_per_unit }} {{ sub_unit }}/{{ unit }}
+							{{ sub_unit }}/{{ unit }}
 						</v-card-subtitle>
 						<div
 							class="pl-1"

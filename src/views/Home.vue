@@ -19,8 +19,11 @@
 				<!-- End Corousels Section -->
 
 				<!-- Area Section -->
-				<div @click="market_dialog = true">
-					<location-area :skeleton="skeleton.area" :market_name="market_name"></location-area>
+				<div @click="openMarketDialog">
+					<location-area
+						:skeleton="skeleton.area"
+						:market_name="market_name"
+					></location-area>
 				</div>
 				<!-- End Area Section -->
 
@@ -59,7 +62,7 @@
 						>
 						<v-subheader class="px-1" style="height: 20px">
 							<router-link
-								:to="{ name: 'login' }"
+								:to="{ name: 'product.terlaris' }"
 								style="text-decoration: none"
 							>
 								Lihat lainnya
@@ -71,10 +74,10 @@
 					<v-row
 						no-gutters
 						justify="space-around"
-						v-if="ProductTerlaris.length > 0"
+						v-if="products.length > 0"
 					>
 						<products-card
-							v-for="(product, i) in ProductTerlaris"
+							v-for="(product, i) in products"
 							:skeleton="skeleton.product_terlaris"
 							:key="i"
 							:product_id="product.id"
@@ -215,6 +218,7 @@ export default {
 			ProductTerlaris: "products/getSectionProductTerlaris",
 			CurrentUser: "auth/getUser",
 			markets: "getMarkets",
+			choosenMarket: "getChoosenMarket",
 		}),
 	},
 	data() {
@@ -282,6 +286,7 @@ export default {
 			corrousel: 2,
 			total_cart: 5,
 			total_fav: 10,
+			products:[],
 			itemsrecom: "/assets/icon/meat.png",
 			ops: {
 				vuescroll: {
@@ -333,12 +338,7 @@ export default {
 			},
 		};
 	},
-	watch: {
-		// market_id: function (newVal) {
-		// 	this.market_name = this.markets[newVal-1].name
-		// 	console.log(this.market_name);
-		// },
-	},
+
 	mounted() {
 		if (this.ProductTerlaris.length === 0) {
 			this.skeleton.area = true;
@@ -379,8 +379,15 @@ export default {
 			});
 	},
 	methods: {
+		openMarketDialog() {
+			this.market_id = this.choosenMarket;
+			setTimeout(() => {
+				this.market_dialog = true;
+			}, 200);
+		},
 		changeMarketProduct() {
-			this.market_name = this.markets[this.market_id-1].name
+			this.$store.commit("setChoosenMarket", this.market_id)
+			this.market_name = this.markets[this.market_id - 1].name;
 			this.market_dialog = false;
 			this.skeleton.product_terlaris = true;
 			this.fetchProductTerlaris();
@@ -388,8 +395,9 @@ export default {
 		fetchProductTerlaris() {
 			this.$store
 				.dispatch("products/setProductTerlaris", this.market_id)
-				.then(() => {
-					// console.log(result);
+				.then((response) => {
+					// console.log(response);
+					this.products = response.data.data.slice(0,6)
 					this.loading_bar = false;
 					this.skeleton_show = false;
 					this.error_ilust = false;

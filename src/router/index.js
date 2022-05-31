@@ -37,6 +37,7 @@ import PaymentMethod from "../views/pages/Payment"
 import TopUp from "../views/pages/Topup.vue"
 import TopupPayment from "../views/pages/TopupPayment.vue"
 import TopupProcess from "../views/pages/TopupProcess.vue"
+import OtherProducts from "../views/pages/OtherProducts.vue"
 
 import store from "../store/index.js"
 
@@ -143,6 +144,12 @@ const routes = [
     name: 'topup.process',
     component: TopupProcess
   },
+  {
+    path: '/product/terlaris',
+    name: 'product.terlaris',
+    component: OtherProducts
+  },
+
 
 
 
@@ -211,15 +218,23 @@ router.beforeEach((to, from, next) => {
 
     if (token !== null) {
       axios.defaults.headers.Authorization = `Bearer ${token}`;
-      if (to.name === "login" || to.name === "register"  || to.name === "landing") {
-        next({ name: "home" })
+      if (to.name === "login" || to.name === "register" || to.name === "landing") {
+        if (from.name === "home" || from.name === "product.terlaris") {
+          next()
+        } else {
+          next({ name: "home" })
+        }
       } else {
         next()
       }
     } else {
       if (to.name === "login" || to.name === "register" || to.name === "landing") {
         if (store.getters["auth/getUserStatus"]) {
-          next({ name: "home" })
+          if (from.name === "home" || from.name === "product.terlaris") {
+            next()
+          } else {
+            next({ name: "home" })
+          }
         } else {
           next();
         }

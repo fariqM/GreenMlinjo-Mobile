@@ -34,6 +34,7 @@ const store = new Vuex.Store({
       details: "",
     },
     markets: null,
+    choosenMarket:1,
   },
   mutations: {
     setMapAddress(state, payload) {
@@ -48,6 +49,9 @@ const store = new Vuex.Store({
     },
     setMarkets(state, payload) {
       state.markets = payload
+    },
+    setChoosenMarket(state, payload){
+      state.choosenMarket = payload
     }
   },
   actions: {
@@ -66,7 +70,8 @@ const store = new Vuex.Store({
     getcheckOut: state => state.checkOut,
     getTextMapAddress: state => state.textMapAddress,
     getAddressForm: state => state.addressForm,
-    getMarkets: state => state.markets
+    getMarkets: state => state.markets,
+    getChoosenMarket: state => state.choosenMarket
   },
   modules: {
     products: Product,
