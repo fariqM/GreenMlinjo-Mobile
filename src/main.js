@@ -20,9 +20,9 @@ Vue.use(VueTouch, {name: 'v-touch'})
 // base server ip
 // const { SplashScreen } = Plugins
 window.platform = Capacitor.getPlatform();
-const __BASE_URL_SERVER = 'http://192.168.1.7:8888/';
+// const __BASE_URL_SERVER = 'http://192.168.1.7:8888/';
 // const __BASE_URL_SERVER = 'http://d8e6-2001-448a-50e0-41a0-9454-b9ad-b243-b6c.ngrok.io/';
-// const __BASE_URL_SERVER = 'http://green-mlijo.anmello.com/';
+const __BASE_URL_SERVER = 'http://green-mlijo.anmello.com/';
 
 
 const __API_PREFIX = 'api'

@@ -1,5 +1,11 @@
 <template>
-	<v-list-item link style="padding: 0px" class="mb-2 mr-2" v-if="!skeleton">
+	<v-list-item
+		link
+		style="padding: 0px"
+		class="mb-2 mr-2"
+		v-if="!skeleton"
+		@click="goRecomPage(id)"
+	>
 		<v-card
 			class="d-flex align-center justify-center pa-2"
 			outlined
@@ -31,9 +37,17 @@ export default {
 		alt: String,
 		title: String,
 		skeleton: Boolean,
+		id: Number,
 	},
 	data() {
-		return {};
+		return {
+			goRecomPage(id) {
+				this.$router.push({
+					name: "product.recom",
+					params: { product_category_id: id },
+				});
+			},
+		};
 	},
 };
 </script>

@@ -90,8 +90,8 @@ export default {
 	data() {
 		return {
 			form: {
-				email: "mlinjo@gmail.com",
-				password: "password",
+				email: "",
+				password: "",
 			},
 			checkbox: [],
 			overlay: false,

@@ -74,7 +74,15 @@
 						</v-card-title>
 						<v-card-subtitle
 							v-if="max_qty_per_unit !== 0"
-							style="padding: 5px 5px; color: #8b8b8b; font-size: 0.7rem"
+							style="
+								padding: 5px 5px;
+								color: #8b8b8b;
+								font-size: 0.7rem;
+								line-height: 0.7rem;
+								margin-bottom: 0px;
+								padding-bottom: 0px;
+								margin-top: -14px;
+							"
 						>
 							{{ min_qty_per_unit }}-{{ max_qty_per_unit }} {{ sub_unit }}/{{
 								unit
@@ -82,28 +90,103 @@
 						</v-card-subtitle>
 						<v-card-subtitle
 							v-else
-							style="padding: 5px 5px; color: #8b8b8b; font-size: 0.7rem"
+							style="
+								padding: 5px 5px;
+								color: #8b8b8b;
+								font-size: 0.7rem;
+								line-height: 0.7rem;
+								margin-bottom: 0px;
+								padding-bottom: 0px;
+								margin-top: -14px;
+							"
 						>
 							{{ sub_unit }}/{{ unit }}
 						</v-card-subtitle>
-						<div
-							class="pl-1"
-							style="
-								font-weight: 500;
-								font-size: 0.9rem;
-								white-space: nowrap;
-								overflow: hidden;
-								text-overflow: ellipsis;
-								color: #09893c;
-							"
-						>
-							Rp {{ numberWithCommas(price)
-							}}<span
-								class="pl-1 normal-text"
-								style="font-weight: 500; font-size: 0.775rem"
-								>/{{ unit }}</span
+						<template v-if="product_category !== null">
+							<div class="px-1">
+								<v-chip
+									color="error"
+									x-small
+									class="pa-0 px-2 mr-1"
+									v-if="product_category.id === 1"
+									>- {{ this.discountTotal }}%</v-chip
+								>
+
+								<v-chip color="success" x-small class="pa-0 px-2">
+									{{ product_category.category }}
+								</v-chip>
+							</div>
+						</template>
+						<template v-if="product_category == null">
+							<div class="px-1">
+								<v-chip color="success" x-small class="pa-0 px-2">
+									Fresh Mlijo
+								</v-chip>
+							</div>
+						</template>
+
+						<template v-if="product_category !== null">
+							<div
+								v-if="product_category.id !== 1"
+								class="pl-1"
+								style="
+									font-weight: 500;
+									font-size: 0.9rem;
+									white-space: nowrap;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									color: #09893c;
+								"
 							>
-						</div>
+								Rp {{ numberWithCommas(price)
+								}}<span
+									class="pl-1 normal-text"
+									style="font-weight: 500; font-size: 0.775rem"
+									>/{{ unit }}</span
+								>
+							</div>
+
+							<div
+								v-if="product_category.id === 1"
+								class="pl-1"
+								style="
+									font-weight: 500;
+									font-size: 0.9rem;
+									white-space: nowrap;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									color: #09893c;
+								"
+							>
+								Rp <s style="color: #ff0000">{{ numberWithCommas(price) }} </s>
+								{{ numberWithCommas(discount(price)) }}
+								<span
+									class="pl-1 normal-text"
+									style="font-weight: 500; font-size: 0.775rem"
+									>/{{ unit }}</span
+								>
+							</div>
+						</template>
+						<template v-if="product_category == null">
+							<div
+								class="pl-1"
+								style="
+									font-weight: 500;
+									font-size: 0.9rem;
+									white-space: nowrap;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									color: #09893c;
+								"
+							>
+								Rp {{ numberWithCommas(price)
+								}}<span
+									class="pl-1 normal-text"
+									style="font-weight: 500; font-size: 0.775rem"
+									>/{{ unit }}</span
+								>
+							</div>
+						</template>
 					</div>
 				</v-list-item>
 
@@ -145,6 +228,7 @@ export default {
 	data() {
 		return {
 			url: __BASE_URL__,
+			discountTotal: 0,
 		};
 	},
 	props: {
@@ -161,6 +245,10 @@ export default {
 		price: {
 			type: [Number, String],
 		},
+		product_category: {
+			type: Object,
+			default: null,
+		},
 		product_id: Number,
 		skeleton: Boolean,
 		favourite: Array,
@@ -170,6 +258,12 @@ export default {
 		...mapGetters({ isLogedIn: "auth/getUserStatus" }),
 	},
 	methods: {
+		discount(price) {
+			const min = 35;
+			const max = 60;
+			this.discountTotal = Math.floor(Math.random() * (max - min + 1)) + min;
+			return price - price * (this.discountTotal / 100);
+		},
 		numberWithCommas(x) {
 			var number = parseInt(x);
 			var parts = number.toString().split(".");

@@ -26,7 +26,7 @@
 								<v-badge avatar overlap icon="mdi-pencil">
 									<v-avatar color="grey" size="50">
 										<v-img
-											src="https://cdn.vuetifyjs.com/images/lists/1.jpg"
+											:src="require('../../assets/user.jpg')"
 										></v-img>
 									</v-avatar>
 								</v-badge>
@@ -104,7 +104,7 @@
 			</my-scroll>
 		</v-main>
         <div class="pa-2 bottom-container-profile">
-			<v-btn  block color="primary"
+			<v-btn  block color="primary" @click="$router.back()"
 				>Simpan</v-btn
 			>
 		</div>

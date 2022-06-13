@@ -547,6 +547,7 @@ export default {
 			this.$store
 				.dispatch("carts/getCartsProduct")
 				.then((response) => {
+					console.log(response);
 					this.carts = response.data.data;
 					this.loading = false;
 				})

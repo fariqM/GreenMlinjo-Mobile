@@ -49,6 +49,41 @@ export default {
             })
         })
     },
+    getRecomProducts(state, payload){
+        return new Promise((resolve, reject) => {
+            getItem('mlinjo_token').then(token => {
+                // console.log("my token => " + token);
+                if (token === null) {
+                    axios_open.get(`products/recom/${payload.market_id}/${payload.product_category_id}`).then(response => {
+                        resolve(response)
+                    }).catch(e => {
+                        reject(e)
+                    })
+                } else {
+                    axios.get(`products/recom/${payload.market_id}/${payload.product_category_id}`).then(response => {
+                        resolve(response)
+                    }).catch(e => {
+                        // console.log(e.response);
+                        if (e.response) {
+                            if (e.response.status === 401) {
+                                axios_open.get(`products/recom/${payload.market_id}/${payload.product_category_id}`).then(response => {
+                                    resolve(response)
+                                }).catch(err => {
+                                    reject(err)
+                                })
+                            }
+                        } else {
+                            reject(e)
+                        }
+
+                    })
+                }
+                // console.log(token);
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
     setProductSedekah(state) {
         return new Promise((resolve, reject) => {
             axios.get('products/sedekah-product').then(r => {

@@ -48,6 +48,7 @@
 							:alt="item.alt"
 							:title="item.title"
 							:skeleton="skeleton_show"
+							:id="item.id"
 						></recom-item>
 						<!-- </v-card> -->
 					</v-sheet>
@@ -89,6 +90,7 @@
 							:price="product.price"
 							:favourite="product.favourites"
 							:images="product.images"
+							:product_category="product.product_category"
 							:testing_log="'ini list produk 2'"
 						></products-card>
 					</v-row>
@@ -236,46 +238,55 @@ export default {
 			error_ilust: false,
 			recom_items: [
 				{
+					id:1,
 					src: "/assets/icon/flash-sale.png",
 					alt: "coupons",
 					title: "Promo Kilat",
 				},
 				{
+					id:2,
 					src: "/assets/icon/fruit.png",
 					alt: "coupons",
 					title: "Paket Buah",
 				},
 				{
+					id:3,
 					src: "/assets/icon/wheat-flour.png",
 					alt: "Kebutuhan Pokok",
 					title: "Kebutuhan Pokok",
 				},
 				{
+					id:4,
 					src: "/assets/icon/vegetables.png",
 					alt: "Sayur",
 					title: "Paket Sayur",
 				},
 				{
+					id:5,
 					src: "/assets/icon/egg-carton.png",
 					alt: "Telur",
 					title: "Produk Telur",
 				},
 				{
+					id:6,
 					src: "/assets/icon/meat.png",
 					alt: "Daging",
 					title: "Produk Daging",
 				},
 				{
+					id:7,
 					src: "/assets/icon/sweet-potato.png",
 					alt: "Umbian",
 					title: "Produk Umbian",
 				},
 				{
+					id:8,
 					src: "/assets/icon/seafood.png",
 					alt: "Ikan",
 					title: "Produk Ikan",
 				},
 				{
+					id:9,
 					src: "/assets/icon/milk-box.png",
 					alt: "Produk Susu",
 					title: "Produk Susu",

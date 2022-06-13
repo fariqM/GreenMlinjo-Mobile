@@ -31,17 +31,38 @@
 							:price="product.price"
 							:favourite="product.favourites"
 							:images="product.images"
+                            :product_category="product.product_category"
 							:testing_log="'ini list produk 2'"
-							:product_category="product.product_category"
 						></products-card>
 					</v-row>
 					<div
-						v-else
+						v-if="loading == false && filteredProduct.length === 0"
 						class="text-center mt-4"
 						style="font-size: 1.2rem; font-weight: 500"
 					>
-						Oops... produk yang anda cari gak ada.
+						Yahh... sudah habis.
 					</div>
+					<div class="text-center mt-4" v-if="loading">
+						<v-progress-circular
+							:size="50"
+							color="primary"
+							indeterminate
+						></v-progress-circular>
+					</div>
+					<v-row
+						no-gutters
+						justify="center"
+						align="center"
+						class="pb-3"
+						v-if="error_ilust"
+					>
+						<div>
+							<not-found />
+						</div>
+						<div>
+							<h4 class="link-text mb-3">Opps kayaknya ada masalah koneksi</h4>
+						</div>
+					</v-row>
 				</div>
 			</my-scroll>
 		</v-main>
@@ -53,21 +74,26 @@ import MyScroll from "vuescroll";
 import { mapGetters } from "vuex";
 import ProductsCard from "../components/home/ProductCard.vue";
 import appbar from "../components/home/Appbar1.vue";
+import notFound from "../components/ilustration/404.vue";
 
 export default {
 	components: {
 		MyScroll,
 		ProductsCard,
 		appbar,
+		notFound,
 	},
 
 	data() {
 		return {
 			windowWidth: window.innerWidth,
 			windowsHeight: window.innerHeight,
-			loading: false,
+			loading: true,
 			productSkeleton: false,
 			appbarSkeleton: false,
+			product_category_id: null,
+			error_ilust: false,
+			products: [],
 			input: "",
 			ops: {
 				vuescroll: {
@@ -119,20 +145,18 @@ export default {
 			},
 		};
 	},
-    beforeMount(){
-       this.productSkeleton = true
-       setTimeout(() => {
-           this.productSkeleton = false
-       }, 1500);
-    },
-    watch:{
-       products:function(newVal){
-           console.log(newVal);
-       } 
-    },
+	beforeMount() {
+		this.product_category_id =
+			this.$router.history.current.params.product_category_id;
+		this.getProducts();
+	},
+	watch: {
+		products: function (newVal) {
+			console.log(newVal);
+		},
+	},
 	computed: {
 		...mapGetters({
-			products: "products/getSectionProductTerlaris",
 			CurrentUser: "auth/getUser",
 			choosenMarket: "getChoosenMarket",
 		}),
@@ -146,6 +170,28 @@ export default {
 		},
 	},
 	methods: {
+		getProducts() {
+			this.loading = true;
+			this.appbarSkeleton = true;
+			this.productSkeleton = true;
+			this.$store
+				.dispatch("products/getRecomProducts", {
+					market_id: this.$store.getters["getChoosenMarket"],
+					product_category_id: this.product_category_id,
+				})
+				.then((response) => {
+					this.products = response.data.data;
+					this.productSkeleton = false;
+					this.appbarSkeleton = false;
+					this.loading = false;
+				})
+				.catch((e) => {
+					this.productSkeleton = false;
+					this.appbarSkeleton = false;
+					this.error_ilust = true;
+					this.loading = false;
+				});
+		},
 		filteringProduct(value) {
 			this.input = value;
 			// console.log(value);

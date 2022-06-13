@@ -8,7 +8,7 @@
 			<v-list two-line class="pt-0 primary" style="max-height: 9rem">
 				<v-list-item v-if="isLogedIn">
 					<v-list-item-avatar size="70">
-						<v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+						<v-img :src="require('../assets/user.jpg')"></v-img>
 					</v-list-item-avatar>
 					<v-list-item-content>
 						<v-list-item-title style="font-size: 1.1rem; font-weight: 500">{{
